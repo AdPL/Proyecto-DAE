@@ -1,6 +1,7 @@
 
 package ujaen.proyecto.proyecto_dae;
 
+import ujaen.proyecto.proyecto_dae.usuario.UsuarioService;
 import org.springframework.context.ApplicationContext;
 
 /**
