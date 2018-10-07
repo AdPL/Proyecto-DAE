@@ -1,6 +1,7 @@
 
 package ujaen.proyecto.proyecto_dae;
 
+import ujaen.proyecto.proyecto_dae.cliente.ClienteUsuario;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
