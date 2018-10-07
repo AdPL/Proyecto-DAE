@@ -1,38 +1,61 @@
 
 package ujaen.proyecto.proyecto_dae.usuario;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import ujaen.proyecto.proyecto_dae.evento.Evento;
+
 /**
  *
  * @author adpl
  * @author Rafa
  */
-public class UsuarioServiceImpl implements UsuarioService{
-    String nombre;
+public class UsuarioServiceImpl implements UsuarioService {
+    private List<Usuario> usuarios;
     
     public UsuarioServiceImpl() {
-        nombre = "";
+        usuarios = new ArrayList<>();
     }
     
-    private static class UsuarioServiceImplHolder {
-        private static final UsuarioServiceImpl INSTANCE = new UsuarioServiceImpl();
+    @Override
+    public int getNUsuarios() {
+        return usuarios.size();
     }
     
-    public static UsuarioServiceImpl getInstance() {
-        return UsuarioServiceImplHolder.INSTANCE;
+    @Override
+    public Usuario registrarUsuario(String nombre, String pass1, String pass2, String email) {
+        Usuario usuario = null;
+        if (pass1.equals(pass2)) {
+            usuario = new Usuario(1, nombre, email, pass1);
+            if ( !usuarios.contains(usuario) ) { // No es válida la comparación
+                usuarios.add(usuario);
+            } else {
+                System.out.println("ERROR: El usuario ya existe");
+            }
+        } else {
+            System.out.println("ERROR: Las contraseñas no coinciden.");
+        }
+        return usuario;
     }
 
     @Override
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public Usuario identificarUsuario(String identificacion, String pass) {
+        for (Usuario usuario : usuarios) {
+            if ((identificacion.equals(usuario.getNombre()) || identificacion.equals(usuario.getEmail()) ) && pass.equals(usuario.getPassword())) {
+                return usuario;
+            }
+        }
+        return null;
     }
 
     @Override
-    public String getNombre() {
-        return nombre;
+    public Collection<Evento> listaEventosInscrito(Usuario usuario) {
+        return usuario.getEventosInscrito();
     }
 
     @Override
-    public void hola() {
-        System.out.println("El usuario " + getNombre() + " dice hola.");
+    public Collection<Evento> listaEventosOrganizador(Usuario usuario) {
+        return usuario.getEventosOrganizador();
     }
 }
