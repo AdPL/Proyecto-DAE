@@ -13,7 +13,7 @@ import ujaen.proyecto.proyecto_dae.usuario.Usuario;
  * @author Rafa
  */
 public class EventoServiceImpl implements EventoService {
-    private List<Evento> eventos;
+    private List<EventoDTO> eventos;
     
     public EventoServiceImpl() {
         eventos = new ArrayList<>();
@@ -24,12 +24,12 @@ public class EventoServiceImpl implements EventoService {
         return eventos.size();
     }
     
-    @Override
-    public void crearEvento(Usuario usuario, String titulo, String descripcion, String localizacion, int nMax, Date fecha) { //TODO: Completar método
+    /*@Override
+    public void crearEvento(Usuario usuario, String titulo, String descripcion, String localizacion, int nMax, Date fecha, Tipo tipo) { //TODO: Completar método
         boolean existe = false;
         if (usuario != null) {
-            Evento nuevoEvento = new Evento(1, nMax, titulo, descripcion, localizacion, fecha, usuario);
-            for (Evento evento : eventos) {
+            EventoDTO nuevoEvento = new EventoDTO(1, nMax, titulo, descripcion, localizacion, fecha, tipo, usuario);
+            for (EventoDTO evento : eventos) {
                 if ( evento.getTitulo().equals(titulo) ) {
                     existe = true;
                     System.out.println("ERROR: Ya existe un evento con ese título");
@@ -45,9 +45,9 @@ public class EventoServiceImpl implements EventoService {
             System.out.println("ERROR: Debe estar identificado para crear un evento");
         }
     }
-
+    */
     @Override
-    public Collection<Evento> listaEventos() {
+    public Collection<EventoDTO> listaEventos() {
         return eventos;
     }
 
@@ -69,8 +69,8 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public Evento buscarEvento(String titulo) { //TODO: Método buscarEvento de la clase ujaen.proyecto.proyecto_dae.evento.EventoServiceImpl
-        for (Evento evento : eventos) {
+    public EventoDTO buscarEvento(String titulo) { //TODO: Método buscarEvento de la clase ujaen.proyecto.proyecto_dae.evento.EventoServiceImpl
+        for (EventoDTO evento : eventos) {
             if ( titulo.equals(evento.getTitulo())) {
                 return evento;
             }
@@ -79,9 +79,9 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public Collection<Evento> buscarEvento(Tipo tipo) {
-        Collection<Evento> busq = new ArrayList<>();
-        for (Evento evento : eventos) {
+    public Collection<EventoDTO> buscarEvento(Tipo tipo) {
+        Collection<EventoDTO> busq = new ArrayList<>();
+        for (EventoDTO evento : eventos) {
             if ( tipo == evento.getTipo() ) {
                 busq.add(evento);
             }
@@ -90,9 +90,9 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public Collection<Evento> buscarEvento(Tipo tipo, String descripcion) { //TODO: Método buscarEvento con filtrado, hay mejores clases a contains
-        Collection<Evento> busq = new ArrayList<>();
-        for (Evento evento : eventos) {
+    public Collection<EventoDTO> buscarEvento(Tipo tipo, String descripcion) { //TODO: Método buscarEvento con filtrado, hay mejores clases a contains
+        Collection<EventoDTO> busq = new ArrayList<>();
+        for (EventoDTO evento : eventos) {
             if ( tipo == evento.getTipo() && evento.getDescripcion().contains(descripcion) ) {
                 busq.add(evento);
             }
@@ -100,8 +100,8 @@ public class EventoServiceImpl implements EventoService {
         return busq;
     }
 
-    @Override
-    public void cancelarEvento(Usuario usuario, Evento evento) {
+    /*@Override
+    public void cancelarEvento(Usuario usuario, EventoDTO evento) {
         if( eventos.contains(evento) && usuario.equals(evento.getOrganizador())) {
             for ( Usuario usu : evento.getAsistentes() ) {
                 usu.eliminarEventoAsistente(evento); //TODO: Eliminación de asistentes: Esto no está funcionando
@@ -112,5 +112,5 @@ public class EventoServiceImpl implements EventoService {
             System.out.println("ERROR: No puedes borrar un evento que no es tuyo");
         }
         //TODO: Método cancelarEvento de la clase ujaen.proyecto.proyecto_dae.evento.EventoServiceImpl
-    }
+    }*/
 }
