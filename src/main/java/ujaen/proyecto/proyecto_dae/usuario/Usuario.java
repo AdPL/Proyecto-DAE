@@ -106,4 +106,7 @@ public class Usuario {
         this.eventosOrganizador.remove(evento);
     }
     
+    public UsuarioDTO getUsuarioDTO() {
+        return new UsuarioDTO(id, nombre, email);
+    }
 }

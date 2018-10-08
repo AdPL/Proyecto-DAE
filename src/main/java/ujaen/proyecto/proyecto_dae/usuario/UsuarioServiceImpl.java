@@ -24,7 +24,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
     
     @Override
-    public Usuario registrarUsuario(String nombre, String pass1, String pass2, String email) {
+    public UsuarioDTO registrarUsuario(String nombre, String pass1, String pass2, String email) {
         Usuario usuario = null;
         if (pass1.equals(pass2)) {
             usuario = new Usuario(1, nombre, email, pass1);
@@ -36,14 +36,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         } else {
             System.out.println("ERROR: Las contraseñas no coinciden.");
         }
-        return usuario;
+        return usuario.getUsuarioDTO();
     }
 
     @Override
-    public Usuario identificarUsuario(String identificacion, String pass) {
+    public UsuarioDTO identificarUsuario(String identificacion, String pass) {
         for (Usuario usuario : usuarios) {
             if ((identificacion.equals(usuario.getNombre()) || identificacion.equals(usuario.getEmail()) ) && pass.equals(usuario.getPassword())) {
-                return usuario;
+                return usuario.getUsuarioDTO();
             }
         }
         return null;
