@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import ujaen.proyecto.proyecto_dae.evento.Evento;
+import ujaen.proyecto.proyecto_dae.evento.EventoDTO;
 
 /**
  *
@@ -28,7 +29,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuario = null;
         if (pass1.equals(pass2)) {
             usuario = new Usuario(1, nombre, email, pass1);
-            if ( !usuarios.contains(usuario) ) { // No es válida la comparación
+            if ( !usuarios.contains(usuario) ) { //ToDo: No es válida la comparación
                 usuarios.add(usuario);
             } else {
                 System.out.println("ERROR: El usuario ya existe");
@@ -36,7 +37,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         } else {
             System.out.println("ERROR: Las contraseñas no coinciden.");
         }
-        return usuario.getUsuarioDTO();
+        return usuario != null ? usuario.getUsuarioDTO() : null;
     }
 
     @Override
@@ -50,12 +51,39 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Collection<Evento> listaEventosInscrito(Usuario usuario) {
-        return usuario.getEventosInscrito();
+    public Collection<EventoDTO> listaEventosInscrito(UsuarioDTO usuario) {
+        Usuario u;
+        u = comprobarSesion(usuario);
+        if ( u == null ) return null;
+        
+        List<EventoDTO> eventosDTO = new ArrayList<>();
+        
+        for (Evento evento : u.getEventosInscrito() ) {
+            eventosDTO.add(evento.getEventoDTO());
+        }
+        return eventosDTO;
     }
 
     @Override
-    public Collection<Evento> listaEventosOrganizador(Usuario usuario) {
-        return usuario.getEventosOrganizador();
+    public Collection<EventoDTO> listaEventosOrganizador(UsuarioDTO usuario) {
+        Usuario u;
+        u = comprobarSesion(usuario);
+        if ( u == null ) return null;
+        
+        List<EventoDTO> eventosDTO = new ArrayList<>();
+        
+        for (Evento evento : u.getEventosInscrito() ) {
+            eventosDTO.add(evento.getEventoDTO());
+        }
+        return eventosDTO;
+    }
+    
+    public Usuario comprobarSesion(UsuarioDTO usuario) {
+        for (Usuario u : usuarios) {
+            if ( usuario.getNombre().equals(u.getNombre()) ) {
+                return u;
+            }
+        }
+        return null;
     }
 }
