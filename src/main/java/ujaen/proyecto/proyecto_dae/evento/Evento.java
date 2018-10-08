@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import ujaen.proyecto.proyecto_dae.usuario.Usuario;
 
+
 /**
  *
  * @author adpl
@@ -147,5 +148,9 @@ public class Evento {
     public String toString() {
         return "Evento " + titulo + " | Descripción: " + descripcion 
                 + " Lugar: " + localizacion + " Tipo: " + tipo.toString();
+    }
+    
+    public EventoDTO getEventoDTO(){
+        return new EventoDTO(id, nMax, titulo, localizacion, descripcion, fecha, tipo, organizador);
     }
 }
