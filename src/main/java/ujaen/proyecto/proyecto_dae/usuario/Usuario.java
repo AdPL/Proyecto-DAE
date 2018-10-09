@@ -27,11 +27,6 @@ public class Usuario {
         eventosInscrito = new ArrayList<>();
         eventosOrganizador = new ArrayList<>();
     }
-    
-    @Override
-    protected void finalize() {
-        System.out.println("Destruyendo objeto usuario " + this.nombre);
-    }
 
     public Usuario(int id, String nombre, String email, String password) {
         aleatorio = new Random();
@@ -41,7 +36,7 @@ public class Usuario {
         this.password = password;
         this.eventosInscrito = new ArrayList<>();
         this.eventosOrganizador = new ArrayList<>();
-        this.token = aleatorio.nextInt(10000);
+        this.token = aleatorio.nextInt(Integer.MAX_VALUE);
         System.out.println("Token: " + this.token);
     }
     

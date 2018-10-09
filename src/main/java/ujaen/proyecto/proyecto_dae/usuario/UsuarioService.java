@@ -13,10 +13,10 @@ import ujaen.proyecto.proyecto_dae.evento.Tipo;
  * @author Rafa
  */
 public interface UsuarioService {
-    UsuarioDTO registrarUsuario(String nombre, String pass1, String pass2, String email);
-    UsuarioDTO identificarUsuario(String identificacion, String pass);
-    Collection<EventoDTO> listaEventosInscrito(UsuarioDTO usuario);
-    Collection<EventoDTO> listaEventosOrganizador(UsuarioDTO usuario);
-    EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Date fecha, int nMax, UsuarioDTO usuario);
+    int registrarUsuario(String nombre, String pass1, String pass2, String email);
+    int identificarUsuario(String identificacion, String pass);
+    Collection<EventoDTO> listaEventosInscrito(int sesion);
+    Collection<EventoDTO> listaEventosOrganizador(int sesion);
+    EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Date fecha, int nMax, int sesion);
     int getNUsuarios();
 }

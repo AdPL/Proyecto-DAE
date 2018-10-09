@@ -85,7 +85,7 @@ public class GestorEventos implements EventoService, UsuarioService {
     }
     
     @Override
-    public UsuarioDTO registrarUsuario(String nombre, String pass1, String pass2, String email) {
+    public int registrarUsuario(String nombre, String pass1, String pass2, String email) {
         Usuario usuario = null;
         if (pass1.equals(pass2)) {
             usuario = new Usuario(1, nombre, email, pass1);
@@ -97,58 +97,60 @@ public class GestorEventos implements EventoService, UsuarioService {
         } else {
             System.out.println("ERROR: Las contraseñas no coinciden.");
         }
-        return usuario != null ? usuario.getUsuarioDTO() : null;
+        return usuario != null ? usuario.getToken() : -1;
     }
 
     @Override
-    public UsuarioDTO identificarUsuario(String identificacion, String pass) {
+    public int identificarUsuario(String identificacion, String pass) {
         for (Usuario usuario : usuarios) {
             if ((identificacion.equals(usuario.getNombre()) || identificacion.equals(usuario.getEmail()) ) && pass.equals(usuario.getPassword())) {
-                return usuario.getUsuarioDTO();
+                return usuario.getToken();
             }
         }
-        return null;
+        return -1;
     }
 
     @Override
-    public Collection<EventoDTO> listaEventosInscrito(UsuarioDTO usuario) {
-        Usuario u;
-        u = comprobarSesion(usuario);
-        if ( u == null ) return null;
+    public Collection<EventoDTO> listaEventosInscrito(int sesion) {
+        Usuario usuario = comprobarSesion(sesion);
+        
+        if ( usuario == null ) return null;
         
         List<EventoDTO> eventosDTO = new ArrayList<>();
         
-        for (Evento evento : u.getEventosInscrito() ) {
+        for (Evento evento : usuario.getEventosInscrito() ) {
             eventosDTO.add(evento.getEventoDTO());
         }
         return eventosDTO;
     }
 
     @Override
-    public Collection<EventoDTO> listaEventosOrganizador(UsuarioDTO usuario) {
-        Usuario u;
-        u = comprobarSesion(usuario);
-        if ( u == null ) return null;
+    public Collection<EventoDTO> listaEventosOrganizador(int sesion) {
+        Usuario usuario = comprobarSesion(sesion);
+        
+        if ( usuario == null ) return null;
         
         List<EventoDTO> eventosDTO = new ArrayList<>();
         
-        for (Evento evento : u.getEventosOrganizador()) {
+        for (Evento evento : usuario.getEventosOrganizador()) {
             eventosDTO.add(evento.getEventoDTO());
         }
         return eventosDTO;
     }  
 
     @Override
-    public EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Date fecha, int nMax, UsuarioDTO usuario) {
-        Usuario u = comprobarSesion(usuario);
-        if ( u == null ) return null;
+    public EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Date fecha, int nMax, int sesion) {
+        Usuario usuario = comprobarSesion(sesion);
+        
+        if ( usuario == null ) return null;
+        
         for (Evento evento : eventos) {
             if ( titulo.equals(evento.getTitulo()) ) return null;
         }
-        Evento e = new Evento(1, nMax, titulo, descripcion, localizacion, tipo, fecha, u);
-        u.agregarEventoOrganizador(e);
-        eventos.add(e);
-        return e.getEventoDTO();
+        Evento evento = new Evento(1, nMax, titulo, descripcion, localizacion, tipo, fecha, usuario);
+        usuario.agregarEventoOrganizador(evento);
+        eventos.add(evento);
+        return evento.getEventoDTO();
     }
 
     @Override
@@ -175,10 +177,10 @@ public class GestorEventos implements EventoService, UsuarioService {
         return null;
     }
     
-    public Usuario comprobarSesion(UsuarioDTO usuario) {
-        for (Usuario u : usuarios) {
-            if ( usuario.getNombre().equals(u.getNombre()) ) {
-                return u;
+    public Usuario comprobarSesion(int sesion) {
+        for (Usuario usuario : usuarios) {
+            if ( usuario.getToken() == sesion ) {
+                return usuario;
             }
         }
         return null;

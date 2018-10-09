@@ -27,7 +27,27 @@ public class ClienteUsuario {
     }
     
     public void run() {
-        Scanner sc = new Scanner(System.in);
+        int sesion = 0;
+        
+        GestorEventos gestorEventos = (GestorEventos) context.getBean(GestorEventos.class);
+        
+        sesion = gestorEventos.registrarUsuario("adpl", "oretania", "oretania", "adrianpelopez@gmail.com");
+        System.out.println("ID Sesión: " + sesion);
+        
+        sesion = gestorEventos.identificarUsuario("adpl", "oretania");
+        System.out.println("Debería coincidir ID Sesión: " + sesion);       
+
+        gestorEventos.crearEvento("prueba", "prueba", "Linares", Tipo.FESTIVAL, Date.from(Instant.now()), 20, sesion);
+        
+        System.out.println("Número de usuarios en el sistema: " + gestorEventos.getNUsuarios());
+        System.out.println("Número de eventos en el sistema: " + gestorEventos.getNEventos());
+        
+        
+        
+        
+        
+        
+/*        Scanner sc = new Scanner(System.in);
         int opcion;
         UsuarioDTO usuario = null;
         EventoDTO evento = null;
@@ -153,9 +173,9 @@ public class ClienteUsuario {
                     } else {
                         System.out.println("ERROR: Debe estar identificado para consultar sus eventos");
                     }*/
-                break;
+                /*break;
                 case 10: 
-                    System.out.println("No disponible");
+                    System.out.println("No disponible");*/
                     /*
                     if ( usuario != null ) {
                         sc.nextLine();
@@ -170,9 +190,9 @@ public class ClienteUsuario {
                         }
                     } else {
                         System.out.println("ERROR: Debe estar identificado para consultar sus eventos");
-                    }*/
+                    }
                 break;
             }
-        } while ( opcion != 0);
+        } while ( opcion != 0);*/
     }
 }

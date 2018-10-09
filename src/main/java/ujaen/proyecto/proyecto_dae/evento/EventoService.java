@@ -18,7 +18,7 @@ public interface EventoService {
     EventoDTO buscarEvento(String titulo);
     Collection<EventoDTO> buscarEvento(Tipo tipo);
     Collection<EventoDTO> buscarEvento(Tipo tipo, String descripcion);
-    //EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Date fecha, int nMax, UsuarioDTO usuario);
+    EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Date fecha, int nMax, int sesion);
     void inscribirUsuario(Usuario usuario, Evento evento);
     void cancelarAsistencia(Usuario usuario);
     int getNEventos();
