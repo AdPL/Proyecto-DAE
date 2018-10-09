@@ -27,20 +27,15 @@ public class Evento {
 
     public Evento() {
     }
-    
-    @Override
-    protected void finalize() {
-        System.out.println("Destruyendo objeto evento " + this.titulo);
-    }
 
-    public Evento(Integer id, Integer nMax, String titulo, String descripcion, String localizacion, Date fecha, Usuario usuario) {
+    public Evento(int id, int nMax, String titulo, String descripcion, String localizacion, Tipo tipo, Date fecha, Usuario usuario) {
         this.id = id;
         this.nMax = nMax;
         this.titulo = titulo;
         this.localizacion = localizacion;
         this.descripcion = descripcion;
         this.fecha = fecha;
-        this.tipo = Tipo.FESTIVAL;
+        this.tipo = tipo;
         this.asistentes = new ArrayList<>();
         this.listaEspera = new ArrayList<>();
         this.organizador = usuario;

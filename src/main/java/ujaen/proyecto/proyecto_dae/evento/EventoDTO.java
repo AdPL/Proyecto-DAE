@@ -147,4 +147,10 @@ public class EventoDTO {
     public void setOrganizador(Usuario organizador) {
         this.organizador = organizador;
     }
+    
+    @Override
+    public String toString() {
+        return "Evento " + titulo + " | Descripción: " + descripcion 
+                + " Lugar: " + localizacion + " Tipo: " + tipo.toString();
+    }
 }

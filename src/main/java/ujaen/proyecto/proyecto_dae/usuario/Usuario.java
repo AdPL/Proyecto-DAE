@@ -3,6 +3,7 @@ package ujaen.proyecto.proyecto_dae.usuario;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import ujaen.proyecto.proyecto_dae.evento.Evento;
 
 /**
@@ -18,6 +19,9 @@ public class Usuario {
     private String nombre;
     private String email;
     private String password;
+    private int token;
+    
+    private Random aleatorio;
     
     public Usuario() {
         eventosInscrito = new ArrayList<>();
@@ -30,12 +34,15 @@ public class Usuario {
     }
 
     public Usuario(int id, String nombre, String email, String password) {
+        aleatorio = new Random();
         this.id = id;
         this.nombre = nombre;
         this.email = email;
         this.password = password;
         this.eventosInscrito = new ArrayList<>();
         this.eventosOrganizador = new ArrayList<>();
+        this.token = aleatorio.nextInt(10000);
+        System.out.println("Token: " + this.token);
     }
     
     public Integer getId() {
@@ -105,8 +112,18 @@ public class Usuario {
     public void eliminarEventoOrganizado(Evento evento) {
         this.eventosOrganizador.remove(evento);
     }
+
+    public int getToken() {
+        return token;
+    }
+
+    public void setToken(int token) {
+        this.token = token;
+    }
     
     public UsuarioDTO getUsuarioDTO() {
         return new UsuarioDTO(id, nombre, email);
     }
+    
+    
 }
