@@ -15,7 +15,8 @@ public class Usuario {
     private List<Evento> eventosInscrito;
     private List<Evento> eventosOrganizador;
     
-    private int id;
+    private static int id = 1;
+    private int idUsuario;
     private String nombre;
     private String email;
     private String password;
@@ -28,9 +29,9 @@ public class Usuario {
         eventosOrganizador = new ArrayList<>();
     }
 
-    public Usuario(int id, String nombre, String email, String password) {
+    public Usuario(String nombre, String email, String password) {
         aleatorio = new Random();
-        this.id = id;
+        this.idUsuario = Usuario.id++;
         this.nombre = nombre;
         this.email = email;
         this.password = password;
@@ -39,13 +40,13 @@ public class Usuario {
         this.token = aleatorio.nextInt(Integer.MAX_VALUE);
         System.out.println("Token: " + this.token);
     }
-    
-    public Integer getId() {
-        return id;
+
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNombre() {
@@ -117,8 +118,6 @@ public class Usuario {
     }
     
     public UsuarioDTO getUsuarioDTO() {
-        return new UsuarioDTO(id, nombre, email);
+        return new UsuarioDTO(idUsuario, nombre, email);
     }
-    
-    
 }

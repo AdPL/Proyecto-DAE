@@ -7,22 +7,22 @@ package ujaen.proyecto.proyecto_dae.usuario;
  * @author Rafa
  */
 public class UsuarioDTO {
-    private int id;
+    private int idUsuario;
     private String nombre;
     private String email;
 
     public UsuarioDTO(int id, String nombre, String email) {
-        this.id = id;
+        this.idUsuario = id;
         this.nombre = nombre;
         this.email = email;
     }
 
-    public int getId() {
-        return id;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdUsuario(int id) {
+        this.idUsuario = id;
     }
 
     public String getNombre() {
@@ -39,5 +39,10 @@ public class UsuarioDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+    @Override
+    public String toString() {
+        return this.nombre;
     }
 }

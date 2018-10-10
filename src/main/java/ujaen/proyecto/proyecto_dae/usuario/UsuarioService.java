@@ -3,7 +3,6 @@ package ujaen.proyecto.proyecto_dae.usuario;
 
 import java.util.Collection;
 import java.util.Date;
-import ujaen.proyecto.proyecto_dae.evento.Evento;
 import ujaen.proyecto.proyecto_dae.evento.EventoDTO;
 import ujaen.proyecto.proyecto_dae.evento.Tipo;
 

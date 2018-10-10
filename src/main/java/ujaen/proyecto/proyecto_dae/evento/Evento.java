@@ -146,6 +146,6 @@ public class Evento {
     }
     
     public EventoDTO getEventoDTO(){
-        return new EventoDTO(id, nMax, titulo, localizacion, descripcion, fecha, tipo, organizador);
+        return new EventoDTO(id, nMax, titulo, localizacion, descripcion, fecha, tipo, organizador.getUsuarioDTO());
     }
 }

@@ -1,16 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ujaen.proyecto.proyecto_dae.evento;
 
 import java.util.Date;
-import ujaen.proyecto.proyecto_dae.usuario.Usuario;
+import ujaen.proyecto.proyecto_dae.usuario.UsuarioDTO;
 
 
 /**
  *
+ * @author adpl
  * @author Rafa
  */
 public class EventoDTO {
@@ -21,9 +18,9 @@ public class EventoDTO {
     private String descripcion;
     private Date fecha;
     private Tipo tipo;
-    private Usuario organizador;
+    private UsuarioDTO organizador;
 
-    public EventoDTO(int id, int nMax, String titulo, String localizacion, String descripcion, Date fecha, Tipo tipo, Usuario organizador) {
+    public EventoDTO(int id, int nMax, String titulo, String localizacion, String descripcion, Date fecha, Tipo tipo, UsuarioDTO organizador) {
         this.id = id;
         this.nMax = nMax;
         this.titulo = titulo;
@@ -137,14 +134,14 @@ public class EventoDTO {
     /**
      * @return the organizador
      */
-    public Usuario getOrganizador() {
+    public UsuarioDTO getOrganizador() {
         return organizador;
     }
 
     /**
      * @param organizador the organizador to set
      */
-    public void setOrganizador(Usuario organizador) {
+    public void setOrganizador(UsuarioDTO organizador) {
         this.organizador = organizador;
     }
     

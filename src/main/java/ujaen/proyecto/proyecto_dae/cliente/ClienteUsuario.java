@@ -4,14 +4,10 @@ package ujaen.proyecto.proyecto_dae.cliente;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Scanner;
-import ujaen.proyecto.proyecto_dae.usuario.UsuarioService;
 import org.springframework.context.ApplicationContext;
-import ujaen.proyecto.proyecto_dae.evento.Evento;
 import ujaen.proyecto.proyecto_dae.evento.EventoDTO;
-import ujaen.proyecto.proyecto_dae.evento.EventoService;
 import ujaen.proyecto.proyecto_dae.evento.GestorEventos;
 import ujaen.proyecto.proyecto_dae.evento.Tipo;
-import ujaen.proyecto.proyecto_dae.usuario.Usuario;
 import ujaen.proyecto.proyecto_dae.usuario.UsuarioDTO;
 
 /**
@@ -28,24 +24,24 @@ public class ClienteUsuario {
     
     public void run() {
         int sesion = 0;
+        EventoDTO evento;
         
         GestorEventos gestorEventos = (GestorEventos) context.getBean(GestorEventos.class);
         
         sesion = gestorEventos.registrarUsuario("adpl", "oretania", "oretania", "adrianpelopez@gmail.com");
-        System.out.println("ID Sesión: " + sesion);
-        
-        sesion = gestorEventos.identificarUsuario("adpl", "oretania");
-        System.out.println("Debería coincidir ID Sesión: " + sesion);       
-
         gestorEventos.crearEvento("prueba", "prueba", "Linares", Tipo.FESTIVAL, Date.from(Instant.now()), 20, sesion);
+        sesion = gestorEventos.registrarUsuario("pepe", "pepe", "pepe", "pepe@gmail.com");
+        sesion = gestorEventos.registrarUsuario("paco", "paco", "paco", "paco@gmail.com");
         
         System.out.println("Número de usuarios en el sistema: " + gestorEventos.getNUsuarios());
         System.out.println("Número de eventos en el sistema: " + gestorEventos.getNEventos());
         
         
+        evento = gestorEventos.buscarEvento("prueba");
+        gestorEventos.inscribirUsuario(sesion, evento);
         
-        
-        
+        System.out.println(gestorEventos.listaAsistentes(evento));
+        System.out.println(gestorEventos.listaEventosInscrito(sesion));
         
 /*        Scanner sc = new Scanner(System.in);
         int opcion;
