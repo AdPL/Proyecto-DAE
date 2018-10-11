@@ -29,19 +29,29 @@ public class ClienteUsuario {
         GestorEventos gestorEventos = (GestorEventos) context.getBean(GestorEventos.class);
         
         sesion = gestorEventos.registrarUsuario("adpl", "oretania", "oretania", "adrianpelopez@gmail.com");
-        gestorEventos.crearEvento("prueba", "prueba", "Linares", Tipo.FESTIVAL, Date.from(Instant.now()), 20, sesion);
+        gestorEventos.crearEvento("prueba", "prueba", "Linares", Tipo.FESTIVAL, Date.from(Instant.now()), 1, sesion);
         sesion = gestorEventos.registrarUsuario("pepe", "pepe", "pepe", "pepe@gmail.com");
         sesion = gestorEventos.registrarUsuario("paco", "paco", "paco", "paco@gmail.com");
+        sesion = gestorEventos.registrarUsuario("fsa", "oretania", "oretania", "adrianpelopez@gmail.com");
         
         System.out.println("Número de usuarios en el sistema: " + gestorEventos.getNUsuarios());
         System.out.println("Número de eventos en el sistema: " + gestorEventos.getNEventos());
         
+        sesion = gestorEventos.identificarUsuario("pepe", "pepe");
+        evento = gestorEventos.buscarEvento("prueba");
+        gestorEventos.inscribirUsuario(sesion, evento);
         
+        sesion = gestorEventos.identificarUsuario("paco", "paco");
         evento = gestorEventos.buscarEvento("prueba");
         gestorEventos.inscribirUsuario(sesion, evento);
         
         System.out.println(gestorEventos.listaAsistentes(evento));
-        System.out.println(gestorEventos.listaEventosInscrito(sesion));
+        //System.out.println(gestorEventos.listaEventosInscrito(sesion));
+        
+        sesion = gestorEventos.identificarUsuario("pepe", "pepe");
+        gestorEventos.cancelarAsistencia(sesion, evento);
+        System.out.println(gestorEventos.listaAsistentes(evento));
+        //System.out.println(gestorEventos.listaEventosInscrito(sesion));
         
 /*        Scanner sc = new Scanner(System.in);
         int opcion;

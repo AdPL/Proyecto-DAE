@@ -11,7 +11,7 @@ import ujaen.proyecto.proyecto_dae.usuario.UsuarioDTO;
  * @author Rafa
  */
 public class EventoDTO {
-    private int id;
+    private int idEvento;
     private int nMax;
     private String titulo;
     private String localizacion;
@@ -21,7 +21,7 @@ public class EventoDTO {
     private UsuarioDTO organizador;
 
     public EventoDTO(int id, int nMax, String titulo, String localizacion, String descripcion, Date fecha, Tipo tipo, UsuarioDTO organizador) {
-        this.id = id;
+        this.idEvento = id;
         this.nMax = nMax;
         this.titulo = titulo;
         this.localizacion = localizacion;
@@ -31,20 +31,18 @@ public class EventoDTO {
         this.organizador = organizador;
     }
 
-    
-    
     /**
-     * @return the id
+     * @return the idEvento
      */
-    public int getId() {
-        return id;
+    public int getIdEvento() {
+        return idEvento;
     }
 
     /**
-     * @param id the id to set
+     * @param idEvento the id to set
      */
-    public void setId(int id) {
-        this.id = id;
+    public void setIdEvento(int idEvento) {
+        this.idEvento = idEvento;
     }
 
     /**

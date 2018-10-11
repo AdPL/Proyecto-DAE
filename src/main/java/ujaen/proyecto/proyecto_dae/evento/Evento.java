@@ -16,7 +16,8 @@ public class Evento {
     private List<Usuario> asistentes;
     private List<Usuario> listaEspera;
     
-    private int id;
+    private static int id = 1;
+    private int idEvento;
     private int nMax;
     private String titulo;
     private String localizacion;
@@ -29,7 +30,7 @@ public class Evento {
     }
 
     public Evento(int id, int nMax, String titulo, String descripcion, String localizacion, Tipo tipo, Date fecha, Usuario usuario) {
-        this.id = id;
+        this.idEvento = Evento.id++;
         this.nMax = nMax;
         this.titulo = titulo;
         this.localizacion = localizacion;
@@ -41,12 +42,12 @@ public class Evento {
         this.organizador = usuario;
     }
 
-    public Integer getId() {
-        return id;
+    public int getIdEvento() {
+        return idEvento;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdEvento(int idEvento) {
+        this.idEvento = idEvento;
     }
 
     public Integer getnMax() {
@@ -132,6 +133,23 @@ public class Evento {
                 listaEspera.add(usuario);
                 System.out.println("Usuario agregado a la lista de espera");
             }
+        }
+    }
+    
+    public void quitarAsistente(Usuario usuario) {
+        if ( asistentes.contains(usuario) ) {
+            asistentes.remove(usuario);
+            System.out.println("Usuario " + usuario.getNombre() + " cancela su asistencia al evento " + titulo);
+            if ( listaEspera.size() > 0 ) {
+                System.out.println(listaEspera.get(0).getNombre() + " es el primero de la lista de Espera, ahora está en asistentes");
+                asistentes.add(listaEspera.remove(0));
+            }
+        } else if ( listaEspera.contains(usuario) ) {
+            listaEspera.remove(usuario);
+            System.out.println("Usuario " + usuario.getNombre() + " se cancela de la lista de espera al evento " + titulo);
+        }
+ {
+            
         }
     }
     
