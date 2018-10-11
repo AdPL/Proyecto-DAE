@@ -19,5 +19,6 @@ public interface EventoService {
     EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Date fecha, int nMax, int sesion);
     void inscribirUsuario(int sesion, EventoDTO evento);
     void cancelarAsistencia(int sesion, EventoDTO evento);
+    void cancelarEvento(int sesion, EventoDTO evento);
     int getNEventos();
 }

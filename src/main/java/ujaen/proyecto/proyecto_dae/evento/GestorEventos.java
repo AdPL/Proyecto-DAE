@@ -85,13 +85,15 @@ public class GestorEventos implements EventoService, UsuarioService {
     @Override
     public int registrarUsuario(String nombre, String pass1, String pass2, String email) {
         Usuario usuario = null;
-        if (pass1.equals(pass2)) {
-            usuario = new Usuario(nombre, email, pass1);
-            if ( !usuarios.containsKey(usuario.getIdUsuario()) ) {
-                usuarios.put(usuario.getIdUsuario(), usuario);
-            } else {
-                System.out.println("ERROR: El usuario ya existe");
+        if ( pass1.equals(pass2) ) {
+            for (Usuario u : usuarios.values() ) {
+                if ( nombre.equals(u.getNombre()) || email.equals(u.getEmail()) ) {
+                    System.out.println("Ese nombre de usuario o email ya está registrado");
+                    return -1;
+                }
             }
+            usuario = new Usuario(nombre, email, pass1);
+            usuarios.put(usuario.getIdUsuario(), usuario);
         } else {
             System.out.println("ERROR: Las contraseñas no coinciden.");
         }
@@ -105,6 +107,7 @@ public class GestorEventos implements EventoService, UsuarioService {
                 return usuario.getToken();
             }
         }
+        System.out.println("ERROR: Datos incorrectos");
         return -1;
     }
 
@@ -164,10 +167,31 @@ public class GestorEventos implements EventoService, UsuarioService {
         
         //TODO: Método inscribirUsuario de la clase ujaen.proyecto.proyecto_dae.evento.GestorEventos
     }
+    
+    @Override
+    public void cancelarEvento(int sesion, EventoDTO evento) {
+        Usuario usuario = comprobarSesion(sesion);
+        Evento e = buscar(evento.getTitulo());
+        
+        if ( usuario == null ) throw new UnsupportedOperationException("Usuario no identificado"); //TODO: Configurar Throw Exception correcta
+        if ( e == null ) throw new UnsupportedOperationException("Evento no encontrado");
+        
+        if ( e.getOrganizador().getNombre().equals(usuario.getNombre())) {
+            usuario.eliminarEventoOrganizado(e); //TODO: Eliminar el evento de la lista de cada usuario que tiene de a que eventos asistirá
+            eventos.remove(e.getIdEvento());
+        }
+    }
 
     @Override
     public void cancelarAsistencia(int sesion, EventoDTO evento) {
-        throw new UnsupportedOperationException("Not supported yet."); //TODO: Método cancelarAsistencia de la clase ujaen.proyecto.proyecto_dae.evento.GestorEventos
+        Usuario usuario = comprobarSesion(sesion);
+        Evento e = buscar(evento.getTitulo());
+        
+        if ( usuario == null ) throw new UnsupportedOperationException("Usuario no identificado"); //TODO: Configurar Throw Exception correcta
+        if ( e == null ) throw new UnsupportedOperationException("Evento no encontrado");
+        
+        e.quitarAsistente(usuario);
+        usuario.eliminarEventoAsistente(e);
     }
 
     @Override
