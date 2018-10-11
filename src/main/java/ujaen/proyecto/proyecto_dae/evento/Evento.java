@@ -140,16 +140,13 @@ public class Evento {
         if ( asistentes.contains(usuario) ) {
             asistentes.remove(usuario);
             System.out.println("Usuario " + usuario.getNombre() + " cancela su asistencia al evento " + titulo);
-            if ( listaEspera.size() > 0 ) {
+            if ( !listaEspera.isEmpty() ) {
                 System.out.println(listaEspera.get(0).getNombre() + " es el primero de la lista de Espera, ahora está en asistentes");
                 asistentes.add(listaEspera.remove(0));
             }
         } else if ( listaEspera.contains(usuario) ) {
             listaEspera.remove(usuario);
             System.out.println("Usuario " + usuario.getNombre() + " se cancela de la lista de espera al evento " + titulo);
-        }
- {
-            
         }
     }
     

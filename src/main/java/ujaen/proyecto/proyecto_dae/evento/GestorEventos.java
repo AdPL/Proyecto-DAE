@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import ujaen.proyecto.proyecto_dae.excepciones.EventoNoExiste;
+import ujaen.proyecto.proyecto_dae.excepciones.IdentificacionErronea;
 import ujaen.proyecto.proyecto_dae.usuario.Usuario;
 import ujaen.proyecto.proyecto_dae.usuario.UsuarioDTO;
 import ujaen.proyecto.proyecto_dae.usuario.UsuarioService;
@@ -155,12 +157,12 @@ public class GestorEventos implements EventoService, UsuarioService {
     }
 
     @Override
-    public void inscribirUsuario(int sesion, EventoDTO evento) {
+    public void inscribirUsuario(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste {
         Usuario usuario = comprobarSesion(sesion);
         Evento e = buscar(evento.getTitulo());
         
-        if ( usuario == null ) throw new UnsupportedOperationException("Usuario no identificado"); //TODO: Configurar Throw Exception correcta
-        if ( e == null ) throw new UnsupportedOperationException("Evento no encontrado");
+        if ( usuario == null ) throw new IdentificacionErronea("Usuario o contraseña incorrectos"); //TODO: Configurar Throw Exception correcta
+        if ( e == null ) throw new EventoNoExiste("El evento no existe");
         
         usuario.agregarEventoAsistente(e);
         e.agregarAsistente(usuario);
@@ -169,12 +171,12 @@ public class GestorEventos implements EventoService, UsuarioService {
     }
     
     @Override
-    public void cancelarEvento(int sesion, EventoDTO evento) {
+    public void cancelarEvento(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste {
         Usuario usuario = comprobarSesion(sesion);
         Evento e = buscar(evento.getTitulo());
         
-        if ( usuario == null ) throw new UnsupportedOperationException("Usuario no identificado"); //TODO: Configurar Throw Exception correcta
-        if ( e == null ) throw new UnsupportedOperationException("Evento no encontrado");
+        if ( usuario == null ) throw new IdentificacionErronea("Usuario o contraseña incorrectos"); //TODO: Configurar Throw Exception correcta
+        if ( e == null ) throw new EventoNoExiste("El evento no existe");
         
         if ( e.getOrganizador().getNombre().equals(usuario.getNombre())) {
             usuario.eliminarEventoOrganizado(e); //TODO: Eliminar el evento de la lista de cada usuario que tiene de a que eventos asistirá
@@ -183,12 +185,12 @@ public class GestorEventos implements EventoService, UsuarioService {
     }
 
     @Override
-    public void cancelarAsistencia(int sesion, EventoDTO evento) {
+    public void cancelarAsistencia(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste {
         Usuario usuario = comprobarSesion(sesion);
         Evento e = buscar(evento.getTitulo());
         
-        if ( usuario == null ) throw new UnsupportedOperationException("Usuario no identificado"); //TODO: Configurar Throw Exception correcta
-        if ( e == null ) throw new UnsupportedOperationException("Evento no encontrado");
+        if ( usuario == null ) throw new IdentificacionErronea("Usuario o contraseña incorrectos"); //TODO: Configurar Throw Exception correcta
+        if ( e == null ) throw new EventoNoExiste("El evento no existe");
         
         e.quitarAsistente(usuario);
         usuario.eliminarEventoAsistente(e);

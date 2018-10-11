@@ -8,6 +8,8 @@ import org.springframework.context.ApplicationContext;
 import ujaen.proyecto.proyecto_dae.evento.EventoDTO;
 import ujaen.proyecto.proyecto_dae.evento.GestorEventos;
 import ujaen.proyecto.proyecto_dae.evento.Tipo;
+import ujaen.proyecto.proyecto_dae.excepciones.EventoNoExiste;
+import ujaen.proyecto.proyecto_dae.excepciones.IdentificacionErronea;
 import ujaen.proyecto.proyecto_dae.usuario.UsuarioDTO;
 
 /**
@@ -37,15 +39,24 @@ public class ClienteUsuario {
         System.out.println("Número de usuarios en el sistema: " + gestorEventos.getNUsuarios());
         System.out.println("Número de eventos en el sistema: " + gestorEventos.getNEventos());
         
-        sesion = gestorEventos.identificarUsuario("pepe", "pepe");
+        sesion = gestorEventos.identificarUsuario("pepe", "pepee");
         evento = gestorEventos.buscarEvento("prueba");
-        gestorEventos.inscribirUsuario(sesion, evento);
         
+        try {
+            gestorEventos.inscribirUsuario(sesion, evento);
+        } catch (IdentificacionErronea e) {
+            System.err.println(e.getMessage());
+        }
+
         sesion = gestorEventos.identificarUsuario("paco", "paco");
-        evento = gestorEventos.buscarEvento("prueba");
-        gestorEventos.inscribirUsuario(sesion, evento);
+        try {
+            evento = gestorEventos.buscarEvento("prueba");
+            System.out.println(gestorEventos.listaAsistentes(evento));
+        } catch ( EventoNoExiste e ) {
+            System.err.println(e.getMessage());
+        }
         
-        System.out.println(gestorEventos.listaAsistentes(evento));
+        
         //System.out.println(gestorEventos.listaEventosInscrito(sesion));
         
         sesion = gestorEventos.identificarUsuario("pepe", "pepe");
