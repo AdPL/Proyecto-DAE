@@ -5,13 +5,18 @@
  */
 package ujaen.proyecto.proyecto_dae.evento;
 
+//import java.text.DateFormat;
+//import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+//import java.util.Date;
+
 import java.util.List;
 import ujaen.proyecto.proyecto_dae.usuario.Usuario;
 import ujaen.proyecto.proyecto_dae.usuario.UsuarioDTO;
 import ujaen.proyecto.proyecto_dae.usuario.UsuarioService;
+//import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  *
@@ -139,8 +144,11 @@ public class GestorEventos implements EventoService, UsuarioService {
     }  
 
     @Override
-    public EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Date fecha, int nMax, int sesion) {
+    public EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, int dia, int mes, int anio, int nMax, int sesion){
         Usuario usuario = comprobarSesion(sesion);
+        Calendar fecha = Calendar.getInstance();
+        //Al mes hay que restarle 1 porque los cuenta de 0 a 11 (0 es enero y 11 diciembre)
+        fecha.set(anio, mes-1, dia);
         
         if ( usuario == null ) return null;
         
@@ -154,13 +162,43 @@ public class GestorEventos implements EventoService, UsuarioService {
     }
 
     @Override
-    public void inscribirUsuario(Usuario usuario, Evento evento) {
-        throw new UnsupportedOperationException("Not supported yet."); //TODO: Método inscribirUsuario de la clase ujaen.proyecto.proyecto_dae.evento.GestorEventos
+    public void inscribirUsuario(int sesion, EventoDTO evento) {
+        Usuario usuario = comprobarSesion(sesion);
+        Evento e = buscar(evento.getTitulo());
+        if(usuario != null){
+            usuario.getEventosInscrito().add(e);
+            if(e.getAsistentes().size() < e.getnMax()){
+                e.getAsistentes().add(usuario);
+            }else{
+                e.getListaEspera().add(usuario);
+            }
+        }else{
+            System.out.println("ERROR: Debe estar identificado para crear un evento");
+        }
     }
 
     @Override
-    public void cancelarAsistencia(Usuario usuario) {
-        throw new UnsupportedOperationException("Not supported yet."); //TODO: Método cancelarAsistencia de la clase ujaen.proyecto.proyecto_dae.evento.GestorEventos
+    //pasas id de sesion(token), y un evento DTO
+    public void cancelarAsistencia(int sesion, EventoDTO evento) {
+        Usuario usuario = comprobarSesion(sesion);
+        Evento even = buscar(evento.getTitulo());
+        if(usuario != null){
+            if(usuario.getEventosInscrito().contains(even)){
+                //elimino el evento de la lista de eventosInscrito del usuario
+                usuario.getEventosInscrito().remove(even);
+                //Elimino el usuario de la lista de usuarios(Asistentes) del evento
+                even.getAsistentes().remove(usuario);
+                //Si hay lista de Espera, paso el primer inscrito en la lista de espera a la lista de Asistentes
+                if(!even.getListaEspera().isEmpty()){
+                    even.getAsistentes().add(even.getListaEspera().get(0));
+                    even.getListaEspera().remove(0);
+                }
+            }
+        }else{
+            System.out.println("ERROR: Debe estar identificado para crear un evento");
+        }
+      
+      
     }
 
     @Override
@@ -185,4 +223,6 @@ public class GestorEventos implements EventoService, UsuarioService {
         }
         return null;
     }
+
+    
 }

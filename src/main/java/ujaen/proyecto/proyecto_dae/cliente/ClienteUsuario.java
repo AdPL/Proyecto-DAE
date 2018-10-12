@@ -1,6 +1,7 @@
 
 package ujaen.proyecto.proyecto_dae.cliente;
 
+import java.text.ParseException;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Scanner;
@@ -26,24 +27,34 @@ public class ClienteUsuario {
         this.context = context;
     }
     
-    public void run() {
+    public void run() throws ParseException {
         int sesion = 0;
-        
+        EventoDTO evento;
+        UsuarioDTO usuario;
         GestorEventos gestorEventos = (GestorEventos) context.getBean(GestorEventos.class);
         
         sesion = gestorEventos.registrarUsuario("adpl", "oretania", "oretania", "adrianpelopez@gmail.com");
         System.out.println("ID Sesión: " + sesion);
         
         sesion = gestorEventos.identificarUsuario("adpl", "oretania");
-        System.out.println("Debería coincidir ID Sesión: " + sesion);       
-
-        gestorEventos.crearEvento("prueba", "prueba", "Linares", Tipo.FESTIVAL, Date.from(Instant.now()), 20, sesion);
+        System.out.println("Debería coincidir ID Sesión: " + sesion);
+        //crearEvento(nombre, descripcion, lugar, tipo, dia, mes, año, maximoAsistentes, token)
+        gestorEventos.crearEvento("prueba", "prueba", "Linares", Tipo.FESTIVAL, 9, 12, 2018, 10, sesion);
+        sesion = gestorEventos.registrarUsuario("pep", "p", "p", "a");
+        System.out.println("nueva sesion: " + sesion);
+        
+        gestorEventos.crearEvento("prueba2", "paraProbar", "uja", Tipo.CULTURAL, 9, 1, 2018, 10, sesion);
+        gestorEventos.inscribirUsuario(sesion, gestorEventos.buscarEvento("prueba"));
         
         System.out.println("Número de usuarios en el sistema: " + gestorEventos.getNUsuarios());
         System.out.println("Número de eventos en el sistema: " + gestorEventos.getNEventos());
-        
-        
-        
+        evento = gestorEventos.buscarEvento("prueba");
+        System.out.println("Nombre del evento: " + evento.getTitulo());
+        System.out.println("Fecha del evento: " + evento.getFecha().getTime());
+        //System.out.println(gestorEventos.listaAsistentes(gestorEventos.buscarEvento("prueba")));
+        gestorEventos.cancelarAsistencia(sesion, evento);
+        System.out.println(evento.getOrganizador().getNombre());
+        System.out.println(gestorEventos.listaEventos().size());
         
         
         
