@@ -2,7 +2,8 @@
 package ujaen.proyecto.proyecto_dae.cliente;
 
 import java.time.Instant;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 import org.springframework.context.ApplicationContext;
 import ujaen.proyecto.proyecto_dae.evento.EventoDTO;
@@ -27,11 +28,14 @@ public class ClienteUsuario {
     public void run() {
         int sesion = 0;
         EventoDTO evento;
+        Calendar fecha = GregorianCalendar.getInstance();
+        fecha.set(2018, 10, 12);
         
         GestorEventos gestorEventos = (GestorEventos) context.getBean(GestorEventos.class);
         
         sesion = gestorEventos.registrarUsuario("adpl", "oretania", "oretania", "adrianpelopez@gmail.com");
-        gestorEventos.crearEvento("prueba", "prueba", "Linares", Tipo.FESTIVAL, Date.from(Instant.now()), 1, sesion);
+        System.out.println("El evento se celebrará el: " + fecha.getTime().toString());
+        gestorEventos.crearEvento("prueba", "prueba", "Linares", Tipo.FESTIVAL, fecha, 1, sesion);
         sesion = gestorEventos.registrarUsuario("pepe", "pepe", "pepe", "pepe@gmail.com");
         sesion = gestorEventos.registrarUsuario("paco", "paco", "paco", "paco@gmail.com");
         sesion = gestorEventos.registrarUsuario("fsa", "oretania", "oretania", "adrianpelopez@gmail.com");

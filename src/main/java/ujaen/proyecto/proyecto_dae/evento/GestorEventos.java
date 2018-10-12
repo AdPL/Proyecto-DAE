@@ -3,7 +3,7 @@ package ujaen.proyecto.proyecto_dae.evento;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -142,7 +142,7 @@ public class GestorEventos implements EventoService, UsuarioService {
     }  
 
     @Override
-    public EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Date fecha, int nMax, int sesion) {
+    public EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, int nMax, int sesion) {
         Usuario usuario = comprobarSesion(sesion);
         
         if ( usuario == null ) return null;

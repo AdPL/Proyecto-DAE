@@ -1,7 +1,7 @@
 
 package ujaen.proyecto.proyecto_dae.evento;
 
-import java.util.Date;
+import java.util.Calendar;
 import ujaen.proyecto.proyecto_dae.usuario.UsuarioDTO;
 
 
@@ -16,11 +16,11 @@ public class EventoDTO {
     private String titulo;
     private String localizacion;
     private String descripcion;
-    private Date fecha;
+    private Calendar fecha;
     private Tipo tipo;
     private UsuarioDTO organizador;
 
-    public EventoDTO(int id, int nMax, String titulo, String localizacion, String descripcion, Date fecha, Tipo tipo, UsuarioDTO organizador) {
+    public EventoDTO(int id, int nMax, String titulo, String localizacion, String descripcion, Calendar fecha, Tipo tipo, UsuarioDTO organizador) {
         this.idEvento = id;
         this.nMax = nMax;
         this.titulo = titulo;
@@ -104,14 +104,14 @@ public class EventoDTO {
     /**
      * @return the fecha
      */
-    public Date getFecha() {
+    public Calendar getFecha() {
         return fecha;
     }
 
     /**
      * @param fecha the fecha to set
      */
-    public void setFecha(Date fecha) {
+    public void setFecha(Calendar fecha) {
         this.fecha = fecha;
     }
 

@@ -2,7 +2,7 @@
 package ujaen.proyecto.proyecto_dae.evento;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import ujaen.proyecto.proyecto_dae.usuario.Usuario;
 
@@ -22,14 +22,14 @@ public class Evento {
     private String titulo;
     private String localizacion;
     private String descripcion;
-    private Date fecha;
+    private Calendar fecha;
     private Tipo tipo;
     private Usuario organizador;
 
     public Evento() {
     }
 
-    public Evento(int id, int nMax, String titulo, String descripcion, String localizacion, Tipo tipo, Date fecha, Usuario usuario) {
+    public Evento(int id, int nMax, String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, Usuario usuario) {
         this.idEvento = Evento.id++;
         this.nMax = nMax;
         this.titulo = titulo;
@@ -82,11 +82,11 @@ public class Evento {
         this.descripcion = descripcion;
     }
 
-    public Date getFecha() {
+    public Calendar getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(Calendar fecha) {
         this.fecha = fecha;
     }
     

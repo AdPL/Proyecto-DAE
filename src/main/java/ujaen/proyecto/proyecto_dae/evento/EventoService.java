@@ -2,7 +2,7 @@
 package ujaen.proyecto.proyecto_dae.evento;
 
 import java.util.Collection;
-import java.util.Date;
+import java.util.Calendar;
 import ujaen.proyecto.proyecto_dae.excepciones.EventoNoExiste;
 import ujaen.proyecto.proyecto_dae.excepciones.IdentificacionErronea;
 import ujaen.proyecto.proyecto_dae.usuario.UsuarioDTO;
@@ -18,7 +18,7 @@ public interface EventoService {
     EventoDTO buscarEvento(String titulo);
     Collection<EventoDTO> buscarEvento(Tipo tipo);
     Collection<EventoDTO> buscarEvento(Tipo tipo, String descripcion);
-    EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Date fecha, int nMax, int sesion);
+    EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, int nMax, int sesion);
     void inscribirUsuario(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste;
     void cancelarAsistencia(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste;;
     void cancelarEvento(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste;;
