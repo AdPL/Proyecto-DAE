@@ -18,12 +18,14 @@ import ujaen.proyecto.proyecto_dae.usuario.UsuarioService;
  * @author adria
  */
 public class GestorEventos implements EventoService, UsuarioService {
-    private Map<Integer, Evento> eventos;
-    private Map<Integer, Usuario> usuarios;
+    private Map<String, Evento> eventos;
+    private Map<String, Usuario> usuarios;
+    private Map<Integer, Usuario> sesiones;
     
     public GestorEventos() {
         eventos = new HashMap<>();
         usuarios = new HashMap<>();
+        sesiones = new HashMap<>();
     }
     
     @Override
@@ -37,13 +39,12 @@ public class GestorEventos implements EventoService, UsuarioService {
 
     @Override
     public Collection<UsuarioDTO> listaAsistentes(EventoDTO evento) {
-        Evento e = buscar(evento.getTitulo());
-        if ( e == null) return null;
+        Evento e = obtenerEvento(evento.getTitulo());
+        if ( e == null ) return null;
         Collection<UsuarioDTO> usuarios = new ArrayList<>();
         for (Usuario asistente : e.getAsistentes()) {
             usuarios.add(asistente.getUsuarioDTO());
         }
-        usuarios.add(e.getOrganizador().getUsuarioDTO());
         return usuarios;
     }
 
@@ -87,35 +88,40 @@ public class GestorEventos implements EventoService, UsuarioService {
     @Override
     public int registrarUsuario(String nombre, String pass1, String pass2, String email) {
         Usuario usuario = null;
+        int sesion = -1;
+        if ( obtenerUsuario(nombre) != null ) return -1;
+        
         if ( pass1.equals(pass2) ) {
-            for (Usuario u : usuarios.values() ) {
-                if ( nombre.equals(u.getNombre()) || email.equals(u.getEmail()) ) {
-                    System.out.println("Ese nombre de usuario o email ya está registrado");
-                    return -1;
-                }
-            }
             usuario = new Usuario(nombre, email, pass1);
-            usuarios.put(usuario.getIdUsuario(), usuario);
-        } else {
-            System.out.println("ERROR: Las contraseñas no coinciden.");
+            usuarios.put(nombre, usuario);
+            sesion = usuario.getToken();
+            sesiones.put(sesion, usuario);
         }
-        return usuario != null ? usuario.getToken() : -1;
+        
+        return sesion;
     }
 
     @Override
-    public int identificarUsuario(String identificacion, String pass) {
-        for (Usuario usuario : usuarios.values()) { //TODO: Optimizar búsquedas
-            if ((identificacion.equals(usuario.getNombre()) || identificacion.equals(usuario.getEmail()) ) && pass.equals(usuario.getPassword())) {
-                return usuario.getToken();
-            }
+    public int identificarUsuario(String nombre, String pass) {
+        Usuario usuario = obtenerUsuario(nombre);
+        if ( usuario == null ) return -1;
+        int sesion = usuario.getToken();
+        
+        if ( nombre.equals(usuario.getNombre()) && pass.equals(usuario.getPassword()) ) {
+            sesiones.put(sesion, usuario);
         }
-        System.out.println("ERROR: Datos incorrectos");
-        return -1;
+        
+        return sesion;
+    }
+    
+    @Override
+    public void cerrarSesionUsuario(int sesion) {
+        sesiones.remove(sesion);
     }
 
     @Override
     public Collection<EventoDTO> listaEventosInscrito(int sesion) { //TODO: Añadir los que está en lista de espera
-        Usuario usuario = comprobarSesion(sesion);
+        Usuario usuario = obtenerSesion(sesion);
         
         if ( usuario == null ) return null;
         
@@ -129,7 +135,7 @@ public class GestorEventos implements EventoService, UsuarioService {
 
     @Override
     public Collection<EventoDTO> listaEventosOrganizador(int sesion) {
-        Usuario usuario = comprobarSesion(sesion);
+        Usuario usuario = obtenerSesion(sesion);
         
         if ( usuario == null ) return null;
         
@@ -143,51 +149,50 @@ public class GestorEventos implements EventoService, UsuarioService {
 
     @Override
     public EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, int nMax, int sesion) {
-        Usuario usuario = comprobarSesion(sesion);
+        Usuario usuario = obtenerSesion(sesion);
         
         if ( usuario == null ) return null;
+        if ( obtenerEvento(titulo) != null ) return null;
         
-        for (Evento evento : eventos.values()) {
-            if ( titulo.equals(evento.getTitulo()) ) return null;
-        }
-        Evento evento = new Evento(1, nMax, titulo, descripcion, localizacion, tipo, fecha, usuario);
+        Evento evento = new Evento(nMax, titulo, descripcion, localizacion, tipo, fecha, usuario);
         usuario.agregarEventoOrganizador(evento);
-        eventos.put(1, evento);
+        eventos.put(titulo, evento);
         return evento.getEventoDTO();
     }
 
     @Override
     public void inscribirUsuario(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste {
-        Usuario usuario = comprobarSesion(sesion);
-        Evento e = buscar(evento.getTitulo());
+        Usuario usuario = obtenerSesion(sesion);
+        Evento e = obtenerEvento(evento.getTitulo());
         
         if ( usuario == null ) throw new IdentificacionErronea("Usuario o contraseña incorrectos"); //TODO: Configurar Throw Exception correcta
         if ( e == null ) throw new EventoNoExiste("El evento no existe");
         
         usuario.agregarEventoAsistente(e);
         e.agregarAsistente(usuario);
-        
-        //TODO: Método inscribirUsuario de la clase ujaen.proyecto.proyecto_dae.evento.GestorEventos
     }
     
     @Override
     public void cancelarEvento(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste {
-        Usuario usuario = comprobarSesion(sesion);
-        Evento e = buscar(evento.getTitulo());
+        Usuario usuario = obtenerSesion(sesion);
+        Evento e = obtenerEvento(evento.getTitulo());
         
         if ( usuario == null ) throw new IdentificacionErronea("Usuario o contraseña incorrectos"); //TODO: Configurar Throw Exception correcta
         if ( e == null ) throw new EventoNoExiste("El evento no existe");
         
-        if ( e.getOrganizador().getNombre().equals(usuario.getNombre())) {
+        if ( e.getOrganizador().getNombre().equals(usuario.getNombre()) ) {
+            for ( Usuario u : e.getAsistentes() ) {
+                u.eliminarEventoAsistente(e);
+            }
             usuario.eliminarEventoOrganizado(e); //TODO: Eliminar el evento de la lista de cada usuario que tiene de a que eventos asistirá
-            eventos.remove(e.getIdEvento());
+            eventos.remove(e.getTitulo());
         }
     }
 
     @Override
     public void cancelarAsistencia(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste {
-        Usuario usuario = comprobarSesion(sesion);
-        Evento e = buscar(evento.getTitulo());
+        Usuario usuario = obtenerSesion(sesion);
+        Evento e = obtenerEvento(evento.getTitulo());
         
         if ( usuario == null ) throw new IdentificacionErronea("Usuario o contraseña incorrectos"); //TODO: Configurar Throw Exception correcta
         if ( e == null ) throw new EventoNoExiste("El evento no existe");
@@ -201,21 +206,15 @@ public class GestorEventos implements EventoService, UsuarioService {
         return eventos.size();
     }
     
-    private Evento buscar(String titulo) {
-        for (Evento evento : eventos.values()) {
-            if ( titulo.equals(evento.getTitulo())) {
-                return evento;
-            }
-        }
-        return null;
+    private Usuario obtenerUsuario(String nombre) {
+        return usuarios.get(nombre);
     }
     
-    public Usuario comprobarSesion(int sesion) {
-        for (Usuario usuario : usuarios.values()) {
-            if ( usuario.getToken() == sesion ) {
-                return usuario;
-            }
-        }
-        return null;
+    private Usuario obtenerSesion(int sesion) {
+        return sesiones.get(sesion);
+    }
+    
+    private Evento obtenerEvento(String titulo) {
+        return eventos.get(titulo);
     }
 }
