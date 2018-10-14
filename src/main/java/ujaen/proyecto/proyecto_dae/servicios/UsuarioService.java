@@ -1,10 +1,10 @@
 
-package ujaen.proyecto.proyecto_dae.usuario;
+package ujaen.proyecto.proyecto_dae.servicios;
 
 import java.util.Collection;
 import java.util.Calendar;
-import ujaen.proyecto.proyecto_dae.evento.EventoDTO;
-import ujaen.proyecto.proyecto_dae.evento.Tipo;
+import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
+import ujaen.proyecto.proyecto_dae.beans.Tipo;
 
 /**
  *

@@ -1,5 +1,5 @@
 
-package ujaen.proyecto.proyecto_dae.evento;
+package ujaen.proyecto.proyecto_dae.beans;
 
 /**
  *

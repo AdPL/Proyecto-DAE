@@ -1,8 +1,9 @@
 
-package ujaen.proyecto.proyecto_dae.evento;
+package ujaen.proyecto.proyecto_dae.servicios.dto;
 
+import ujaen.proyecto.proyecto_dae.beans.Tipo;
 import java.util.Calendar;
-import ujaen.proyecto.proyecto_dae.usuario.UsuarioDTO;
+import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
 
 
 /**

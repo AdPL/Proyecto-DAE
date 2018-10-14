@@ -1,5 +1,5 @@
 
-package ujaen.proyecto.proyecto_dae.evento;
+package ujaen.proyecto.proyecto_dae.beans;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -7,7 +7,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingDeque;
-import ujaen.proyecto.proyecto_dae.usuario.Usuario;
+import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
+import ujaen.proyecto.proyecto_dae.beans.Usuario;
 
 /**
  *

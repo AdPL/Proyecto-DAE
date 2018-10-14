@@ -1,17 +1,16 @@
 
 package ujaen.proyecto.proyecto_dae.cliente;
 
-import java.time.Instant;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 import org.springframework.context.ApplicationContext;
-import ujaen.proyecto.proyecto_dae.evento.EventoDTO;
-import ujaen.proyecto.proyecto_dae.evento.GestorEventos;
-import ujaen.proyecto.proyecto_dae.evento.Tipo;
+import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
+import ujaen.proyecto.proyecto_dae.beans.GestorEventos;
+import ujaen.proyecto.proyecto_dae.beans.Tipo;
 import ujaen.proyecto.proyecto_dae.excepciones.EventoNoExiste;
 import ujaen.proyecto.proyecto_dae.excepciones.IdentificacionErronea;
-import ujaen.proyecto.proyecto_dae.usuario.UsuarioDTO;
+import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
 
 /**
  *
@@ -39,7 +38,7 @@ public class ClienteUsuario {
         fecha.set(2018, 10, 20);
         gestorEventos.crearEvento("Feria", "Evento para la feria de Jaén", "Jaén", Tipo.FESTIVAL, fecha, 2, sesion);
         sesion = gestorEventos.registrarUsuario("rafa", "rafa", "rafa", "rafa@ujaen.es");
-        evento = gestorEventos.buscarEvento("a");
+        evento = gestorEventos.buscarEvento("Feria");
         gestorEventos.inscribirUsuario(sesion, evento);
         gestorEventos.registrarUsuario("antonio", "antonio", "antonio", "antonio@ujaen.es");
         gestorEventos.registrarUsuario("pepe", "pepe", "pepe", "pepe@ujaen.es");

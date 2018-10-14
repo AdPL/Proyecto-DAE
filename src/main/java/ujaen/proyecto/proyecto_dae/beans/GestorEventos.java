@@ -1,5 +1,5 @@
 
-package ujaen.proyecto.proyecto_dae.evento;
+package ujaen.proyecto.proyecto_dae.beans;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,11 +7,13 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
+import ujaen.proyecto.proyecto_dae.servicios.EventoService;
 import ujaen.proyecto.proyecto_dae.excepciones.EventoNoExiste;
 import ujaen.proyecto.proyecto_dae.excepciones.IdentificacionErronea;
-import ujaen.proyecto.proyecto_dae.usuario.Usuario;
-import ujaen.proyecto.proyecto_dae.usuario.UsuarioDTO;
-import ujaen.proyecto.proyecto_dae.usuario.UsuarioService;
+import ujaen.proyecto.proyecto_dae.beans.Usuario;
+import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
+import ujaen.proyecto.proyecto_dae.servicios.UsuarioService;
 
 /**
  *

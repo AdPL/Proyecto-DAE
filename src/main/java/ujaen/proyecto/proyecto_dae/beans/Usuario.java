@@ -1,10 +1,11 @@
 
-package ujaen.proyecto.proyecto_dae.usuario;
+package ujaen.proyecto.proyecto_dae.beans;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import ujaen.proyecto.proyecto_dae.evento.Evento;
+import ujaen.proyecto.proyecto_dae.beans.Evento;
+import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
 
 /**
  *

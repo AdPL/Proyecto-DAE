@@ -1,5 +1,5 @@
 
-package ujaen.proyecto.proyecto_dae.usuario;
+package ujaen.proyecto.proyecto_dae.servicios.dto;
 
 /**
  *
