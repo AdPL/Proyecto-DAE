@@ -3,9 +3,11 @@ package ujaen.proyecto.proyecto_dae.evento;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingDeque;
 import ujaen.proyecto.proyecto_dae.usuario.Usuario;
-
 
 /**
  *
@@ -14,7 +16,7 @@ import ujaen.proyecto.proyecto_dae.usuario.Usuario;
  */
 public class Evento {
     private List<Usuario> asistentes;
-    private List<Usuario> listaEspera;
+    private Queue<Usuario> listaEspera;
     
     private static int id = 1;
     private int idEvento;
@@ -29,7 +31,7 @@ public class Evento {
     public Evento() {
     }
 
-    public Evento(int id, int nMax, String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, Usuario usuario) {
+    public Evento(int nMax, String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, Usuario usuario) {
         this.idEvento = Evento.id++;
         this.nMax = nMax;
         this.titulo = titulo;
@@ -38,7 +40,7 @@ public class Evento {
         this.fecha = fecha;
         this.tipo = tipo;
         this.asistentes = new ArrayList<>();
-        this.listaEspera = new ArrayList<>();
+        this.listaEspera = new LinkedBlockingDeque<>() ;
         this.organizador = usuario;
     }
 
@@ -106,11 +108,11 @@ public class Evento {
         this.asistentes = asistentes;
     }
 
-    public List<Usuario> getListaEspera() {
+    public Collection<Usuario> getListaEspera() {
         return listaEspera;
     }
 
-    public void setListaEspera(List<Usuario> listaEspera) {
+    public void setListaEspera(LinkedBlockingDeque<Usuario> listaEspera) {
         this.listaEspera = listaEspera;
     }
 
@@ -130,7 +132,7 @@ public class Evento {
                 asistentes.add(usuario);
                 System.out.println("Usuario agregado a la lista de asistentes");
             } else {
-                listaEspera.add(usuario);
+                listaEspera.offer(usuario);
                 System.out.println("Usuario agregado a la lista de espera");
             }
         }
@@ -141,8 +143,8 @@ public class Evento {
             asistentes.remove(usuario);
             System.out.println("Usuario " + usuario.getNombre() + " cancela su asistencia al evento " + titulo);
             if ( !listaEspera.isEmpty() ) {
-                System.out.println(listaEspera.get(0).getNombre() + " es el primero de la lista de Espera, ahora está en asistentes");
-                asistentes.add(listaEspera.remove(0));
+                System.out.println(listaEspera.peek().getNombre() + " es el primero de la lista de Espera, ahora está en asistentes");
+                asistentes.add(listaEspera.poll());
             }
         } else if ( listaEspera.contains(usuario) ) {
             listaEspera.remove(usuario);
@@ -157,7 +159,8 @@ public class Evento {
     @Override
     public String toString() {
         return "Evento " + titulo + " | Descripción: " + descripcion 
-                + " Lugar: " + localizacion + " Tipo: " + tipo.toString();
+                + " Lugar: " + localizacion + " Tipo: " + tipo.toString() 
+                + " Fecha: " + fecha.getTime().toString();
     }
     
     public EventoDTO getEventoDTO(){

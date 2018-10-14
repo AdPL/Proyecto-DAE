@@ -146,6 +146,7 @@ public class EventoDTO {
     @Override
     public String toString() {
         return "Evento " + titulo + " | Descripción: " + descripcion 
-                + " Lugar: " + localizacion + " Tipo: " + tipo.toString();
+                + " Lugar: " + localizacion + " Tipo: " + tipo.toString() 
+                + " Fecha: " + fecha.getTime().toString();
     }
 }
