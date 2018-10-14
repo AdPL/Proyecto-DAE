@@ -3,7 +3,9 @@ package ujaen.proyecto.proyecto_dae.cliente;
 
 import java.text.ParseException;
 import java.time.Instant;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Scanner;
 import ujaen.proyecto.proyecto_dae.usuario.UsuarioService;
 import org.springframework.context.ApplicationContext;
@@ -39,24 +41,35 @@ public class ClienteUsuario {
         sesion = gestorEventos.identificarUsuario("adpl", "oretania");
         System.out.println("Debería coincidir ID Sesión: " + sesion);
         //crearEvento(nombre, descripcion, lugar, tipo, dia, mes, año, maximoAsistentes, token)
-        gestorEventos.crearEvento("prueba", "prueba", "Linares", Tipo.FESTIVAL, 9, 12, 2018, 10, sesion);
-        sesion = gestorEventos.registrarUsuario("pep", "p", "p", "a");
-        System.out.println("nueva sesion: " + sesion);
+        Calendar fechaEvento = Calendar.getInstance();
+        //fechaEvento.set(año,mes-1,dia,hora,minuto)
+        fechaEvento.set(2018, 10-1, 15, 20, 45);
+       
+        evento = gestorEventos.crearEvento("prueba", "prueba", "Linares", Tipo.FESTIVAL, fechaEvento, 10, sesion);
+        Calendar fecha2 = Calendar.getInstance();
+        fecha2.set(2018, 10-1, 16, 20, 45);
+        gestorEventos.crearEvento("prueba2", "paraProbar", "uja", Tipo.CULTURAL, fecha2, 10, sesion);
+        gestorEventos.crearEvento("prueba3", "paraProbar3", "uja3", Tipo.CULTURAL, fecha2, 10, sesion);
+        gestorEventos.crearEvento("prueba4", "paraProba4r", "uja4", Tipo.CULTURAL, fecha2, 10, sesion);
         
-        gestorEventos.crearEvento("prueba2", "paraProbar", "uja", Tipo.CULTURAL, 9, 1, 2018, 10, sesion);
-        gestorEventos.inscribirUsuario(sesion, gestorEventos.buscarEvento("prueba"));
+        sesion = gestorEventos.registrarUsuario("rgr", "pass", "pass", "rgr00030@red.ujaen.es");
+        System.out.println("ID Sesión: " + sesion);
+        sesion = gestorEventos.identificarUsuario("rgr", "pass");
+        System.out.println("Debería coincidir ID Sesión: " + sesion);
+        
+        gestorEventos.inscribirUsuario(sesion, evento);
         
         System.out.println("Número de usuarios en el sistema: " + gestorEventos.getNUsuarios());
         System.out.println("Número de eventos en el sistema: " + gestorEventos.getNEventos());
         evento = gestorEventos.buscarEvento("prueba");
         System.out.println("Nombre del evento: " + evento.getTitulo());
         System.out.println("Fecha del evento: " + evento.getFecha().getTime());
-        //System.out.println(gestorEventos.listaAsistentes(gestorEventos.buscarEvento("prueba")));
-        gestorEventos.cancelarAsistencia(sesion, evento);
+        System.out.println(gestorEventos.listaAsistentes(gestorEventos.buscarEvento("prueba")));
+        
         System.out.println(evento.getOrganizador().getNombre());
         System.out.println(gestorEventos.listaEventos().size());
-        
-        
+        System.out.println("Eventos por celebrar del usuario " +sesion+ ": " +gestorEventos.listaEventoPorCelebrar(sesion).size());
+        System.out.println("Eventos celebrados del usuario: " +sesion+ ": " +gestorEventos.listaEventoCelebrados(sesion).size());
         
 /*        Scanner sc = new Scanner(System.in);
         int opcion;

@@ -5,17 +5,13 @@
  */
 package ujaen.proyecto.proyecto_dae.evento;
 
-//import java.text.DateFormat;
-//import java.text.ParseException;
+
 import java.util.ArrayList;
 import java.util.Collection;
-//import java.util.Date;
-
 import java.util.List;
 import ujaen.proyecto.proyecto_dae.usuario.Usuario;
 import ujaen.proyecto.proyecto_dae.usuario.UsuarioDTO;
 import ujaen.proyecto.proyecto_dae.usuario.UsuarioService;
-//import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -136,20 +132,38 @@ public class GestorEventos implements EventoService, UsuarioService {
         if ( usuario == null ) return null;
         
         List<EventoDTO> eventosDTO = new ArrayList<>();
-        
+
         for (Evento evento : usuario.getEventosOrganizador()) {
             eventosDTO.add(evento.getEventoDTO());
         }
         return eventosDTO;
     }  
 
-    @Override
+    /*@Override
     public EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, int dia, int mes, int anio, int nMax, int sesion){
         Usuario usuario = comprobarSesion(sesion);
         Calendar fecha = Calendar.getInstance();
         //Al mes hay que restarle 1 porque los cuenta de 0 a 11 (0 es enero y 11 diciembre)
-        fecha.set(anio, mes-1, dia);
+        fecha.set(anio, mes-1, dia, 20, 30);
         
+        
+        if ( usuario == null ) return null;
+        
+        for (Evento evento : eventos) {
+            if ( titulo.equals(evento.getTitulo()) ) return null;
+        }
+        Evento evento = new Evento(1, nMax, titulo, descripcion, localizacion, tipo, fecha, usuario);
+        usuario.agregarEventoOrganizador(evento);
+        eventos.add(evento);
+        return evento.getEventoDTO();
+    }*/
+    
+    //Probar con otra forma de crear el evento
+    @Override
+    public EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, int nMax, int sesion){
+        Usuario usuario = comprobarSesion(sesion);
+        Calendar fechaActual = Calendar.getInstance();
+        if(fecha.before(fechaActual)) return null;
         if ( usuario == null ) return null;
         
         for (Evento evento : eventos) {
@@ -161,6 +175,39 @@ public class GestorEventos implements EventoService, UsuarioService {
         return evento.getEventoDTO();
     }
 
+    //Listar Eventos por celebrar
+    @Override
+    public Collection<EventoDTO> listaEventoPorCelebrar(int sesion) {
+        Usuario usuario = comprobarSesion(sesion);
+        Calendar fechaActual = Calendar.getInstance();
+        if ( usuario == null ) return null;
+        
+        List<EventoDTO> eventosPendientes = new ArrayList<>();
+
+        for (Evento evento : usuario.getEventosInscrito()) {
+            if(fechaActual.before(evento.getFecha()))
+                eventosPendientes.add(evento.getEventoDTO());
+        }
+        return eventosPendientes;
+    }
+    
+    //Listar eventos celebrados
+    @Override
+    public Collection<EventoDTO> listaEventoCelebrados(int sesion) {
+        Usuario usuario = comprobarSesion(sesion);
+        Calendar fechaActual = Calendar.getInstance();
+        if ( usuario == null ) return null;
+        
+        List<EventoDTO> eventosCelebrados = new ArrayList<>();
+
+        for (Evento evento : usuario.getEventosInscrito()) {
+            if(fechaActual.after(evento.getFecha()))
+                eventosCelebrados.add(evento.getEventoDTO());
+        }
+        return eventosCelebrados;
+    }
+    
+    
     @Override
     public void inscribirUsuario(int sesion, EventoDTO evento) {
         Usuario usuario = comprobarSesion(sesion);
