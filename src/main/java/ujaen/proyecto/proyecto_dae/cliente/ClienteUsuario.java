@@ -1,4 +1,8 @@
-
+/**
+ * Cliente del Gestor de Eventos
+ * @author Adrián Perez López
+ * @author Rafael Galán Ruiz
+ */
 package ujaen.proyecto.proyecto_dae.cliente;
 
 import java.text.ParseException;
@@ -31,7 +35,7 @@ public class ClienteUsuario {
     
     public void run() throws ParseException {
         int sesion = 0;
-        EventoDTO evento;
+        EventoDTO evento, evento2, evento3, evento4;
         UsuarioDTO usuario;
         GestorEventos gestorEventos = (GestorEventos) context.getBean(GestorEventos.class);
         
@@ -48,8 +52,8 @@ public class ClienteUsuario {
         evento = gestorEventos.crearEvento("prueba", "prueba", "Linares", Tipo.FESTIVAL, fechaEvento, 10, sesion);
         Calendar fecha2 = Calendar.getInstance();
         fecha2.set(2018, 10-1, 16, 20, 45);
-        gestorEventos.crearEvento("prueba2", "paraProbar", "uja", Tipo.CULTURAL, fecha2, 10, sesion);
-        gestorEventos.crearEvento("prueba3", "paraProbar3", "uja3", Tipo.CULTURAL, fecha2, 10, sesion);
+        evento2 = gestorEventos.crearEvento("prueba2", "paraProbar", "uja", Tipo.CULTURAL, fecha2, 10, sesion);
+        evento3 = gestorEventos.crearEvento("prueba3", "paraProbar3", "uja3", Tipo.CULTURAL, fecha2, 10, sesion);
         gestorEventos.crearEvento("prueba4", "paraProba4r", "uja4", Tipo.CULTURAL, fecha2, 10, sesion);
         
         sesion = gestorEventos.registrarUsuario("rgr", "pass", "pass", "rgr00030@red.ujaen.es");
@@ -58,17 +62,23 @@ public class ClienteUsuario {
         System.out.println("Debería coincidir ID Sesión: " + sesion);
         
         gestorEventos.inscribirUsuario(sesion, evento);
+        gestorEventos.inscribirUsuario(sesion, evento2);
+        gestorEventos.inscribirUsuario(sesion, evento3);
+        
+        evento4 = gestorEventos.crearEvento("Concierto", "Concierto en la uja", "UJA", Tipo.CONCIERTO, fecha2, 1000, sesion);
         
         System.out.println("Número de usuarios en el sistema: " + gestorEventos.getNUsuarios());
         System.out.println("Número de eventos en el sistema: " + gestorEventos.getNEventos());
-        evento = gestorEventos.buscarEvento("prueba");
+        gestorEventos.buscarEvento("prueba");
         System.out.println("Nombre del evento: " + evento.getTitulo());
         System.out.println("Fecha del evento: " + evento.getFecha().getTime());
         System.out.println(gestorEventos.listaAsistentes(gestorEventos.buscarEvento("prueba")));
         
         System.out.println(evento.getOrganizador().getNombre());
         System.out.println(gestorEventos.listaEventos().size());
-        System.out.println("Eventos por celebrar del usuario " +sesion+ ": " +gestorEventos.listaEventoPorCelebrar(sesion).size());
+       
+        System.out.println("Eventos por celebrar del usuario " +sesion+ ": " +gestorEventos.listaEventoPorCelebrar(sesion));
+        
         System.out.println("Eventos celebrados del usuario: " +sesion+ ": " +gestorEventos.listaEventoCelebrados(sesion).size());
         
 /*        Scanner sc = new Scanner(System.in);

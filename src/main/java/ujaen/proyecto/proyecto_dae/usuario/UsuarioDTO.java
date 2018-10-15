@@ -1,11 +1,11 @@
-
+/**
+ * DTO de la clase usuario
+ * @author Adrián Perez López
+ * @author Rafael Galá Ruiz
+ */
 package ujaen.proyecto.proyecto_dae.usuario;
 
-/**
- *
- * @author adpl
- * @author Rafa
- */
+
 public class UsuarioDTO {
     private int id;
     private String nombre;

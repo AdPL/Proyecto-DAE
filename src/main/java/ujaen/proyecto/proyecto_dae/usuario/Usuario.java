@@ -1,4 +1,8 @@
-
+/**
+ * Clase que define un usuario
+ * @author Adrián Perez López
+ * @author Rafael Galán Ruiz
+ */
 package ujaen.proyecto.proyecto_dae.usuario;
 
 import java.util.ArrayList;
@@ -6,11 +10,7 @@ import java.util.List;
 import java.util.Random;
 import ujaen.proyecto.proyecto_dae.evento.Evento;
 
-/**
- *
- * @author adpl
- * @author Rafa
- */
+
 public class Usuario {
     private List<Evento> eventosInscrito;
     private List<Evento> eventosOrganizador;

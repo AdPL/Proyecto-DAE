@@ -1,7 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * DTO de la clase evento
+ * @author Adrián Pérez López
+ * @author Rafael Galán Ruiz
  */
 package ujaen.proyecto.proyecto_dae.evento;
 
@@ -9,10 +9,7 @@ import java.util.Calendar;
 import ujaen.proyecto.proyecto_dae.usuario.UsuarioDTO;
 
 
-/**
- *
- * @author Rafa
- */
+
 public class EventoDTO {
     private int id;
     private int nMax;

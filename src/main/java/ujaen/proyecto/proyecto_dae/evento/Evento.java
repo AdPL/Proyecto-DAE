@@ -1,18 +1,17 @@
-
+/**
+ * Clase que define un evento 
+ * @author Adrián Pérez López
+ * @author Rafael Galán Ruiz
+ */
 package ujaen.proyecto.proyecto_dae.evento;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import ujaen.proyecto.proyecto_dae.usuario.Usuario;
 
 
-/**
- *
- * @author adpl
- * @author Rafa
- */
+
 public class Evento {
     private List<Usuario> asistentes;
     private List<Usuario> listaEspera;

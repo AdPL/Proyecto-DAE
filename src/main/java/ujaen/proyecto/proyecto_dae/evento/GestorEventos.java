@@ -1,7 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**Gestor Eventos: Clase que implementa las interfaces UsuarioService.java y EventoService.java
+ * @author Adrián Pérez López
+ * @author Rafael Galán Ruiz
  */
 package ujaen.proyecto.proyecto_dae.evento;
 
@@ -14,10 +13,7 @@ import ujaen.proyecto.proyecto_dae.usuario.UsuarioDTO;
 import ujaen.proyecto.proyecto_dae.usuario.UsuarioService;
 import java.util.Calendar;
 
-/**
- *
- * @author adria
- */
+
 public class GestorEventos implements EventoService, UsuarioService {
     private List<Evento> eventos;
     private List<Usuario> usuarios;
@@ -35,7 +31,13 @@ public class GestorEventos implements EventoService, UsuarioService {
         }
         return e;
     }
-
+    /**
+     * Método que nos devuelve los asistentes a un evento
+     * @author Adrián Pérez López
+     * @author Rafael Galán Ruiz
+     * @param evento
+     * @return Una lista con los asistentes al evento
+     */
     @Override
     public Collection<UsuarioDTO> listaAsistentes(EventoDTO evento) {
         Evento e = buscar(evento.getTitulo());
@@ -48,6 +50,13 @@ public class GestorEventos implements EventoService, UsuarioService {
         return usuarios;
     }
 
+    /**
+     * Método que devuelve el evento que se busca por el titulo
+     * @author Adrián Pérez López
+     * @author Rafael Galán Ruiz
+     * @param titulo
+     * @return Un evento con el título igual al que se ha pasado como argumento
+     */
     @Override
     public EventoDTO buscarEvento(String titulo) { //TODO: Método buscarEvento de la clase ujaen.proyecto.proyecto_dae.evento.EventoServiceImpl
         for (Evento evento : eventos) {
@@ -58,6 +67,14 @@ public class GestorEventos implements EventoService, UsuarioService {
         return null;
     }
 
+    
+    /**
+     * Este método devuelve los eventos que coincide con el tipo que se ha pasado como argumento
+     * @author Adrián Pérez López
+     * @author Rafael Galán Ruiz
+     * @param tipo
+     * @return Los eventos que coincide con el tipo que se ha pasado como argumento
+     */
     @Override
     public Collection<EventoDTO> buscarEvento(Tipo tipo) {
         Collection<EventoDTO> busq = new ArrayList<>();
@@ -69,6 +86,14 @@ public class GestorEventos implements EventoService, UsuarioService {
         return busq;
     }
 
+    /**
+     * Método que devuelve los eventos que conice con el tipo y con la descripción que se han pasado como argumentos
+     * @author Adrián Pérez López
+     * @author Rafael Galán Ruiz
+     * @param tipo
+     * @param descripcion
+     * @return Los eventos que coinciden con el tipo y con la descripción que se han pasado como argumentos
+     */
     @Override
     public Collection<EventoDTO> buscarEvento(Tipo tipo, String descripcion) { //TODO: Método buscarEvento con filtrado, hay mejores clases a contains
         Collection<EventoDTO> busq = new ArrayList<>();
@@ -84,7 +109,14 @@ public class GestorEventos implements EventoService, UsuarioService {
     public int getNUsuarios() {
         return usuarios.size();
     }
-    
+    /**
+     * Método para registrar un usuario en el sistema
+     * @param nombre
+     * @param pass1
+     * @param pass2
+     * @param email
+     * @return 
+     */
     @Override
     public int registrarUsuario(String nombre, String pass1, String pass2, String email) {
         Usuario usuario = null;
@@ -111,6 +143,13 @@ public class GestorEventos implements EventoService, UsuarioService {
         return -1;
     }
 
+    /**
+     * Este método devuelve una lista con los eventos a los que se ha inscrito un usuario
+     * @author Adrián Pérez Lopez
+     * @author Rafael Galán Ruiz
+     * @param sesion
+     * @return Lista de eventos con los a los que se incrito el usuario
+     */
     @Override
     public Collection<EventoDTO> listaEventosInscrito(int sesion) {
         Usuario usuario = comprobarSesion(sesion);
@@ -125,6 +164,13 @@ public class GestorEventos implements EventoService, UsuarioService {
         return eventosDTO;
     }
 
+    /**
+     * Método que lista los eventos que organiza un usuario
+     * @author Adrián Pérez López
+     * @author Rafael Galán Ruiz
+     * @param sesion
+     * @return Una lista con los eventos organizados por el usuario
+     */
     @Override
     public Collection<EventoDTO> listaEventosOrganizador(int sesion) {
         Usuario usuario = comprobarSesion(sesion);
@@ -138,44 +184,45 @@ public class GestorEventos implements EventoService, UsuarioService {
         }
         return eventosDTO;
     }  
-
-    /*@Override
-    public EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, int dia, int mes, int anio, int nMax, int sesion){
-        Usuario usuario = comprobarSesion(sesion);
-        Calendar fecha = Calendar.getInstance();
-        //Al mes hay que restarle 1 porque los cuenta de 0 a 11 (0 es enero y 11 diciembre)
-        fecha.set(anio, mes-1, dia, 20, 30);
-        
-        
-        if ( usuario == null ) return null;
-        
-        for (Evento evento : eventos) {
-            if ( titulo.equals(evento.getTitulo()) ) return null;
-        }
-        Evento evento = new Evento(1, nMax, titulo, descripcion, localizacion, tipo, fecha, usuario);
-        usuario.agregarEventoOrganizador(evento);
-        eventos.add(evento);
-        return evento.getEventoDTO();
-    }*/
-    
+ 
     //Probar con otra forma de crear el evento
+    /**
+     * Método para crear un evento
+     * @author Adrián Pérez López
+     * @author Rafael Galán Ruiz
+     * @param titulo
+     * @param descripcion
+     * @param localizacion
+     * @param tipo
+     * @param fecha
+     * @param nMax
+     * @param sesion
+     * @return El evento creado
+     */
     @Override
     public EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, int nMax, int sesion){
         Usuario usuario = comprobarSesion(sesion);
         Calendar fechaActual = Calendar.getInstance();
-        if(fecha.before(fechaActual)) return null;
-        if ( usuario == null ) return null;
         
+        if ( usuario == null ) return null;
+        if(fecha.before(fechaActual)) return null;
         for (Evento evento : eventos) {
             if ( titulo.equals(evento.getTitulo()) ) return null;
         }
         Evento evento = new Evento(1, nMax, titulo, descripcion, localizacion, tipo, fecha, usuario);
         usuario.agregarEventoOrganizador(evento);
+        
         eventos.add(evento);
         return evento.getEventoDTO();
     }
 
-    //Listar Eventos por celebrar
+    /**
+     * Este método devuelve una Colección de eventosDTO con los eventos que están aún por celebrar
+     * @author Adrián Pérez López
+     * @author Rafael Galán Ruiz
+     * @param sesion
+     * @return Colección de eventosDTO
+     */
     @Override
     public Collection<EventoDTO> listaEventoPorCelebrar(int sesion) {
         Usuario usuario = comprobarSesion(sesion);
@@ -188,10 +235,20 @@ public class GestorEventos implements EventoService, UsuarioService {
             if(fechaActual.before(evento.getFecha()))
                 eventosPendientes.add(evento.getEventoDTO());
         }
+        for (Evento evento : usuario.getEventosOrganizador()) {
+            if(fechaActual.before(evento.getFecha()))
+                eventosPendientes.add(evento.getEventoDTO());
+        }
         return eventosPendientes;
     }
     
-    //Listar eventos celebrados
+    /**
+     * Devuelve una lista de eventos ya celebrados por el usuario
+     * @author Adrián Pérez López
+     * @author Rafael Galán Ruiz
+     * @param sesion
+     * @return Colección de eventosDTO
+     */
     @Override
     public Collection<EventoDTO> listaEventoCelebrados(int sesion) {
         Usuario usuario = comprobarSesion(sesion);
@@ -204,10 +261,20 @@ public class GestorEventos implements EventoService, UsuarioService {
             if(fechaActual.after(evento.getFecha()))
                 eventosCelebrados.add(evento.getEventoDTO());
         }
+        for (Evento evento : usuario.getEventosOrganizador()) {
+            if(fechaActual.after(evento.getFecha()))
+                eventosCelebrados.add(evento.getEventoDTO());
+        }
         return eventosCelebrados;
     }
     
-    
+    /**
+     * Método para inscribir un usuario en el sistema
+     * @author Adrián Pérez López
+     * @author Rafael Galán Ruiz
+     * @param sesion
+     * @param evento 
+     */
     @Override
     public void inscribirUsuario(int sesion, EventoDTO evento) {
         Usuario usuario = comprobarSesion(sesion);
@@ -224,8 +291,14 @@ public class GestorEventos implements EventoService, UsuarioService {
         }
     }
 
+    /**
+     * Método para cancelar la asistencia a un evento por parte de un usuario
+     * @author Adrián Pérez López
+     * @author Rafael Galán Ruiz
+     * @param sesion
+     * @param evento 
+     */
     @Override
-    //pasas id de sesion(token), y un evento DTO
     public void cancelarAsistencia(int sesion, EventoDTO evento) {
         Usuario usuario = comprobarSesion(sesion);
         Evento even = buscar(evento.getTitulo());
@@ -248,11 +321,23 @@ public class GestorEventos implements EventoService, UsuarioService {
       
     }
 
+    /**
+     * Este método devuelve el número de eventos que hay en el sistema
+     * @author Adrián Pérez López
+     * @author Rafael Galán Ruiz
+     * @return int 
+     */
     @Override
     public int getNEventos() {
         return eventos.size();
     }
-    
+    /**
+     * Método para buscar un evento
+     * @author Adrián Pérez lópez
+     * @author Rafael Galán Ruiz
+     * @param titulo
+     * @return El evento con el titulo igual al string que se ha pasado como argumento
+     */
     public Evento buscar(String titulo) {
         for (Evento evento : eventos) {
             if ( titulo.equals(evento.getTitulo())) {
@@ -261,6 +346,7 @@ public class GestorEventos implements EventoService, UsuarioService {
         }
         return null;
     }
+    
     
     public Usuario comprobarSesion(int sesion) {
         for (Usuario usuario : usuarios) {
