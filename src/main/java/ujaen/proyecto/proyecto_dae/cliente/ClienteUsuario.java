@@ -54,8 +54,6 @@ public class ClienteUsuario {
                 System.out.println("Identificado como " + usuario);
             }
             System.out.println();
-            System.out.println("Número de usuarios en el sistema: " + gestorEventos.getNUsuarios());
-            System.out.println("Número de eventos en el sistema: " + gestorEventos.getNEventos());
             System.out.println();
             System.out.println("1. Registrar usuario");
             System.out.println("2. Identificar usuario");

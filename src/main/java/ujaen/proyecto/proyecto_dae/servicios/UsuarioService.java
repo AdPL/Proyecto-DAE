@@ -18,5 +18,4 @@ public interface UsuarioService {
     Collection<EventoDTO> listaEventosInscrito(int sesion);
     Collection<EventoDTO> listaEventosOrganizador(int sesion);
     EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, int nMax, int sesion);
-    int getNUsuarios();
 }

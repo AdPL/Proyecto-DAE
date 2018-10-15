@@ -29,15 +29,6 @@ public class GestorEventos implements EventoService, UsuarioService {
         usuarios = new HashMap<>();
         sesiones = new HashMap<>();
     }
-    
-    @Override
-    public Collection<EventoDTO> listaEventos() {
-        Collection<EventoDTO> e = new ArrayList<>();
-        for (Evento evento : eventos.values()) {
-            e.add(evento.getEventoDTO());
-        }
-        return e;
-    }
 
     @Override
     public Collection<UsuarioDTO> listaAsistentes(EventoDTO evento) {
@@ -80,11 +71,6 @@ public class GestorEventos implements EventoService, UsuarioService {
             }
         }
         return busq;
-    }
-
-    @Override
-    public int getNUsuarios() {
-        return usuarios.size();
     }
     
     @Override
@@ -201,11 +187,6 @@ public class GestorEventos implements EventoService, UsuarioService {
         
         e.quitarAsistente(usuario);
         usuario.eliminarEventoAsistente(e);
-    }
-
-    @Override
-    public int getNEventos() {
-        return eventos.size();
     }
     
     private Usuario obtenerUsuario(String nombre) {
