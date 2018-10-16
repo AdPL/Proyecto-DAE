@@ -2,15 +2,18 @@
 package ujaen.proyecto.proyecto_dae.beans;
 
 /**
- *
- * @author adpl
- * @author Rafa
+ * Clase que describe el Tipo de un evento
+ * @author Adrián Pérez López
+ * @author Rafael Galán Ruiz
  */
+package ujaen.proyecto.proyecto_dae.evento;
+
+
 public enum Tipo {
     CULTURAL("Evento cultural", "Los eventos de la categoría cultural son todos aquellos eventos donde los asistentes visitaran distintos monumentos, obras y museos."),
     FESTIVAL("Festival", "Este tipo recoge aquellos eventos en los que se realizan múltiples conciertos."),
     CONCIERTO("Concierto", "Eventos en los que un artista da un concierto.");
-    
+
     private final String titulo;
     private final String descripcion;
 

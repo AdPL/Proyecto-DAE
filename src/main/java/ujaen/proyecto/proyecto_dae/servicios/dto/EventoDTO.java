@@ -1,16 +1,15 @@
 
+/**
+ * DTO de la clase evento
+ * @author Adrián Pérez López
+ * @author Rafael Galán Ruiz
+ */
 package ujaen.proyecto.proyecto_dae.servicios.dto;
 
 import ujaen.proyecto.proyecto_dae.beans.Tipo;
 import java.util.Calendar;
 import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
 
-
-/**
- *
- * @author adpl
- * @author Rafa
- */
 public class EventoDTO {
     private int idEvento;
     private int nMax;
@@ -143,11 +142,11 @@ public class EventoDTO {
     public void setOrganizador(UsuarioDTO organizador) {
         this.organizador = organizador;
     }
-    
+
     @Override
     public String toString() {
-        return "Evento " + titulo + " | Descripción: " + descripcion 
-                + " Lugar: " + localizacion + " Tipo: " + tipo.toString() 
+        return "Evento " + titulo + " | Descripción: " + descripcion
+                + " Lugar: " + localizacion + " Tipo: " + tipo.toString()
                 + " Fecha: " + fecha.getTime().toString();
     }
 }

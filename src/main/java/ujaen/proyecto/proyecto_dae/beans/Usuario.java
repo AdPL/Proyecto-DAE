@@ -1,4 +1,9 @@
 
+/**
+ * Clase que define un usuario
+ * @author Adrián Perez López
+ * @author Rafael Galán Ruiz
+ */
 package ujaen.proyecto.proyecto_dae.beans;
 
 import java.util.ArrayList;
@@ -7,24 +12,20 @@ import java.util.Random;
 import ujaen.proyecto.proyecto_dae.beans.Evento;
 import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
 
-/**
- *
- * @author adpl
- * @author Rafa
- */
+
 public class Usuario {
     private List<Evento> eventosInscrito;
     private List<Evento> eventosOrganizador;
-    
+
     private static int id = 1;
     private int idUsuario;
     private String nombre;
     private String email;
     private String password;
     private int token;
-    
+
     private Random aleatorio;
-    
+
     public Usuario() {
         eventosInscrito = new ArrayList<>();
         eventosOrganizador = new ArrayList<>();
@@ -73,7 +74,7 @@ public class Usuario {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     public List<Evento> getEventosInscrito() {
         return eventosInscrito;
     }
@@ -81,17 +82,17 @@ public class Usuario {
     public void setEventosInscrito(List<Evento> eventosInscrito) {
         this.eventosInscrito = eventosInscrito;
     }
-    
+
     public List<Evento> getEventosOrganizador() {
         return eventosOrganizador;
     }
-    
+
     public void agregarEventoAsistente(Evento evento) {
         if ( !eventosOrganizador.contains(evento) ) {
             this.eventosInscrito.add(evento);
         }
     }
-    
+
     public void agregarEventoOrganizador(Evento evento) {
         if ( !eventosInscrito.contains(evento) ) {
             this.eventosOrganizador.add(evento);
@@ -101,11 +102,11 @@ public class Usuario {
     public void setEventosOrganizador(List<Evento> eventosOrganizador) {
         this.eventosOrganizador = eventosOrganizador;
     }
-    
+
     public void eliminarEventoAsistente(Evento evento) {
         this.eventosInscrito.remove(evento);
     }
-    
+
     public void eliminarEventoOrganizado(Evento evento) {
         this.eventosOrganizador.remove(evento);
     }
@@ -117,7 +118,7 @@ public class Usuario {
     public void setToken(int token) {
         this.token = token;
     }
-    
+
     public UsuarioDTO getUsuarioDTO() {
         return new UsuarioDTO(idUsuario, nombre, email);
     }

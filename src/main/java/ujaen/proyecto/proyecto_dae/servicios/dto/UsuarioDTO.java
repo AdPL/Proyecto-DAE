@@ -1,11 +1,13 @@
+/**
+ * DTO de la clase usuario
+ * @author Adrián Perez López
+ * @author Rafael Galá Ruiz
+ */
 
 package ujaen.proyecto.proyecto_dae.servicios.dto;
+package ujaen.proyecto.proyecto_dae.usuario;
 
-/**
- *
- * @author adpl
- * @author Rafa
- */
+
 public class UsuarioDTO {
     private int idUsuario;
     private String nombre;
@@ -40,7 +42,7 @@ public class UsuarioDTO {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     @Override
     public String toString() {
         return this.nombre;

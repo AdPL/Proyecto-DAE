@@ -22,5 +22,6 @@ public interface EventoService {
     EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, int nMax, int sesion);
     void inscribirUsuario(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste;
     void cancelarAsistencia(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste;
-    void cancelarEvento(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste;;
+    void cancelarEvento(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste;
+    Collection<EventoDTO> listaEventoPorCelebrar(int sesion);
 }

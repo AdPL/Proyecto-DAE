@@ -1,5 +1,9 @@
-
-package ujaen.proyecto.proyecto_dae.beans;
+/**
+ * Clase que define un evento
+ * @author Adrián Pérez López
+ * @author Rafael Galán Ruiz
+ */
+package ujaen.proyecto.proyecto_dae.evento;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -7,15 +11,10 @@ import java.util.Collection;
 import java.util.List;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 
-/**
- *
- * @author adpl
- * @author Rafa
- */
 public class Evento {
     private List<Usuario> asistentes;
     private List<Usuario> listaEspera;
-    
+
     private static int id = 1;
     private int idEvento;
     private int nMax;
@@ -89,7 +88,7 @@ public class Evento {
     public void setFecha(Calendar fecha) {
         this.fecha = fecha;
     }
-    
+
     public Tipo getTipo() {
         return tipo;
     }
@@ -121,7 +120,7 @@ public class Evento {
     public void setOrganizador(Usuario organizador) {
         this.organizador = organizador;
     }
-    
+
     public void agregarAsistente(Usuario usuario) {
         if ( asistentes.contains(usuario) || listaEspera.contains(usuario)) {
             System.out.println("El usuario ya está inscrito en este evento");
@@ -135,7 +134,7 @@ public class Evento {
             }
         }
     }
-    
+
     public void quitarAsistente(Usuario usuario) {
         if ( asistentes.contains(usuario) ) {
             asistentes.remove(usuario);
@@ -149,18 +148,18 @@ public class Evento {
             System.out.println("Usuario " + usuario.getNombre() + " se cancela de la lista de espera al evento " + titulo);
         }
     }
-    
+
     public int getPlazasDisponibles() {
         return nMax - asistentes.size();
     }
-    
+
     @Override
     public String toString() {
-        return "Evento " + titulo + " | Descripción: " + descripcion 
-                + " Lugar: " + localizacion + " Tipo: " + tipo.toString() 
+        return "Evento " + titulo + " | Descripción: " + descripcion
+                + " Lugar: " + localizacion + " Tipo: " + tipo.toString()
                 + " Fecha: " + fecha.getTime().toString();
     }
-    
+
     public EventoDTO getEventoDTO() {
         return new EventoDTO(id, nMax, titulo, localizacion, descripcion, fecha, tipo, organizador.getUsuarioDTO());
     }
