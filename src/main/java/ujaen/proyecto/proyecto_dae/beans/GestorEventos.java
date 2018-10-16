@@ -255,7 +255,7 @@ public class GestorEventos implements EventoService, UsuarioService {
         Calendar fechaActual = Calendar.getInstance();
         if ( usuario == null ) return null;
 
-        List<EventoDTO> eventosPendientes = new ArrayList<>();
+        Collection<EventoDTO> eventosPendientes = new ArrayList<>();
 
         for ( Evento evento : usuario.getEventosInscrito() ) {
             if(fechaActual.before(evento.getFecha()))
@@ -278,5 +278,10 @@ public class GestorEventos implements EventoService, UsuarioService {
 
     private Evento obtenerEvento(String titulo) {
         return eventos.get(titulo);
+    }
+
+    @Override
+    public Collection<EventoDTO> listaEventoCelebrados(int sesion) {
+        throw new UnsupportedOperationException("Not supported yet."); //TODO: Método listaEventoCelebrados de la clase ujaen.proyecto.proyecto_dae.beans.GestorEventos
     }
 }

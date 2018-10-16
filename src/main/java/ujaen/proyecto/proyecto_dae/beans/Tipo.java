@@ -6,7 +6,6 @@ package ujaen.proyecto.proyecto_dae.beans;
  * @author Adrián Pérez López
  * @author Rafael Galán Ruiz
  */
-package ujaen.proyecto.proyecto_dae.evento;
 
 
 public enum Tipo {

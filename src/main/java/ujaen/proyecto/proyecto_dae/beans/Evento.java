@@ -3,12 +3,13 @@
  * @author Adrián Pérez López
  * @author Rafael Galán Ruiz
  */
-package ujaen.proyecto.proyecto_dae.evento;
+package ujaen.proyecto.proyecto_dae.beans;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import ujaen.proyecto.proyecto_dae.beans.Usuario;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 
 public class Evento {

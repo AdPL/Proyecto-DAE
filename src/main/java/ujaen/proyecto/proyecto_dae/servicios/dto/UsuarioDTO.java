@@ -5,7 +5,6 @@
  */
 
 package ujaen.proyecto.proyecto_dae.servicios.dto;
-package ujaen.proyecto.proyecto_dae.usuario;
 
 
 public class UsuarioDTO {
