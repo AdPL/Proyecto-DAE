@@ -16,12 +16,11 @@ import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
  */
 public interface EventoService {
     Collection<UsuarioDTO> listaAsistentes(EventoDTO evento);
-    EventoDTO buscarEvento(String titulo);
+    EventoDTO buscarEvento(String titulo) throws EventoNoExiste;
     Collection<EventoDTO> buscarEvento(Tipo tipo);
     Collection<EventoDTO> buscarEvento(Tipo tipo, String descripcion);
     EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, int nMax, int sesion);
     void inscribirUsuario(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste;
     void cancelarAsistencia(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste;
     void cancelarEvento(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste;
-    Collection<EventoDTO> listaEventoPorCelebrar(int sesion);
 }

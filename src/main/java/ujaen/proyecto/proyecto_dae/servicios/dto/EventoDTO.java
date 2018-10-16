@@ -8,7 +8,6 @@ package ujaen.proyecto.proyecto_dae.servicios.dto;
 
 import ujaen.proyecto.proyecto_dae.beans.Tipo;
 import java.util.Calendar;
-import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
 
 public class EventoDTO {
     private int idEvento;

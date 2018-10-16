@@ -99,9 +99,15 @@ public class ClienteUsuario {
                     System.out.print("Contraseña: ");
                     pass = sc.nextLine();
 
-                    sesion = gestorEventos.identificarUsuario(nombre, pass);
-                    if ( sesion > 0 ) {
-                        usuario = nombre;
+                    try {
+                        sesion = gestorEventos.identificarUsuario(nombre, pass);
+                        if ( sesion > 0 ) {
+                            usuario = nombre;
+                        }
+                    } catch ( IdentificacionErronea e ) {
+                        System.err.println(e.getMessage());
+                    } finally {
+                        sesion = 0;
                     }
 
                 break;
@@ -151,18 +157,17 @@ public class ClienteUsuario {
 
                     System.out.print("Título del evento: ");
                     titulo = sc.nextLine();
-                    evento = gestorEventos.buscarEvento(titulo);
-
-                    if ( evento != null) {
+                    try {
+                        evento = gestorEventos.buscarEvento(titulo);
                         for ( UsuarioDTO u : gestorEventos.listaAsistentes(evento) ) {
                             System.out.println(u.getNombre());
                         }
-                    } else {
-                        System.out.println("ERROR: Evento no encontrado");
+                    } catch ( EventoNoExiste e ) {
+                        System.err.println(e.getMessage());
                     }
                 break;
 
-                case 7: //TODO: Completar filtro
+                case 7:
                     System.out.println("Eventos de tipo " + Tipo.FESTIVAL.getTitulo() + ": " + Tipo.FESTIVAL.getDescripcion());
                     System.out.println(gestorEventos.buscarEvento(Tipo.FESTIVAL));
                 break;
@@ -202,7 +207,6 @@ public class ClienteUsuario {
                         evento = gestorEventos.buscarEvento(titulo);
                         if ( evento != null) {
                             gestorEventos.cancelarAsistencia(sesion, evento);
-                            evento = null;
                         } else {
                             System.out.println("ERROR: Evento no encontrado");
                         }
@@ -220,7 +224,6 @@ public class ClienteUsuario {
                         evento = gestorEventos.buscarEvento(titulo);
                         if ( evento != null) {
                             gestorEventos.cancelarEvento(sesion, evento);
-                            evento = null;
                         } else {
                             System.out.println("ERROR: Evento no encontrado");
                         }
