@@ -125,9 +125,15 @@ public class GestorEventos implements EventoService, UsuarioService {
     public int identificarUsuario(String nombre, String pass) {
         Usuario usuario = obtenerUsuario(nombre);
         if ( usuario == null ) return -1;
-        int sesion = usuario.getToken();
-
+        
+        int token = usuario.getToken();
+        if ( token > 0 ) cerrarSesionUsuario(token);
+        
+        int sesion = -1;
+        
         if ( nombre.equals(usuario.getNombre()) && pass.equals(usuario.getPassword()) ) {
+            usuario.generarNuevoToken();
+            sesion = usuario.getToken();
             sesiones.put(sesion, usuario);
         }
 
@@ -136,7 +142,10 @@ public class GestorEventos implements EventoService, UsuarioService {
 
     @Override
     public void cerrarSesionUsuario(int sesion) {
+        Usuario usuario = obtenerSesion(sesion);
+        
         sesiones.remove(sesion);
+        usuario.setToken(-1);
     }
 
     /**

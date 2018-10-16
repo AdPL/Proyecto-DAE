@@ -118,6 +118,11 @@ public class Usuario {
         this.token = token;
     }
     
+    public void generarNuevoToken() {
+        this.token = aleatorio.nextInt(Integer.MAX_VALUE);
+        System.out.println("Nuevo token: " + token);
+    }
+    
     public UsuarioDTO getUsuarioDTO() {
         return new UsuarioDTO(idUsuario, nombre, email);
     }
