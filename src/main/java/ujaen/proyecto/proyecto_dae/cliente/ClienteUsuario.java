@@ -106,7 +106,6 @@ public class ClienteUsuario {
                         }
                     } catch ( IdentificacionErronea e ) {
                         System.err.println(e.getMessage());
-                    } finally {
                         sesion = 0;
                     }
 

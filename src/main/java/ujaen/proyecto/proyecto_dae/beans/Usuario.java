@@ -39,7 +39,6 @@ public class Usuario {
         this.eventosInscrito = new ArrayList<>();
         this.eventosOrganizador = new ArrayList<>();
         this.token = aleatorio.nextInt(Integer.MAX_VALUE);
-        System.out.println("Token: " + this.token);
     }
 
     public int getIdUsuario() {
@@ -120,7 +119,6 @@ public class Usuario {
     
     public void generarNuevoToken() {
         this.token = aleatorio.nextInt(Integer.MAX_VALUE);
-        System.out.println("Nuevo token: " + token);
     }
     
     public UsuarioDTO getUsuarioDTO() {
