@@ -5,31 +5,45 @@
  */
 package ujaen.proyecto.proyecto_dae.beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 
-public class Evento {
+@Entity
+public class Evento implements Serializable {
+    @ManyToMany
     private List<Usuario> asistentes;
+    @Transient
     private List<Usuario> listaEspera;
 
-    private static int id = 1;
-    private int idEvento;
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private int id;
     private int nMax;
     private String titulo;
     private String localizacion;
     private String descripcion;
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar fecha;
     private Tipo tipo;
+    
+    @Transient
     private Usuario organizador;
 
-    public Evento() {
-    }
+    public Evento() {}
 
     public Evento(int nMax, String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, Usuario usuario) {
-        this.idEvento = Evento.id++;
         this.nMax = nMax;
         this.titulo = titulo;
         this.localizacion = localizacion;
@@ -39,14 +53,6 @@ public class Evento {
         this.asistentes = new ArrayList<>();
         this.listaEspera = new ArrayList<>();
         this.organizador = usuario;
-    }
-
-    public int getIdEvento() {
-        return idEvento;
-    }
-
-    public void setIdEvento(int idEvento) {
-        this.idEvento = idEvento;
     }
 
     public Integer getnMax() {

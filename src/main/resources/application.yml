@@ -1,0 +1,14 @@
+## YAML Template.
+---
+spring:
+    datasource:
+        driver-class-name: org.apache.derby.jdbc.ClientDriver
+        username: dae
+        password: oretania
+        url:
+            jdbc: derby://localhost:1527/DAE
+    jpa:
+        hibernate:
+            ddl-auto: create
+        properties:
+            dialect: org.hibernate.dialect.DerbyTenSevenDialect

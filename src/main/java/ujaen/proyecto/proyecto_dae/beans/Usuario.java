@@ -6,18 +6,28 @@
  */
 package ujaen.proyecto.proyecto_dae.beans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
 
 
-public class Usuario {
+@Entity
+public class Usuario implements Serializable {
+    @ManyToMany(mappedBy="asistentes")
     private List<Evento> eventosInscrito;
+    @ManyToMany
     private List<Evento> eventosOrganizador;
     
-    private static int id = 1;
-    private int idUsuario;
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private int id;
     private String nombre;
     private String email;
     private String password;
@@ -32,7 +42,6 @@ public class Usuario {
 
     public Usuario(String nombre, String email, String password) {
         aleatorio = new Random();
-        this.idUsuario = Usuario.id++;
         this.nombre = nombre;
         this.email = email;
         this.password = password;
@@ -40,14 +49,6 @@ public class Usuario {
         this.eventosOrganizador = new ArrayList<>();
         this.token = aleatorio.nextInt(Integer.MAX_VALUE);
         System.out.println("Token: " + this.token);
-    }
-
-    public int getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
     }
 
     public String getNombre() {
@@ -124,6 +125,6 @@ public class Usuario {
     }
     
     public UsuarioDTO getUsuarioDTO() {
-        return new UsuarioDTO(idUsuario, nombre, email);
+        return new UsuarioDTO(id, nombre, email);
     }
 }
