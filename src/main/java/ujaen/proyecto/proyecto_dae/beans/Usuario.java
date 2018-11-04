@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Transient;
 import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
 
 
@@ -22,7 +23,8 @@ import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
 public class Usuario implements Serializable {
     @ManyToMany(mappedBy="asistentes")
     private List<Evento> eventosInscrito;
-    @ManyToMany
+    //@ManyToMany(mappedBy="organizador")
+    @Transient
     private List<Evento> eventosOrganizador;
     
     @Id
@@ -33,6 +35,7 @@ public class Usuario implements Serializable {
     private String password;
     private int token;
     
+    @Transient
     private Random aleatorio;
     
     public Usuario() {

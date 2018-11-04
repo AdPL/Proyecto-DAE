@@ -13,6 +13,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import ujaen.proyecto.proyecto_dae.dao.EventoDAO;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 import ujaen.proyecto.proyecto_dae.servicios.EventoService;
 import ujaen.proyecto.proyecto_dae.excepciones.EventoNoExiste;
@@ -24,6 +26,9 @@ public class GestorEventos implements EventoService, UsuarioService {
     private Map<String, Evento> eventos;
     private Map<String, Usuario> usuarios;
     private Map<Integer, Usuario> sesiones;
+    
+    @Autowired
+    private EventoDAO eventoDAO;
 
     public GestorEventos() {
         eventos = new HashMap<>();
@@ -267,6 +272,7 @@ public class GestorEventos implements EventoService, UsuarioService {
         Evento evento = new Evento(nMax, titulo, descripcion, localizacion, tipo, fecha, usuario);
         usuario.agregarEventoOrganizador(evento);
         eventos.put(titulo, evento);
+        eventoDAO.insertar(evento);
         return evento.getEventoDTO();
     }
 

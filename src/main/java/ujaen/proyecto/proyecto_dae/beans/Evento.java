@@ -8,7 +8,6 @@ package ujaen.proyecto.proyecto_dae.beans;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,8 +23,6 @@ import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 public class Evento implements Serializable {
     @ManyToMany
     private List<Usuario> asistentes;
-    @Transient
-    private List<Usuario> listaEspera;
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -51,7 +48,6 @@ public class Evento implements Serializable {
         this.fecha = fecha;
         this.tipo = tipo;
         this.asistentes = new ArrayList<>();
-        this.listaEspera = new ArrayList<>();
         this.organizador = usuario;
     }
 
@@ -111,14 +107,6 @@ public class Evento implements Serializable {
         this.asistentes = asistentes;
     }
 
-    public Collection<Usuario> getListaEspera() {
-        return listaEspera;
-    }
-
-    public void setListaEspera(ArrayList<Usuario> listaEspera) {
-        this.listaEspera = listaEspera;
-    }
-
     public Usuario getOrganizador() {
         return organizador;
     }
@@ -128,21 +116,21 @@ public class Evento implements Serializable {
     }
 
     public void agregarAsistente(Usuario usuario) {
-        if ( asistentes.contains(usuario) || listaEspera.contains(usuario)) {
+        if ( asistentes.contains(usuario) /* TODO: || listaEspera.contains(usuario)*/) {
             System.out.println("El usuario ya está inscrito en este evento");
         } else {
             if ( asistentes.size() < nMax ) {
                 asistentes.add(usuario);
                 System.out.println("Usuario agregado a la lista de asistentes");
             } else {
-                listaEspera.add(usuario);
+                //TODO: listaEspera.add(usuario);
                 System.out.println("Usuario agregado a la lista de espera");
             }
         }
     }
 
     public void quitarAsistente(Usuario usuario) {
-        if ( asistentes.contains(usuario) ) {
+        /*if ( asistentes.contains(usuario) ) {
             asistentes.remove(usuario);
             System.out.println("Usuario " + usuario.getNombre() + " cancela su asistencia al evento " + titulo);
             if ( !listaEspera.isEmpty() ) {
@@ -152,7 +140,7 @@ public class Evento implements Serializable {
         } else if ( listaEspera.contains(usuario) ) {
             listaEspera.remove(usuario);
             System.out.println("Usuario " + usuario.getNombre() + " se cancela de la lista de espera al evento " + titulo);
-        }
+        }*/
     }
 
     public int getPlazasDisponibles() {
