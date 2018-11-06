@@ -9,20 +9,23 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 
 @Entity
 public class Evento implements Serializable {
     @ManyToMany
     private List<Usuario> asistentes;
+    @ManyToMany
+    private Map<Calendar, Usuario> listaEspera;
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -35,7 +38,7 @@ public class Evento implements Serializable {
     private Calendar fecha;
     private Tipo tipo;
     
-    @Transient
+    @ManyToOne
     private Usuario organizador;
 
     public Evento() {}
@@ -143,6 +146,14 @@ public class Evento implements Serializable {
         }*/
     }
 
+    public Map<Calendar, Usuario> getListaEspera() {
+        return listaEspera;
+    }
+
+    public void setListaEspera(Map<Calendar, Usuario> listaEspera) {
+        this.listaEspera = listaEspera;
+    }
+    
     public int getPlazasDisponibles() {
         return nMax - asistentes.size();
     }

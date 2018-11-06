@@ -42,8 +42,8 @@ public class ClienteUsuario {
         fecha.set(2018, 10, 20);
         gestorEventos.crearEvento("Feria", "Evento para la feria de Jaén", "Jaén", Tipo.FESTIVAL, fecha, 2, sesion);
         sesion = gestorEventos.registrarUsuario("rafa", "rafa", "rafa", "rafa@ujaen.es");
-        evento = gestorEventos.buscarEvento("Feria");
-        gestorEventos.inscribirUsuario(sesion, evento);
+        //evento = gestorEventos.buscarEvento("Feria");
+        //gestorEventos.inscribirUsuario(sesion, evento);
         gestorEventos.registrarUsuario("antonio", "antonio", "antonio", "antonio@ujaen.es");
         gestorEventos.registrarUsuario("pepe", "pepe", "pepe", "pepe@ujaen.es");
         gestorEventos.registrarUsuario("paco", "paco", "paco", "paco@ujaen.es");

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import ujaen.proyecto.proyecto_dae.dao.EventoDAO;
+import ujaen.proyecto.proyecto_dae.dao.UsuarioDAO;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 import ujaen.proyecto.proyecto_dae.servicios.EventoService;
 import ujaen.proyecto.proyecto_dae.excepciones.EventoNoExiste;
@@ -29,6 +30,8 @@ public class GestorEventos implements EventoService, UsuarioService {
     
     @Autowired
     private EventoDAO eventoDAO;
+    @Autowired
+    private UsuarioDAO usuarioDAO;
 
     public GestorEventos() {
         eventos = new HashMap<>();
@@ -60,8 +63,9 @@ public class GestorEventos implements EventoService, UsuarioService {
         if ( pass1.equals(pass2) ) {
             Usuario usuario = new Usuario(nombre, email, pass1);
             usuarios.put(nombre, usuario);
+            usuarioDAO.insertar(usuario);
+            sesiones.put(usuario.getToken(), usuario);
             sesion = usuario.getToken();
-            sesiones.put(sesion, usuario);
         }
 
         return sesion;
@@ -271,8 +275,8 @@ public class GestorEventos implements EventoService, UsuarioService {
 
         Evento evento = new Evento(nMax, titulo, descripcion, localizacion, tipo, fecha, usuario);
         usuario.agregarEventoOrganizador(evento);
-        eventos.put(titulo, evento);
         eventoDAO.insertar(evento);
+        eventos.put(titulo, evento);
         return evento.getEventoDTO();
     }
 

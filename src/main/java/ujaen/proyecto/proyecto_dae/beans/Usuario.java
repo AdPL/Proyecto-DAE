@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
 
@@ -23,8 +24,9 @@ import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
 public class Usuario implements Serializable {
     @ManyToMany(mappedBy="asistentes")
     private List<Evento> eventosInscrito;
-    //@ManyToMany(mappedBy="organizador")
-    @Transient
+    @ManyToMany(mappedBy="listaEspera")
+    private List<Evento> eventosEspera;
+    @OneToMany(mappedBy="organizador")
     private List<Evento> eventosOrganizador;
     
     @Id
@@ -51,7 +53,6 @@ public class Usuario implements Serializable {
         this.eventosInscrito = new ArrayList<>();
         this.eventosOrganizador = new ArrayList<>();
         this.token = aleatorio.nextInt(Integer.MAX_VALUE);
-        System.out.println("Token: " + this.token);
     }
 
     public String getNombre() {
@@ -112,6 +113,14 @@ public class Usuario implements Serializable {
     
     public void eliminarEventoOrganizado(Evento evento) {
         this.eventosOrganizador.remove(evento);
+    }
+
+    public List<Evento> getEventosEspera() {
+        return eventosEspera;
+    }
+
+    public void setEventosEspera(List<Evento> eventosEspera) {
+        this.eventosEspera = eventosEspera;
     }
 
     public int getToken() {
