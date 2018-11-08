@@ -4,7 +4,7 @@
  * @author Adrián Perez López
  * @author Rafael Galán Ruiz
  */
-package ujaen.proyecto.proyecto_dae.beans;
+package ujaen.proyecto.proyecto_dae.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;

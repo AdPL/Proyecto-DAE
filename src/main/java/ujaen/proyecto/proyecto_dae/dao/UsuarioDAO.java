@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
-import ujaen.proyecto.proyecto_dae.beans.Usuario;
+import ujaen.proyecto.proyecto_dae.entities.Usuario;
 
 /**
  *

@@ -7,6 +7,8 @@
 
 package ujaen.proyecto.proyecto_dae.beans;
 
+import ujaen.proyecto.proyecto_dae.entities.Usuario;
+import ujaen.proyecto.proyecto_dae.entities.Evento;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Calendar;

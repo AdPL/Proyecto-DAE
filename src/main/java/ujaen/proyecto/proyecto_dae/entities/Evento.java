@@ -3,7 +3,7 @@
  * @author Adrián Pérez López
  * @author Rafael Galán Ruiz
  */
-package ujaen.proyecto.proyecto_dae.beans;
+package ujaen.proyecto.proyecto_dae.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,6 +18,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import ujaen.proyecto.proyecto_dae.beans.Tipo;
+import ujaen.proyecto.proyecto_dae.beans.Tipo;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 
 @Entity

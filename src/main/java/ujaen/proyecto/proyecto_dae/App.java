@@ -8,10 +8,12 @@ package ujaen.proyecto.proyecto_dae;
 import ujaen.proyecto.proyecto_dae.cliente.ClienteUsuario;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ApplicationContext;
 
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "ujaen.proyecto.proyecto_dae")
+@EntityScan(basePackages = "ujaen.proyecto.proyecto_dae.entities")
 public class App {
     public static void main(String[] args) throws Exception {
         SpringApplication servidor = new SpringApplication(App.class);
