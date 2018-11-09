@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 import ujaen.proyecto.proyecto_dae.beans.GestorEventos;
 import ujaen.proyecto.proyecto_dae.beans.Tipo;
+import ujaen.proyecto.proyecto_dae.dao.EventoDAO;
 import ujaen.proyecto.proyecto_dae.excepciones.EventoNoExiste;
 import ujaen.proyecto.proyecto_dae.excepciones.IdentificacionErronea;
 import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
@@ -44,14 +45,25 @@ public class ClienteUsuario {
         sesion = gestorEventos.registrarUsuario("rafa", "rafa", "rafa", "rafa@ujaen.es");
         //evento = gestorEventos.buscarEvento("Feria");
         //gestorEventos.inscribirUsuario(sesion, evento);
+        
+        fecha.set(2018,11,9);
+        gestorEventos.crearEvento("prueba","Evento pa la prueba", "uja", Tipo.FESTIVAL, fecha, 3, sesion);
+        
         gestorEventos.registrarUsuario("antonio", "antonio", "antonio", "antonio@ujaen.es");
         gestorEventos.registrarUsuario("pepe", "pepe", "pepe", "pepe@ujaen.es");
         gestorEventos.registrarUsuario("paco", "paco", "paco", "paco@ujaen.es");
-
+        try{
+            System.out.println("evento de la base de datos: "+gestorEventos.buscarEvento("p").toString());
+        }catch(EventoNoExiste e){
+            
+        }
+        System.out.println("evento base datos tipo: "+gestorEventos.buscarEvento(Tipo.FESTIVAL).toString());
+        System.out.println("Eventos por descripcion y tipo"+gestorEventos.buscarEvento(Tipo.FESTIVAL, "pa").toString());
+        System.out.println("Evento por descripcion: "+gestorEventos.buscarDescripcion("a").toString());
+        
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        sesion = 0;
-
+        
+        /*
         do {
             System.out.println();
             if ( sesion > 0 ) {
@@ -243,6 +255,7 @@ public class ClienteUsuario {
                     }
                 break;
             }
-        } while ( opcion != 0 );
+        } while ( opcion != 0 );*/
     }
+    
 }

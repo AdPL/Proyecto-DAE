@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import ujaen.proyecto.proyecto_dae.dao.EventoDAO;
 import ujaen.proyecto.proyecto_dae.dao.UsuarioDAO;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
@@ -216,8 +217,13 @@ public class GestorEventos implements EventoService, UsuarioService {
      */
     @Override
     public EventoDTO buscarEvento(String titulo) throws EventoNoExiste {
-        Evento evento = obtenerEvento(titulo);
-        if ( evento == null ) throw new EventoNoExiste("El evento no existe.");
+        Evento evento;
+        try{
+            evento = eventoDAO.bucarTitulo(titulo);
+        }catch(EmptyResultDataAccessException ex){
+            evento = null;
+        }    
+        if ( evento == null ) throw new EventoNoExiste("El evento de la base de datos no existe.");
         return evento.getEventoDTO();
     }
 
@@ -229,14 +235,18 @@ public class GestorEventos implements EventoService, UsuarioService {
     @Override
     public Collection<EventoDTO> buscarEvento(Tipo tipo) {
         Collection<EventoDTO> busq = new ArrayList<>();
-        for ( Evento evento : eventos.values() ) {
-            if ( tipo == evento.getTipo() ) {
-                busq.add(evento.getEventoDTO());
-            }
+        Collection<Evento> busca = new ArrayList<>();
+        busca = eventoDAO.eventosTipo(tipo);
+        for ( Evento e : busca) {
+                busq.add(e.getEventoDTO());
+            
         }
+        
         return busq;
     }
 
+        
+    
     /**
      * Método que devuelve los eventos que coinciden con el tipo y
      * con la descripción consultada
@@ -247,14 +257,27 @@ public class GestorEventos implements EventoService, UsuarioService {
     @Override
     public Collection<EventoDTO> buscarEvento(Tipo tipo, String descripcion) {
         Collection<EventoDTO> busq = new ArrayList<>();
-        for ( Evento evento : eventos.values() ) {
-            if ( tipo == evento.getTipo() && evento.getDescripcion().contains(descripcion) ) {
-                busq.add(evento.getEventoDTO());
+        Collection<Evento> busca = new ArrayList<>();
+        busca = eventoDAO.eventosTipo(tipo);
+        for(Evento e : busca){
+            if(e.getDescripcion().contains(descripcion)){
+                busq.add(e.getEventoDTO());
             }
         }
         return busq;
     }
 
+    @Override
+    public Collection<EventoDTO> buscarDescripcion(String descripcion){
+        Collection<EventoDTO> busq = new ArrayList<>();
+        Collection<Evento> busca =new ArrayList<>();
+        busca = eventoDAO.eventosDescripcion(descripcion);
+        for(Evento e : busca){
+            
+            busq.add(e.getEventoDTO());
+        }
+        return busq;
+    }
     /**
      * Método para crear un evento
      * @param titulo
@@ -310,7 +333,9 @@ public class GestorEventos implements EventoService, UsuarioService {
     public void cancelarEvento(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste {
         Usuario usuario = obtenerSesion(sesion);
         Evento e = obtenerEvento(evento.getTitulo());
-
+        
+        
+        
         if ( usuario == null ) throw new IdentificacionErronea("Usuario o contraseña incorrectos"); //TODO: Configurar Throw Exception correcta
         if ( e == null ) throw new EventoNoExiste("El evento no existe");
 
@@ -323,6 +348,7 @@ public class GestorEventos implements EventoService, UsuarioService {
         }
     }
 
+    
     /**
      * 
      * MÉTODOS PRIVADOS DE GESTOR EVENTO

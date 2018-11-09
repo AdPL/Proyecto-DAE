@@ -14,8 +14,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import ujaen.proyecto.proyecto_dae.beans.Tipo;
@@ -23,6 +25,7 @@ import ujaen.proyecto.proyecto_dae.beans.Tipo;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 
 @Entity
+@Table(indexes = {@Index (name = "Index_titulo", columnList = "titulo", unique = true)})
 public class Evento implements Serializable {
     @ManyToMany
     private List<Usuario> asistentes;

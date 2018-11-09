@@ -19,6 +19,7 @@ public interface EventoService {
     EventoDTO buscarEvento(String titulo) throws EventoNoExiste;
     Collection<EventoDTO> buscarEvento(Tipo tipo);
     Collection<EventoDTO> buscarEvento(Tipo tipo, String descripcion);
+    Collection<EventoDTO> buscarDescripcion(String descripcion);
     EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, int nMax, int sesion);
     void inscribirUsuario(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste;
     void cancelarAsistencia(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste;
