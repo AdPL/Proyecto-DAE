@@ -130,12 +130,15 @@ public class GestorEventos implements EventoService, UsuarioService {
         Usuario usuario = obtenerSesion(sesion);
 
         if ( usuario == null ) return null;
-
+        int id = usuario.getUsuarioDTO().getIdUsuario();
+        Collection<Evento> evento = eventoDAO.eventosOrganizados(id);
         List<EventoDTO> eventosDTO = new ArrayList<>();
-
-        for ( Evento evento : usuario.getEventosOrganizador() ) {
-            eventosDTO.add(evento.getEventoDTO());
+        for(Evento e: evento){
+            eventosDTO.add(e.getEventoDTO());
         }
+        //for ( Evento evento : usuario.getEventosOrganizador() ) {
+          //  eventosDTO.add(evento.getEventoDTO());
+        //}
         return eventosDTO;
     }
     
@@ -268,14 +271,19 @@ public class GestorEventos implements EventoService, UsuarioService {
     }
 
     @Override
-    public Collection<EventoDTO> buscarDescripcion(String descripcion){
+    public Collection<EventoDTO> buscarDescripcion(String descripcion) throws EventoNoExiste{
         Collection<EventoDTO> busq = new ArrayList<>();
-        Collection<Evento> busca =new ArrayList<>();
-        busca = eventoDAO.eventosDescripcion(descripcion);
-        for(Evento e : busca){
+        Collection<Evento> busca = new ArrayList<>();
+        if(descripcion.contains("select") || descripcion.contains("update") || descripcion.contains("delete")){
+            busq = null;
+        }else{
+            busca = eventoDAO.eventosDescripcion(descripcion);
+            for(Evento e : busca){
+                busq.add(e.getEventoDTO());
+            }
             
-            busq.add(e.getEventoDTO());
         }
+        if ( busq == null ) throw new EventoNoExiste("El evento de la base de datos no existe.");
         return busq;
     }
     /**
@@ -308,8 +316,8 @@ public class GestorEventos implements EventoService, UsuarioService {
     @Override
     public void inscribirUsuario(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste {
         Usuario usuario = obtenerSesion(sesion);
-        Evento e = obtenerEvento(evento.getTitulo());
-
+        //Evento e = obtenerEvento(evento.getTitulo());
+        Evento e = eventoDAO.bucarTitulo(evento.getTitulo());
         if ( usuario == null ) throw new IdentificacionErronea("Usuario o contraseña incorrectos"); //TODO: Configurar Throw Exception correcta
         if ( e == null ) throw new EventoNoExiste("El evento no existe");
 

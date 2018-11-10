@@ -9,7 +9,6 @@ import java.util.Collection;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import ujaen.proyecto.proyecto_dae.beans.Tipo;
 import ujaen.proyecto.proyecto_dae.entities.Evento;
@@ -60,4 +59,12 @@ public class EventoDAO {
         return eventos;
     }
     
+    
+    //Listar eventos organizador
+    public Collection<Evento> eventosOrganizados(int id){
+        Collection<Evento> eventos;
+        System.out.println("que le paso: "+id);
+        eventos = em.createQuery("select e from Evento e where e.organizador.id = :id",Evento.class).setParameter("id", id).getResultList();
+        return eventos;
+    }
 }

@@ -41,25 +41,34 @@ public class ClienteUsuario {
 
         sesion = gestorEventos.registrarUsuario("adrian", "adrian", "adrian", "adrian@ujaen.es");
         fecha.set(2018, 10, 20);
+        System.out.println("Sesion de adrian: " +sesion);
         gestorEventos.crearEvento("Feria", "Evento para la feria de Jaén", "Jaén", Tipo.FESTIVAL, fecha, 2, sesion);
-        sesion = gestorEventos.registrarUsuario("rafa", "rafa", "rafa", "rafa@ujaen.es");
+        gestorEventos.crearEvento("torredelcampo", "Evento en torredelcampo", "torredelcampo", Tipo.FESTIVAL, fecha, 2, sesion);
+        
+        
+        System.out.println("Eventos organizados por adrian: "+gestorEventos.listaEventosOrganizador(sesion));
+        //sesion = gestorEventos.registrarUsuario("rafa", "rafa", "rafa", "rafa@ujaen.es");
         //evento = gestorEventos.buscarEvento("Feria");
         //gestorEventos.inscribirUsuario(sesion, evento);
         
-        fecha.set(2018,11,9);
-        gestorEventos.crearEvento("prueba","Evento pa la prueba", "uja", Tipo.FESTIVAL, fecha, 3, sesion);
+        //fecha.set(2018,11,9);
+        //gestorEventos.crearEvento("prueba","Evento pa la prueba", "uja", Tipo.FESTIVAL, fecha, 3, sesion);
         
-        gestorEventos.registrarUsuario("antonio", "antonio", "antonio", "antonio@ujaen.es");
-        gestorEventos.registrarUsuario("pepe", "pepe", "pepe", "pepe@ujaen.es");
-        gestorEventos.registrarUsuario("paco", "paco", "paco", "paco@ujaen.es");
-        try{
-            System.out.println("evento de la base de datos: "+gestorEventos.buscarEvento("p").toString());
-        }catch(EventoNoExiste e){
+        //gestorEventos.registrarUsuario("antonio", "antonio", "antonio", "antonio@ujaen.es");
+        //gestorEventos.registrarUsuario("pepe", "pepe", "pepe", "pepe@ujaen.es");
+        //gestorEventos.registrarUsuario("paco", "paco", "paco", "paco@ujaen.es");
+        //try{
+        //    System.out.println("evento de la base de datos: "+gestorEventos.buscarEvento("p").toString());
+        //}catch(EventoNoExiste e){
             
-        }
-        System.out.println("evento base datos tipo: "+gestorEventos.buscarEvento(Tipo.FESTIVAL).toString());
-        System.out.println("Eventos por descripcion y tipo"+gestorEventos.buscarEvento(Tipo.FESTIVAL, "pa").toString());
-        System.out.println("Evento por descripcion: "+gestorEventos.buscarDescripcion("a").toString());
+        //}
+        //System.out.println("evento base datos tipo: "+gestorEventos.buscarEvento(Tipo.FESTIVAL).toString());
+        //System.out.println("Eventos por descripcion y tipo"+gestorEventos.buscarEvento(Tipo.FESTIVAL, "pa").toString());
+        //try{
+        //    System.out.println("Evento por descripcion: "+gestorEventos.buscarDescripcion("update").toString());
+        //}catch(EventoNoExiste e){
+        //    System.out.println("error acceso base datos");
+        //}
         
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
