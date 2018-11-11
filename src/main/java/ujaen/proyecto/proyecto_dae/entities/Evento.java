@@ -19,7 +19,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import ujaen.proyecto.proyecto_dae.beans.Tipo;
-import ujaen.proyecto.proyecto_dae.beans.Tipo;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 
 @Entity
@@ -121,14 +120,14 @@ public class Evento implements Serializable {
     }
 
     public void agregarAsistente(Usuario usuario) {
-        if ( asistentes.contains(usuario) /* TODO: || listaEspera.contains(usuario)*/) {
+        if ( asistentes.contains(usuario) ) { // || listaEspera.contains(usuario)) {
             System.out.println("El usuario ya está inscrito en este evento");
         } else {
             if ( asistentes.size() < nMax ) {
                 asistentes.add(usuario);
                 System.out.println("Usuario agregado a la lista de asistentes");
             } else {
-                //TODO: listaEspera.add(usuario);
+                listaEspera.put(Calendar.getInstance(), usuario);
                 System.out.println("Usuario agregado a la lista de espera");
             }
         }

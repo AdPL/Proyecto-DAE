@@ -75,21 +75,14 @@ public class GestorEventos implements EventoService, UsuarioService {
 
     @Override
     public int identificarUsuario(String nombre, String pass) throws IdentificacionErronea {
-        Usuario usuario = obtenerUsuario(nombre);
+        Usuario usuario = usuarioDAO.auntentificarUsuario(nombre, pass);
         if ( usuario == null ) throw new IdentificacionErronea("Datos incorrectos");
         
+        usuario.generarNuevoToken();
         int token = usuario.getToken();
-        if ( token > 0 ) cerrarSesionUsuario(token);
+        sesiones.put(usuario.getToken(), usuario);
         
-        int sesion = -1;
-        
-        if ( nombre.equals(usuario.getNombre()) && pass.equals(usuario.getPassword()) ) {
-            usuario.generarNuevoToken();
-            sesion = usuario.getToken();
-            sesiones.put(sesion, usuario);
-        }
-
-        return sesion;
+        return token;
     }
 
     @Override
@@ -109,11 +102,9 @@ public class GestorEventos implements EventoService, UsuarioService {
     public Collection<EventoDTO> listaEventosInscrito(int sesion) {
         Usuario usuario = obtenerSesion(sesion);
 
-        if ( usuario == null ) return null;
-
         List<EventoDTO> eventosDTO = new ArrayList<>();
 
-        for ( Evento evento : usuario.getEventosInscrito() ) {
+        for ( Evento evento : usuarioDAO.obtenerEventosInscrito(usuario)) {
             eventosDTO.add(evento.getEventoDTO());
         }
         return eventosDTO;
@@ -132,7 +123,7 @@ public class GestorEventos implements EventoService, UsuarioService {
 
         List<EventoDTO> eventosDTO = new ArrayList<>();
 
-        for ( Evento evento : usuario.getEventosOrganizador() ) {
+        for ( Evento evento : usuarioDAO.obtenerEventosOrganizador(usuario.getId()) ) {
             eventosDTO.add(evento.getEventoDTO());
         }
         return eventosDTO;
@@ -271,12 +262,9 @@ public class GestorEventos implements EventoService, UsuarioService {
         Usuario usuario = obtenerSesion(sesion);
 
         if ( usuario == null ) return null;
-        if ( obtenerEvento(titulo) != null ) return null;
-
         if( fecha.before(Calendar.getInstance()) ) return null;
 
         Evento evento = new Evento(nMax, titulo, descripcion, localizacion, tipo, fecha, usuario);
-        usuario.agregarEventoOrganizador(evento);
         eventoDAO.insertar(evento);
         eventos.put(titulo, evento);
         return evento.getEventoDTO();
@@ -285,13 +273,17 @@ public class GestorEventos implements EventoService, UsuarioService {
     @Override
     public void inscribirUsuario(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste {
         Usuario usuario = obtenerSesion(sesion);
-        Evento e = obtenerEvento(evento.getTitulo());
+
+        //Evento e = obtenerEvento(evento.getTitulo());
 
         if ( usuario == null ) throw new IdentificacionErronea("Usuario o contraseña incorrectos"); //TODO: Configurar Throw Exception correcta
-        if ( e == null ) throw new EventoNoExiste("El evento no existe");
+        
+        eventoDAO.inscribirUsuario(usuario, evento.getIdEvento());
+        
+        //if ( e == null ) throw new EventoNoExiste("El evento no existe");
 
-        usuario.agregarEventoAsistente(e);
-        e.agregarAsistente(usuario);
+        //usuario.agregarEventoAsistente(e);
+        //e.agregarAsistente(usuario);
     }
     
     @Override

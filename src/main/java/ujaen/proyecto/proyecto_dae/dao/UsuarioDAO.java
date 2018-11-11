@@ -5,10 +5,12 @@
  */
 package ujaen.proyecto.proyecto_dae.dao;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
+import ujaen.proyecto.proyecto_dae.entities.Evento;
 import ujaen.proyecto.proyecto_dae.entities.Usuario;
 
 /**
@@ -32,5 +34,41 @@ public class UsuarioDAO {
     
     public void actualizar(Usuario usuario) {
         em.merge(usuario);
+    }
+    
+    public Usuario obtenerUsuarioPorNombre(String nombre) {
+        Usuario u = em.createQuery(
+                "SELECT u FROM Usuario u WHERE u.nombre = :nombre", Usuario.class)
+                .setParameter("nombre", nombre).getSingleResult();
+        System.out.println(u.toString());
+        return u;
+    }
+    
+    public Usuario auntentificarUsuario(String nombre, String password) {
+        //TODO: Revisar consulta por setParameter
+        //TODO: Problema al devolver null
+        Usuario u = em.createQuery(
+                "SELECT u FROM Usuario u WHERE u.nombre = :nombre AND u.password = :password", Usuario.class)
+                .setParameter("nombre", nombre)
+                .setParameter("password", password)
+                .getSingleResult();
+
+        return u;
+    }
+    
+    public List<Evento> obtenerEventosInscrito(Usuario usuario) {
+        List<Evento> eventos = em.createQuery(
+                "SELECT e FROM Evento e WHERE :usuario MEMBER OF e.asistentes", Evento.class)
+        .setParameter("usuario", usuario).getResultList();
+        
+        return eventos;
+    }
+    
+    public List<Evento> obtenerEventosOrganizador(int id) {
+        List<Evento> eventos = em.createQuery(
+                "SELECT e FROM Evento e WHERE e.organizador.id = :id", Evento.class)
+        .setParameter("id", id).getResultList();
+        
+        return eventos;
     }
 }

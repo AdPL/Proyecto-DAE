@@ -14,13 +14,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
 
 
 @Entity
+@Table(indexes = {@Index(name = "Index_nombres", columnList = "nombre", unique = true)})
 public class Usuario implements Serializable {
     @ManyToMany(mappedBy="asistentes")
     private List<Evento> eventosInscrito;
@@ -53,6 +56,10 @@ public class Usuario implements Serializable {
         this.eventosInscrito = new ArrayList<>();
         this.eventosOrganizador = new ArrayList<>();
         this.token = aleatorio.nextInt(Integer.MAX_VALUE);
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getNombre() {
@@ -92,9 +99,7 @@ public class Usuario implements Serializable {
     }
     
     public void agregarEventoAsistente(Evento evento) {
-        if ( !eventosOrganizador.contains(evento) ) {
-            this.eventosInscrito.add(evento);
-        }
+        
     }
     
     public void agregarEventoOrganizador(Evento evento) {
@@ -132,6 +137,7 @@ public class Usuario implements Serializable {
     }
     
     public void generarNuevoToken() {
+        aleatorio = new Random();
         this.token = aleatorio.nextInt(Integer.MAX_VALUE);
         System.out.println("Nuevo token: " + token);
     }

@@ -47,6 +47,8 @@ public class ClienteUsuario {
         gestorEventos.registrarUsuario("antonio", "antonio", "antonio", "antonio@ujaen.es");
         gestorEventos.registrarUsuario("pepe", "pepe", "pepe", "pepe@ujaen.es");
         gestorEventos.registrarUsuario("paco", "paco", "paco", "paco@ujaen.es");
+        
+        
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -106,8 +108,6 @@ public class ClienteUsuario {
                         }
                     } catch ( IdentificacionErronea e ) {
                         System.err.println(e.getMessage());
-                    } finally {
-                        sesion = 0;
                     }
 
                 break;
