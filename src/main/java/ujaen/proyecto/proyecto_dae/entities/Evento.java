@@ -18,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.springframework.data.annotation.Version;
 import ujaen.proyecto.proyecto_dae.beans.Tipo;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 
@@ -41,6 +42,9 @@ public class Evento implements Serializable {
     
     @ManyToOne
     private Usuario organizador;
+    
+    @Version
+    int version;
 
     public Evento() {}
 

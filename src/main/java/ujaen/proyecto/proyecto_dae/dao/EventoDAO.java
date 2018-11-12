@@ -6,9 +6,12 @@
 package ujaen.proyecto.proyecto_dae.dao;
 
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import ujaen.proyecto.proyecto_dae.beans.Tipo;
 import ujaen.proyecto.proyecto_dae.entities.Evento;
@@ -40,7 +43,13 @@ public class EventoDAO {
         em.remove(em.merge(evento));
     }
     
+    @Cacheable(value="gestorEventos")
     public Evento obtenerEventoPorTitulo(String titulo) {
+        try {
+            Thread.sleep(5000); // Simulación de petición con alto coste
+        } catch (InterruptedException ex) {
+            Logger.getLogger(EventoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Evento e = em.createQuery(
                 "SELECT e FROM Evento e WHERE e.titulo = :titulo", Evento.class)
                 .setParameter("titulo", titulo).getSingleResult();
