@@ -54,8 +54,12 @@ public class Evento implements Serializable {
         this.asistentes = new ArrayList<>();
         this.organizador = usuario;
     }
+    
+    public int getId() {
+        return id;
+    }
 
-    public Integer getnMax() {
+    public int getnMax() {
         return nMax;
     }
 
@@ -120,31 +124,30 @@ public class Evento implements Serializable {
     }
 
     public void agregarAsistente(Usuario usuario) {
-        if ( asistentes.contains(usuario) ) { // || listaEspera.contains(usuario)) {
-            System.out.println("El usuario ya está inscrito en este evento");
+        if ( asistentes.contains(usuario) ) {
+            System.out.println("El usuario ya setá inscrito en este evento");
         } else {
             if ( asistentes.size() < nMax ) {
                 asistentes.add(usuario);
                 System.out.println("Usuario agregado a la lista de asistentes");
             } else {
-                listaEspera.put(Calendar.getInstance(), usuario);
-                System.out.println("Usuario agregado a la lista de espera");
+                System.out.println("na");
             }
         }
     }
 
     public void quitarAsistente(Usuario usuario) {
-        /*if ( asistentes.contains(usuario) ) {
+        if ( asistentes.contains(usuario) ) {
             asistentes.remove(usuario);
             System.out.println("Usuario " + usuario.getNombre() + " cancela su asistencia al evento " + titulo);
             if ( !listaEspera.isEmpty() ) {
                 System.out.println(listaEspera.get(0).getNombre() + " es el primero de la lista de Espera, ahora está en asistentes");
                 asistentes.add(listaEspera.remove(0));
             }
-        } else if ( listaEspera.contains(usuario) ) {
+        } else if ( listaEspera.containsKey(usuario) ) {
             listaEspera.remove(usuario);
             System.out.println("Usuario " + usuario.getNombre() + " se cancela de la lista de espera al evento " + titulo);
-        }*/
+        }
     }
 
     public Map<Calendar, Usuario> getListaEspera() {

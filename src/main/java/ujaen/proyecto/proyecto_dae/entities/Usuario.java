@@ -99,7 +99,7 @@ public class Usuario implements Serializable {
     }
     
     public void agregarEventoAsistente(Evento evento) {
-        
+        eventosInscrito.add(evento);
     }
     
     public void agregarEventoOrganizador(Evento evento) {
@@ -139,7 +139,6 @@ public class Usuario implements Serializable {
     public void generarNuevoToken() {
         aleatorio = new Random();
         this.token = aleatorio.nextInt(Integer.MAX_VALUE);
-        System.out.println("Nuevo token: " + token);
     }
     
     public UsuarioDTO getUsuarioDTO() {

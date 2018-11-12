@@ -13,9 +13,8 @@ import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 public interface UsuarioService {
     int registrarUsuario(String nombre, String pass1, String pass2, String email);
     int identificarUsuario(String nombre, String pass) throws IdentificacionErronea;
-    void cerrarSesionUsuario(int sesion);
     Collection<EventoDTO> listaEventosInscrito(int sesion);
     Collection<EventoDTO> listaEventosOrganizador(int sesion);
-    Collection<EventoDTO> listaEventoPorCelebrar(int sesion);
-    Collection<EventoDTO> listaEventoCelebrados(int sesion);
+    Collection<EventoDTO> listaEventosPorCelebrar(int sesion);
+    Collection<EventoDTO> listaEventosCelebrados(int sesion);
 }

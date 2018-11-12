@@ -18,6 +18,10 @@ import ujaen.proyecto.proyecto_dae.entities.Usuario;
  * @author adpl
  */
 
+//TODO: Revisar consulta por setParameter y gestionarla de modo literals o string según sea el parámetro
+//TODO: Problema al devolver null, revisar que debe hacerse en esos casos
+//TODO: Caché
+
 @Repository
 @Transactional
 public class UsuarioDAO {
@@ -40,13 +44,17 @@ public class UsuarioDAO {
         Usuario u = em.createQuery(
                 "SELECT u FROM Usuario u WHERE u.nombre = :nombre", Usuario.class)
                 .setParameter("nombre", nombre).getSingleResult();
-        System.out.println(u.toString());
+        return u;
+    }
+    
+    public Usuario obtenerUsuarioPorToken(int token) {
+        Usuario u = em.createQuery(
+                "SELECT u FROM Usuario u WHERE u.token = :token", Usuario.class)
+                .setParameter("token", token).getSingleResult();
         return u;
     }
     
     public Usuario auntentificarUsuario(String nombre, String password) {
-        //TODO: Revisar consulta por setParameter
-        //TODO: Problema al devolver null
         Usuario u = em.createQuery(
                 "SELECT u FROM Usuario u WHERE u.nombre = :nombre AND u.password = :password", Usuario.class)
                 .setParameter("nombre", nombre)
@@ -64,10 +72,26 @@ public class UsuarioDAO {
         return eventos;
     }
     
-    public List<Evento> obtenerEventosOrganizador(int id) {
+    public List<Evento> obtenerEventosOrganizador(Usuario usuario) {
         List<Evento> eventos = em.createQuery(
-                "SELECT e FROM Evento e WHERE e.organizador.id = :id", Evento.class)
-        .setParameter("id", id).getResultList();
+                "SELECT e FROM Evento e WHERE e.organizador = :usuario", Evento.class)
+        .setParameter("usuario", usuario).getResultList();
+        
+        return eventos;
+    }
+    
+    public List<Evento> obtenerEventosInscritoPasados(Usuario usuario) {
+        List<Evento> eventos = em.createQuery(
+                "SELECT e FROM Evento e WHERE :usuario MEMBER OF e.asistentes AND CURRENT_TIMESTAMP > e.fecha", Evento.class)
+        .setParameter("usuario", usuario).getResultList();
+        
+        return eventos;
+    }
+    
+    public List<Evento> obtenerEventosInscritoPorCelebrar(Usuario usuario) {
+        List<Evento> eventos = em.createQuery(
+                "SELECT e FROM Evento e WHERE :usuario MEMBER OF e.asistentes AND CURRENT_TIMESTAMP < e.fecha", Evento.class)
+        .setParameter("usuario", usuario).getResultList();
         
         return eventos;
     }

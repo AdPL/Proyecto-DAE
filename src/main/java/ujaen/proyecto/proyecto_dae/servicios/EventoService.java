@@ -15,7 +15,6 @@ import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
  * @author Rafa
  */
 public interface EventoService {
-    Collection<UsuarioDTO> listaAsistentes(EventoDTO evento);
     EventoDTO buscarEvento(String titulo) throws EventoNoExiste;
     Collection<EventoDTO> buscarEvento(Tipo tipo);
     Collection<EventoDTO> buscarEvento(Tipo tipo, String descripcion);

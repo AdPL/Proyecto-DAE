@@ -42,10 +42,12 @@ public class ClienteUsuario {
         fecha.set(2018, 10, 20);
         gestorEventos.crearEvento("Feria", "Evento para la feria de Jaén", "Jaén", Tipo.FESTIVAL, fecha, 2, sesion);
         sesion = gestorEventos.registrarUsuario("rafa", "rafa", "rafa", "rafa@ujaen.es");
-        //evento = gestorEventos.buscarEvento("Feria");
-        //gestorEventos.inscribirUsuario(sesion, evento);
-        gestorEventos.registrarUsuario("antonio", "antonio", "antonio", "antonio@ujaen.es");
-        gestorEventos.registrarUsuario("pepe", "pepe", "pepe", "pepe@ujaen.es");
+
+        sesion = gestorEventos.registrarUsuario("antonio", "antonio", "antonio", "antonio@ujaen.es");
+        gestorEventos.crearEvento("Evento 1", "Evento 1", "Jaén", Tipo.FESTIVAL, fecha, 2, sesion);
+        
+        sesion = gestorEventos.registrarUsuario("pepe", "pepe", "pepe", "pepe@ujaen.es");
+        gestorEventos.crearEvento("Evento 2", "Evento 2", "Linares", Tipo.CULTURAL, fecha, 2, sesion);
         gestorEventos.registrarUsuario("paco", "paco", "paco", "paco@ujaen.es");
         
         
@@ -66,7 +68,7 @@ public class ClienteUsuario {
             System.out.println("3. Crear evento");
             System.out.println("4. Listar mis eventos (Inscrito)");
             System.out.println("5. Listar mis eventos (Organizador)");
-            System.out.println("6. Lista de asistentes a un evento");
+            System.out.println("6. Buscar evento por título");
             System.out.println("7. Buscar evento por tipo (FESTIVAL)");
             System.out.println("8. Buscar evento por tipo (FESTIVAL) y descripción");
             System.out.println("9. Inscribirse en un evento");
@@ -159,9 +161,7 @@ public class ClienteUsuario {
                     titulo = sc.nextLine();
                     try {
                         evento = gestorEventos.buscarEvento(titulo);
-                        for ( UsuarioDTO u : gestorEventos.listaAsistentes(evento) ) {
-                            System.out.println(u.getNombre());
-                        }
+                        System.out.println(evento.toString());
                     } catch ( EventoNoExiste e ) {
                         System.err.println(e.getMessage());
                     }
@@ -188,11 +188,9 @@ public class ClienteUsuario {
                         System.out.print("Título: ");
                         titulo = sc.nextLine();
                         evento = gestorEventos.buscarEvento(titulo);
-                        if ( evento != null ) {
-                            gestorEventos.inscribirUsuario(sesion, evento);
-                        } else {
-                            System.out.println("ERROR: Evento no encontrado");
-                        }
+
+                        gestorEventos.inscribirUsuario(sesion, evento);
+
                     } else {
                         System.out.println("ERROR: Debe estar identificado para consultar sus eventos");
                     }
@@ -205,11 +203,9 @@ public class ClienteUsuario {
                         System.out.print("Título: ");
                         titulo = sc.nextLine();
                         evento = gestorEventos.buscarEvento(titulo);
-                        if ( evento != null) {
-                            gestorEventos.cancelarAsistencia(sesion, evento);
-                        } else {
-                            System.out.println("ERROR: Evento no encontrado");
-                        }
+
+                        gestorEventos.cancelarAsistencia(sesion, evento);
+
                     } else {
                         System.out.println("ERROR: Debe estar identificado para darse de baja de un evento");
                     }
@@ -222,17 +218,15 @@ public class ClienteUsuario {
                         System.out.print("Título: ");
                         titulo = sc.nextLine();
                         evento = gestorEventos.buscarEvento(titulo);
-                        if ( evento != null) {
-                            gestorEventos.cancelarEvento(sesion, evento);
-                        } else {
-                            System.out.println("ERROR: Evento no encontrado");
-                        }
+                        
+                        gestorEventos.cancelarEvento(sesion, evento);
+
                     } else {
                         System.out.println("ERROR: Debe estar identificado para consultar sus eventos");
                     }
                 break;
 
-                case 12:
+                /*case 12:
                     if ( sesion > 0 ) {
                         gestorEventos.cerrarSesionUsuario(sesion);
                         System.out.println("Sesión cerrada");
@@ -241,7 +235,7 @@ public class ClienteUsuario {
                     } else {
                         System.out.println("ERROR: Sesión no iniciada");
                     }
-                break;
+                break;*/
             }
         } while ( opcion != 0 );
     }
