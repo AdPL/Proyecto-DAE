@@ -38,13 +38,20 @@ public class ClienteUsuario {
 
         GestorEventos gestorEventos = (GestorEventos) context.getBean(GestorEventos.class);
 
-        sesion = gestorEventos.registrarUsuario("adrian", "adrian", "adrian", "adrian@ujaen.es");
+        sesion = gestorEventos.registrarUsuario("adrian", "adrian", "adrian", "adrianpelopez@gmail.com");
         fecha.set(2018, 10, 20);
         gestorEventos.crearEvento("Feria", "Evento para la feria de Jaén", "Jaén", Tipo.FESTIVAL, fecha, 2, sesion);
-        sesion = gestorEventos.registrarUsuario("rafa", "rafa", "rafa", "rafa@ujaen.es");
+        sesion = gestorEventos.registrarUsuario("rafa", "rafa", "rafa", "rgr00030@red.ujaen.es");
 
         sesion = gestorEventos.registrarUsuario("antonio", "antonio", "antonio", "antonio@ujaen.es");
-        gestorEventos.crearEvento("Evento 1", "Evento 1", "Jaén", Tipo.FESTIVAL, fecha, 2, sesion);
+        gestorEventos.crearEvento("Evento 1", "Evento 1", "Jaén", Tipo.FESTIVAL, fecha, 1, sesion);
+        
+        sesion = gestorEventos.identificarUsuario("adrian", "adrian");
+        gestorEventos.inscribirUsuario(sesion, gestorEventos.buscarEvento("Evento 1"));
+        sesion = gestorEventos.identificarUsuario("rafa", "rafa");
+        gestorEventos.inscribirUsuario(sesion, gestorEventos.buscarEvento("Evento 1"));
+        sesion = gestorEventos.identificarUsuario("adrian", "adrian");
+        gestorEventos.cancelarAsistencia(sesion, gestorEventos.buscarEvento("Evento 1"));
         
         sesion = gestorEventos.registrarUsuario("pepe", "pepe", "pepe", "pepe@ujaen.es");
         gestorEventos.crearEvento("Evento 2", "Evento 2", "Linares", Tipo.CULTURAL, fecha, 2, sesion);

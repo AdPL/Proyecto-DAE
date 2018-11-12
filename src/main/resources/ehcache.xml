@@ -2,6 +2,8 @@
 
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
-    <cache name="gestorEventos" maxElementsInMemory="10000" eternal="true"
+    <cache name="cacheEventos" maxElementsInMemory="10000" eternal="true"
            overflowToDisk="false" />
+    <cache name="cacheUsuarios" maxElementsInMemory="1000" eternal="true"
+            overflowToDisk="false" />
 </ehcache>

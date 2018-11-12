@@ -5,7 +5,11 @@
  */
 package ujaen.proyecto.proyecto_dae.dao;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -43,13 +47,13 @@ public class EventoDAO {
         em.remove(em.merge(evento));
     }
     
-    @Cacheable(value="gestorEventos")
+    @Cacheable(value="cacheEventos")
     public Evento obtenerEventoPorTitulo(String titulo) {
-        try {
+        /*try {
             Thread.sleep(5000); // Simulación de petición con alto coste
         } catch (InterruptedException ex) {
             Logger.getLogger(EventoDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         Evento e = em.createQuery(
                 "SELECT e FROM Evento e WHERE e.titulo = :titulo", Evento.class)
                 .setParameter("titulo", titulo).getSingleResult();
@@ -73,7 +77,8 @@ public class EventoDAO {
     
     public void inscribirUsuario(Usuario usuario, int id) {
         Evento evento = em.find(Evento.class, id);
-        evento.agregarAsistente(usuario);
+        Usuario u = em.merge(usuario);
+        evento.agregarAsistente(u);
     }
     
     public Evento comprobarAsistencia(Usuario usuario) {
@@ -87,9 +92,13 @@ public class EventoDAO {
     public void cancelarAsistencia(Usuario usuario, Evento evento) {
         Evento e = em.merge(evento);
         Usuario u = em.merge(usuario);
-        e.quitarAsistente(u);
-        em.merge(evento);
-        em.merge(usuario);
+        
+        Set<Calendar> fechas;
+        fechas = e.getListaEspera().keySet();
+        for ( Calendar fecha : fechas ) {
+            System.out.println("He obtenido la fecha: " + fecha);
+            e.quitarAsistente(u, fecha);
+        }
     }
     
     //TODO: Correcta gestión de transacciones
@@ -99,6 +108,5 @@ public class EventoDAO {
         if ( u.getNombre().equals(evento.getOrganizador().getNombre()) ) {
             eliminar(e);
         }
-        em.merge(usuario);
     }
 }

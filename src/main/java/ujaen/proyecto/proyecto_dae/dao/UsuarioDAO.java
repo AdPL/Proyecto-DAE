@@ -20,7 +20,6 @@ import ujaen.proyecto.proyecto_dae.entities.Usuario;
 
 //TODO: Revisar consulta por setParameter y gestionarla de modo literals o string según sea el parámetro
 //TODO: Problema al devolver null, revisar que debe hacerse en esos casos
-//TODO: Caché
 
 @Repository
 @Transactional

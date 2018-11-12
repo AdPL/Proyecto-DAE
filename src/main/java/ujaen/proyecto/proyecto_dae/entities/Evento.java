@@ -8,6 +8,7 @@ package ujaen.proyecto.proyecto_dae.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Entity;
@@ -56,6 +57,7 @@ public class Evento implements Serializable {
         this.fecha = fecha;
         this.tipo = tipo;
         this.asistentes = new ArrayList<>();
+        this.listaEspera = new HashMap<>();
         this.organizador = usuario;
     }
     
@@ -135,18 +137,20 @@ public class Evento implements Serializable {
                 asistentes.add(usuario);
                 System.out.println("Usuario agregado a la lista de asistentes");
             } else {
-                System.out.println("na");
+                listaEspera.put(Calendar.getInstance(), usuario);
+                System.out.println("Usuario agregado a la lista de espera");
             }
         }
     }
 
-    public void quitarAsistente(Usuario usuario) {
+    public void quitarAsistente(Usuario usuario, Calendar fecha) {
         if ( asistentes.contains(usuario) ) {
             asistentes.remove(usuario);
             System.out.println("Usuario " + usuario.getNombre() + " cancela su asistencia al evento " + titulo);
             if ( !listaEspera.isEmpty() ) {
-                System.out.println(listaEspera.get(0).getNombre() + " es el primero de la lista de Espera, ahora está en asistentes");
-                asistentes.add(listaEspera.remove(0));
+                System.out.println(listaEspera.get(fecha) + " es el primero de la lista de Espera, ahora está en asistentes");
+                Usuario u = listaEspera.remove(fecha);
+                asistentes.add(u);
             }
         } else if ( listaEspera.containsKey(usuario) ) {
             listaEspera.remove(usuario);

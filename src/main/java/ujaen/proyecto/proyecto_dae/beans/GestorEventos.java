@@ -7,6 +7,7 @@
 
 package ujaen.proyecto.proyecto_dae.beans;
 
+import ujaen.proyecto.proyecto_dae.EmailServiceImpl;
 import ujaen.proyecto.proyecto_dae.entities.Usuario;
 import ujaen.proyecto.proyecto_dae.entities.Evento;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.Collection;
 import java.util.Calendar;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import ujaen.proyecto.proyecto_dae.dao.EventoDAO;
 import ujaen.proyecto.proyecto_dae.dao.UsuarioDAO;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
@@ -27,6 +29,10 @@ public class GestorEventos implements EventoService, UsuarioService {
     private EventoDAO eventoDAO;
     @Autowired
     private UsuarioDAO usuarioDAO;
+    @Autowired
+    private EmailServiceImpl email;
+    @Autowired
+    private SimpleMailMessage template;
 
     public GestorEventos() {}
 
@@ -145,11 +151,7 @@ public class GestorEventos implements EventoService, UsuarioService {
      */
     @Override
     public EventoDTO buscarEvento(String titulo) throws EventoNoExiste {
-        //EventoDTO eventos = new ArrayList();
         Evento evento = eventoDAO.obtenerEventoPorTitulo(titulo);
-        /*for ( Evento e : eventoDAO.obtenerEventoPorTitulo(titulo) ) {
-            eventos.add(e.getEventoDTO());
-        }*/
         return evento.getEventoDTO();
     }
 
@@ -212,9 +214,13 @@ public class GestorEventos implements EventoService, UsuarioService {
     
     @Override
     public void cancelarAsistencia(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste {
+        //TODO: Pasar a correo con estilo y gestionar mejor
         Usuario usuario = usuarioDAO.obtenerUsuarioPorToken(sesion);
         Evento e = eventoDAO.obtenerEventoPorTitulo(evento.getTitulo());
         eventoDAO.cancelarAsistencia(usuario, e);
+        String templateArgs[] = {"nombre", "lugar", "nombre sistema"};
+        String text = String.format(template.getText(), templateArgs);
+        email.sendSimpleMessage("apl00034@red.ujaen.es", "EVENTO", text);
     }
 
     @Override

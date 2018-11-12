@@ -9,3 +9,13 @@ spring:
             ddl-auto: create
         properties:
             dialect: org.hibernate.dialect.DerbyTenSevenDialect
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: adrianpelopez@gmail.com
+        password: clkbmghpwjlvjemn
+        properties:
+            mail:
+                auth: true
+                starttls:
+                    enable: true
