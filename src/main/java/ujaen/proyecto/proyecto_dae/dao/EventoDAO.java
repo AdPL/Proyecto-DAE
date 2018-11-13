@@ -7,7 +7,7 @@ package ujaen.proyecto.proyecto_dae.dao;
 
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Set;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -91,18 +91,20 @@ public class EventoDAO {
     public Usuario cancelarAsistencia(Usuario usuario, Evento evento) {
         Evento e = em.merge(evento);
         Usuario u = em.merge(usuario);
-        Usuario nuevo = null;
         
-        Set<Calendar> fechas;
-        fechas = e.getListaEspera().keySet();
-        if ( fechas.isEmpty() ) {
-            nuevo = e.quitarAsistente(u, null);
-        } else {
-            for ( Calendar fecha : fechas ) {
-                System.out.println("He obtenido la fecha: " + fecha);
-                nuevo = e.quitarAsistente(u, fecha);
+        Calendar primeraFecha = GregorianCalendar.getInstance();
+        primeraFecha.set(2050, 1, 1);
+        
+        e.getListaEspera().forEach(((Calendar k, Usuario v) -> {
+            if ( primeraFecha.getTime().after(k.getTime()) ) {
+                primeraFecha.setTime(k.getTime());
             }
-        }
+        }));
+        
+        Usuario nuevo = e.getListaEspera().get(primeraFecha);
+        
+        e.quitarAsistente(u, primeraFecha);
+
         return nuevo;
     }
     

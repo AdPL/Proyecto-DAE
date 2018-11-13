@@ -19,10 +19,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Version;
-import org.springframework.mail.SimpleMailMessage;
-import ujaen.proyecto.proyecto_dae.EmailServiceImpl;
 import ujaen.proyecto.proyecto_dae.beans.Tipo;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 
@@ -134,36 +131,29 @@ public class Evento implements Serializable {
 
     public void agregarAsistente(Usuario usuario) {
         if ( asistentes.contains(usuario) ) {
-            System.out.println("El usuario ya setá inscrito en este evento");
         } else {
             if ( asistentes.size() < nMax ) {
                 asistentes.add(usuario);
-                System.out.println("Usuario agregado a la lista de asistentes");
             } else {
                 listaEspera.put(Calendar.getInstance(), usuario);
-                System.out.println("Usuario agregado a la lista de espera");
             }
         }
     }
-
+    
+    public void quitarAsistente(Usuario usuario) {
+        asistentes.remove(usuario);
+    }
+    
     public Usuario quitarAsistente(Usuario usuario, Calendar fecha) {
         Usuario u = null;
-        if ( fecha == null ) {
+        if ( asistentes.contains(usuario) ) {
             asistentes.remove(usuario);
-            System.out.println("Usuario " + usuario.getNombre() + " cancela su asistencia al evento " + titulo);
-        } else {
-            if ( asistentes.contains(usuario) ) {
-                asistentes.remove(usuario);
-                System.out.println("Usuario " + usuario.getNombre() + " cancela su asistencia al evento " + titulo);
-                if ( !listaEspera.isEmpty() ) {
-                    System.out.println(listaEspera.get(fecha) + " es el primero de la lista de Espera, ahora está en asistentes");
-                    u = listaEspera.remove(fecha);
-                    asistentes.add(u);
-                }
-            } else if ( listaEspera.containsKey(usuario) ) {
-                listaEspera.remove(usuario);
-                System.out.println("Usuario " + usuario.getNombre() + " se cancela de la lista de espera al evento " + titulo);
+            if ( !listaEspera.isEmpty() ) {
+                u = listaEspera.remove(fecha);
+                asistentes.add(u);
             }
+        } else if ( listaEspera.containsKey(usuario) ) {
+            listaEspera.remove(usuario);
         }
         return u;
     }

@@ -19,8 +19,6 @@ import ujaen.proyecto.proyecto_dae.entities.Usuario;
  * @author adpl
  */
 
-//TODO: Revisar consulta por setParameter y gestionarla de modo literals o string según sea el parámetro
-
 @Repository
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 public class UsuarioDAO {
