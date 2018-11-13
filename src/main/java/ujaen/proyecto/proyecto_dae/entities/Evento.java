@@ -19,7 +19,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Version;
+import org.springframework.mail.SimpleMailMessage;
+import ujaen.proyecto.proyecto_dae.EmailServiceImpl;
 import ujaen.proyecto.proyecto_dae.beans.Tipo;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 
@@ -143,19 +146,26 @@ public class Evento implements Serializable {
         }
     }
 
-    public void quitarAsistente(Usuario usuario, Calendar fecha) {
-        if ( asistentes.contains(usuario) ) {
+    public Usuario quitarAsistente(Usuario usuario, Calendar fecha) {
+        Usuario u = null;
+        if ( fecha == null ) {
             asistentes.remove(usuario);
             System.out.println("Usuario " + usuario.getNombre() + " cancela su asistencia al evento " + titulo);
-            if ( !listaEspera.isEmpty() ) {
-                System.out.println(listaEspera.get(fecha) + " es el primero de la lista de Espera, ahora está en asistentes");
-                Usuario u = listaEspera.remove(fecha);
-                asistentes.add(u);
+        } else {
+            if ( asistentes.contains(usuario) ) {
+                asistentes.remove(usuario);
+                System.out.println("Usuario " + usuario.getNombre() + " cancela su asistencia al evento " + titulo);
+                if ( !listaEspera.isEmpty() ) {
+                    System.out.println(listaEspera.get(fecha) + " es el primero de la lista de Espera, ahora está en asistentes");
+                    u = listaEspera.remove(fecha);
+                    asistentes.add(u);
+                }
+            } else if ( listaEspera.containsKey(usuario) ) {
+                listaEspera.remove(usuario);
+                System.out.println("Usuario " + usuario.getNombre() + " se cancela de la lista de espera al evento " + titulo);
             }
-        } else if ( listaEspera.containsKey(usuario) ) {
-            listaEspera.remove(usuario);
-            System.out.println("Usuario " + usuario.getNombre() + " se cancela de la lista de espera al evento " + titulo);
         }
+        return u;
     }
 
     public Map<Calendar, Usuario> getListaEspera() {

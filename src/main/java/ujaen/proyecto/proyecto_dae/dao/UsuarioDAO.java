@@ -53,24 +53,6 @@ public class UsuarioDAO {
         return u;
     }
     
-    public Usuario auntentificarUsuario(String nombre, String password) {
-        Usuario u = em.createQuery(
-                "SELECT u FROM Usuario u WHERE u.nombre = :nombre AND u.password = :password", Usuario.class)
-                .setParameter("nombre", nombre)
-                .setParameter("password", password)
-                .getSingleResult();
-
-        return u;
-    }
-    
-    public List<Evento> obtenerEventosInscrito(Usuario usuario) {
-        List<Evento> eventos = em.createQuery(
-                "SELECT e FROM Evento e WHERE :usuario MEMBER OF e.asistentes", Evento.class)
-        .setParameter("usuario", usuario).getResultList();
-        
-        return eventos;
-    }
-    
     public List<Evento> obtenerEventosOrganizador(Usuario usuario) {
         List<Evento> eventos = em.createQuery(
                 "SELECT e FROM Evento e WHERE e.organizador = :usuario", Evento.class)

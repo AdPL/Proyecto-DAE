@@ -81,24 +81,23 @@ public class EventoDAO {
         evento.agregarAsistente(u);
     }
     
-    public Evento comprobarAsistencia(Usuario usuario) {
-        Evento evento = em.createQuery(
-                "SELECT e FROM Evento e WHERE :usuario MEMBER OF e.asistentes", Evento.class)
-                .setParameter("usuario", usuario).getSingleResult();
-        return evento;
-    }
-    
     //TODO: Correcta gestión de transacciones
-    public void cancelarAsistencia(Usuario usuario, Evento evento) {
+    public Usuario cancelarAsistencia(Usuario usuario, Evento evento) {
         Evento e = em.merge(evento);
         Usuario u = em.merge(usuario);
+        Usuario nuevo = null;
         
         Set<Calendar> fechas;
         fechas = e.getListaEspera().keySet();
-        for ( Calendar fecha : fechas ) {
-            System.out.println("He obtenido la fecha: " + fecha);
-            e.quitarAsistente(u, fecha);
+        if ( fechas.isEmpty() ) {
+            nuevo = e.quitarAsistente(u, null);
+        } else {
+            for ( Calendar fecha : fechas ) {
+                System.out.println("He obtenido la fecha: " + fecha);
+                nuevo = e.quitarAsistente(u, fecha);
+            }
         }
+        return nuevo;
     }
     
     //TODO: Correcta gestión de transacciones

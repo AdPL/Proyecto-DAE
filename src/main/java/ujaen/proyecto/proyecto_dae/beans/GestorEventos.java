@@ -33,7 +33,6 @@ public class GestorEventos implements EventoService, UsuarioService {
     private EmailServiceImpl email;
     @Autowired
     private SimpleMailMessage template;
-
     public GestorEventos() {}
 
     /**
@@ -65,30 +64,17 @@ public class GestorEventos implements EventoService, UsuarioService {
 
     @Override
     public int identificarUsuario(String nombre, String pass) throws IdentificacionErronea {
-        Usuario usuario = usuarioDAO.auntentificarUsuario(nombre, pass);
+        Usuario usuario = usuarioDAO.obtenerUsuarioPorNombre(nombre);
         if ( usuario == null ) throw new IdentificacionErronea("Datos incorrectos");
         
-        usuario.generarNuevoToken();
-        usuarioDAO.actualizar(usuario);
-        int token = usuario.getToken();
+        int token = -1;
+        if ( usuario.getNombre().equals(nombre) && usuario.getPassword().equals(pass) ) {
+            usuario.generarNuevoToken();
+            usuarioDAO.actualizar(usuario);
+            token = usuario.getToken();
+        }
         
         return token;
-    }
-
-    /**
-     * Devuelve una lista con los eventos a los que se ha inscrito un usuario
-     * @param sesion Token de la sesión actual del usuario
-     * @return Colección de eventos con los a los que se incrito el usuario
-     */
-    @Override
-    public Collection<EventoDTO> listaEventosInscrito(int sesion) {
-        Usuario usuario = usuarioDAO.obtenerUsuarioPorToken(sesion);
-        
-        List<EventoDTO> eventosDTO = new ArrayList<>();
-        for ( Evento evento : usuarioDAO.obtenerEventosInscrito(usuario)) {
-            eventosDTO.add(evento.getEventoDTO());
-        }
-        return eventosDTO;
     }
 
     /**
@@ -118,7 +104,9 @@ public class GestorEventos implements EventoService, UsuarioService {
         
         Collection<EventoDTO> eventosPendientes = new ArrayList<>();
         
-        usuarioDAO.obtenerEventosInscritoPorCelebrar(usuario);
+        for ( Evento evento : usuarioDAO.obtenerEventosInscritoPorCelebrar(usuario)) {
+            eventosPendientes.add(evento.getEventoDTO());
+        }
         return eventosPendientes;
     }
     
@@ -133,7 +121,9 @@ public class GestorEventos implements EventoService, UsuarioService {
         
         Collection<EventoDTO> eventosPendientes = new ArrayList<>();
         
-        usuarioDAO.obtenerEventosInscritoPasados(usuario);
+        for ( Evento evento : usuarioDAO.obtenerEventosInscritoPasados(usuario)) {
+            eventosPendientes.add(evento.getEventoDTO());
+        }
         return eventosPendientes;
     }
     
@@ -214,13 +204,14 @@ public class GestorEventos implements EventoService, UsuarioService {
     
     @Override
     public void cancelarAsistencia(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste {
-        //TODO: Pasar a correo con estilo y gestionar mejor
         Usuario usuario = usuarioDAO.obtenerUsuarioPorToken(sesion);
         Evento e = eventoDAO.obtenerEventoPorTitulo(evento.getTitulo());
-        eventoDAO.cancelarAsistencia(usuario, e);
-        String templateArgs[] = {"nombre", "lugar", "nombre sistema"};
-        String text = String.format(template.getText(), templateArgs);
-        email.sendSimpleMessage("apl00034@red.ujaen.es", "EVENTO", text);
+        Usuario u = eventoDAO.cancelarAsistencia(usuario, e);
+        if ( u != null ) {
+            String templateArgs[] = {evento.getTitulo(), evento.getFecha().getTime().toString(), evento.getLocalizacion(), u.getNombre()};
+            String text = String.format(template.getText(), templateArgs);
+            email.sendSimpleMessage(u.getEmail(), "Inscrito a evento", text);
+        }
     }
 
     @Override

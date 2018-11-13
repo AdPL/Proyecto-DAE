@@ -7,7 +7,6 @@ import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 import ujaen.proyecto.proyecto_dae.beans.Tipo;
 import ujaen.proyecto.proyecto_dae.excepciones.EventoNoExiste;
 import ujaen.proyecto.proyecto_dae.excepciones.IdentificacionErronea;
-import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
 
 /**
  *

@@ -63,7 +63,7 @@ public class AppConfig {
     @Bean
     public SimpleMailMessage templateSimpleMessage() {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setText("Enhorabuena! Ha sido aceptado para la actividad %s a celebrar el día FECHA en %s. Entra en tu cuenta de %s para obtener más información");
+        message.setText("Enhorabuena! Ha sido aceptado para la actividad %s a celebrar el día %s en %s. Entra en tu cuenta %s para obtener más información");
         return message;
     }
 }
