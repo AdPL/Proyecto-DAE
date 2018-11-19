@@ -87,7 +87,7 @@ public class GestorEventos implements EventoService, UsuarioService {
         Usuario usuario = usuarioDAO.obtenerUsuarioPorToken(sesion);
         
         List<EventoDTO> eventosDTO = new ArrayList<>();
-        for ( Evento evento : usuarioDAO.obtenerEventosOrganizador(usuario)) {
+        for ( Evento evento : usuario.getEventosOrganizador() ) {
             eventosDTO.add(evento.getEventoDTO());
         }
         return eventosDTO;

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +30,7 @@ public class Usuario implements Serializable {
     private List<Evento> eventosInscrito;
     @ManyToMany(mappedBy="listaEspera")
     private List<Evento> eventosEspera;
-    @OneToMany(mappedBy="organizador")
+    @OneToMany(mappedBy="organizador", fetch = FetchType.EAGER)
     private List<Evento> eventosOrganizador;
     
     @Id
