@@ -52,11 +52,6 @@ public class EventoDAO {
     @Cacheable(value="cacheEventos")
     @Transactional(propagation=Propagation.SUPPORTS)
     public Evento obtenerEventoPorTitulo(String titulo) {
-        try {
-            Thread.sleep(5000); // Simulación de petición con alto coste
-        } catch (InterruptedException ex) {
-            Logger.getLogger(EventoDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
         Evento e = em.createQuery(
                 "SELECT e FROM Evento e WHERE e.titulo = :titulo", Evento.class)
                 .setParameter("titulo", titulo).getSingleResult();
@@ -109,9 +104,9 @@ public class EventoDAO {
     }
     
     @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = false)
-    public void cancelarEvento(Usuario usuario, Evento evento) {
+    public void cancelarEvento(Evento evento) {
         Evento e = em.merge(evento);
-        Usuario u = em.merge(usuario);
+        Usuario u = em.merge(evento.getOrganizador());
         if ( u.getNombre().equals(evento.getOrganizador().getNombre()) ) {
             eliminar(e);
         }

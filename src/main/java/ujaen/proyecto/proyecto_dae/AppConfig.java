@@ -12,6 +12,7 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -22,6 +23,7 @@ import ujaen.proyecto.proyecto_dae.beans.GestorEventos;
 
 @Configuration
 @EnableCaching
+@ComponentScan("ujaen.proyecto.proyecto_dae.controllers")
 public class AppConfig {
     @Bean
     public GestorEventos gestorEventos() {

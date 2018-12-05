@@ -3,6 +3,7 @@ package ujaen.proyecto.proyecto_dae.servicios;
 
 import java.util.Collection;
 import java.util.Calendar;
+import java.util.List;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 import ujaen.proyecto.proyecto_dae.beans.Tipo;
 import ujaen.proyecto.proyecto_dae.excepciones.EventoNoExiste;
@@ -14,11 +15,11 @@ import ujaen.proyecto.proyecto_dae.excepciones.IdentificacionErronea;
  * @author Rafa
  */
 public interface EventoService {
-    EventoDTO buscarEvento(String titulo) throws EventoNoExiste;
-    Collection<EventoDTO> buscarEvento(Tipo tipo);
+    EventoDTO obtenerEvento(String titulo) throws EventoNoExiste;
+    List<EventoDTO> buscarEvento(Tipo tipo);
     Collection<EventoDTO> buscarEvento(Tipo tipo, String descripcion);
-    EventoDTO crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, int nMax, int sesion);
-    void inscribirUsuario(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste;
-    void cancelarAsistencia(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste;
-    void cancelarEvento(int sesion, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste;
+    void crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, int nMax, String nombre);
+    void inscribirUsuario(String titulo, String nombre) throws IdentificacionErronea, EventoNoExiste;
+    void cancelarAsistencia(String nombre, EventoDTO evento) throws IdentificacionErronea, EventoNoExiste;
+    void cancelarEvento(String titulo) throws IdentificacionErronea, EventoNoExiste;
 }

@@ -48,14 +48,6 @@ public class UsuarioDAO {
     }
     
     @Transactional(propagation=Propagation.SUPPORTS)
-    public Usuario obtenerUsuarioPorToken(int token) {
-        Usuario u = em.createQuery(
-                "SELECT u FROM Usuario u WHERE u.token = :token", Usuario.class)
-                .setParameter("token", token).getSingleResult();
-        return u;
-    }
-    
-    @Transactional(propagation=Propagation.SUPPORTS)
     public List<Evento> obtenerEventosInscritoPasados(Usuario usuario) {
         List<Evento> eventos = em.createQuery(
                 "SELECT e FROM Evento e WHERE :usuario MEMBER OF e.asistentes AND CURRENT_TIMESTAMP > e.fecha", Evento.class)

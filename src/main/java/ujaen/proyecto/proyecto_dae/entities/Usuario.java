@@ -9,7 +9,6 @@ package ujaen.proyecto.proyecto_dae.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,7 +18,6 @@ import javax.persistence.Index;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
 
 
@@ -39,10 +37,6 @@ public class Usuario implements Serializable {
     private String nombre;
     private String email;
     private String password;
-    private int token;
-    
-    @Transient
-    private Random aleatorio;
     
     public Usuario() {
         eventosInscrito = new ArrayList<>();
@@ -50,13 +44,11 @@ public class Usuario implements Serializable {
     }
 
     public Usuario(String nombre, String email, String password) {
-        aleatorio = new Random();
         this.nombre = nombre;
         this.email = email;
         this.password = password;
         this.eventosInscrito = new ArrayList<>();
         this.eventosOrganizador = new ArrayList<>();
-        this.token = aleatorio.nextInt(Integer.MAX_VALUE);
     }
 
     public int getId() {
@@ -127,19 +119,6 @@ public class Usuario implements Serializable {
 
     public void setEventosEspera(List<Evento> eventosEspera) {
         this.eventosEspera = eventosEspera;
-    }
-
-    public int getToken() {
-        return token;
-    }
-
-    public void setToken(int token) {
-        this.token = token;
-    }
-    
-    public void generarNuevoToken() {
-        aleatorio = new Random();
-        this.token = aleatorio.nextInt(Integer.MAX_VALUE);
     }
     
     public UsuarioDTO getUsuarioDTO() {
