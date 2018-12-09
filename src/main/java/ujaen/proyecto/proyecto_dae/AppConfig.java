@@ -29,7 +29,7 @@ public class AppConfig {
     public GestorEventos gestorEventos() {
         return new GestorEventos();
     }
-    
+
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dataSource() {

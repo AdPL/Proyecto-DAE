@@ -7,9 +7,10 @@ package ujaen.proyecto.proyecto_dae.controllers;
 
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ujaen.proyecto.proyecto_dae.beans.GestorEventos;
 import ujaen.proyecto.proyecto_dae.beans.Tipo;
@@ -25,6 +27,7 @@ import ujaen.proyecto.proyecto_dae.entities.Evento;
 import ujaen.proyecto.proyecto_dae.entities.Usuario;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
 import ujaen.proyecto.proyecto_dae.servicios.dto.UsuarioDTO;
+import ujaen.proyecto.proyecto_dae.excepciones.*;
 
 /**
  *
@@ -42,18 +45,34 @@ public class RecursoApp {
      * @param nombre Nombre del usuario en cuestión
      * @return 
      */
+    @CrossOrigin
     @RequestMapping( value = "/usuarios/{nombre}", method = GET, produces = "application/json" )
-    public UsuarioDTO obtenerUsuario(@PathVariable String nombre) {
-        return app.obtenerUsuario(nombre).getUsuarioDTO();
+    public ResponseEntity<UsuarioDTO> obtenerUsuario(@PathVariable String nombre) {
+        Usuario usuario = app.obtenerUsuario(nombre);
+        if ( usuario == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(usuario.getUsuarioDTO(), HttpStatus.OK);
     }
     
     /**
      * Registro de usuarios en la aplicación
      * @param usuario Usuario a registrar
      */
+    @CrossOrigin
     @RequestMapping( value = "/usuarios", method = POST, consumes = "application/json" )
-    public void registrarUsuario( @RequestBody Usuario usuario ) {
-        app.registrarUsuario(usuario.getNombre(), usuario.getPassword(), usuario.getPassword(), usuario.getEmail());
+    public ResponseEntity<UsuarioDTO> registrarUsuario( @RequestBody Usuario usuario ) {
+        if ( usuario == null ) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
+        if ( app.obtenerUsuario(usuario.getNombre()) != null ) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        
+        String nombre = app.registrarUsuario(usuario.getNombre(), usuario.getPassword(), usuario.getPassword(), usuario.getEmail());
+        Usuario u = app.obtenerUsuario(nombre);
+        return new ResponseEntity<>(u.getUsuarioDTO(), HttpStatus.OK);
     }
     
     /**
@@ -103,6 +122,7 @@ public class RecursoApp {
      * @param titulo Título del evento
      * @param nombre Nombre del usuario
      */
+    //TODO: Tengo que pasarle el usuario en petición POST, no vale por pathvariable, enviaré el POST a asistentes
     @RequestMapping( value = "/eventos/{titulo}/asistentes/{nombre}", method = POST, consumes = "application/json" )
     public void inscribirUsuario( @PathVariable String titulo, @PathVariable String nombre ) {
         app.inscribirUsuario(titulo, nombre);
