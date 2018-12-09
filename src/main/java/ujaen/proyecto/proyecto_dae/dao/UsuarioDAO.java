@@ -41,10 +41,14 @@ public class UsuarioDAO {
     
     @Transactional(propagation=Propagation.SUPPORTS)
     public Usuario obtenerUsuarioPorNombre(String nombre) {
-        Usuario u = em.createQuery(
+        try {
+            Usuario u = em.createQuery(
                 "SELECT u FROM Usuario u WHERE u.nombre = :nombre", Usuario.class)
                 .setParameter("nombre", nombre).getSingleResult();
-        return u;
+            return u;
+        } catch ( javax.persistence.NoResultException e ) {
+            return null;
+        }
     }
     
     @Transactional(propagation=Propagation.SUPPORTS)

@@ -8,8 +8,6 @@ package ujaen.proyecto.proyecto_dae.dao;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.cache.annotation.Cacheable;

@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ujaen.proyecto.proyecto_dae.dao.EventoDAO;
 import ujaen.proyecto.proyecto_dae.dao.UsuarioDAO;
 import ujaen.proyecto.proyecto_dae.servicios.dto.EventoDTO;
