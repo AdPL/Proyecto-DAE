@@ -36,6 +36,8 @@ public class GestorEventos implements EventoService, UsuarioService {
     @Autowired
     private SimpleMailMessage template;
     public GestorEventos() {}
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /*
      * 
@@ -60,7 +62,7 @@ public class GestorEventos implements EventoService, UsuarioService {
     @Override
     public String registrarUsuario(String nombre, String pass1, String pass2, String email) {
         if ( pass1.equals(pass2) ) {
-            Usuario usuario = new Usuario(nombre, email, pass1);
+            Usuario usuario = new Usuario(nombre, email, passwordEncoder.encode(pass1));
             usuarioDAO.insertar(usuario);
         }
         return nombre;
@@ -71,11 +73,12 @@ public class GestorEventos implements EventoService, UsuarioService {
         Usuario usuario = usuarioDAO.obtenerUsuarioPorNombre(nombre);
         if ( usuario == null ) throw new IdentificacionErronea("Datos incorrectos");
         
-        if ( usuario.getNombre().equals(nombre) && usuario.getPassword().equals(pass) ) {
-            usuarioDAO.actualizar(usuario);
+        if ( usuario.getNombre().equals(nombre) && passwordEncoder.matches(usuario.getPassword(), pass) ) {
+            usuarioDAO.actualizar(usuario);        
+            return nombre;
+        } else {
+            return null;
         }
-        
-        return nombre;
     }
 
     /**
@@ -106,6 +109,10 @@ public class GestorEventos implements EventoService, UsuarioService {
         Collection<EventoDTO> eventosPendientes = new ArrayList<>();
         
         for ( Evento evento : usuarioDAO.obtenerEventosInscritoPorCelebrar(usuario)) {
+            eventosPendientes.add(evento.getEventoDTO());
+        }
+        
+        for ( Evento evento : usuarioDAO.obtenerEventosInscritoPasados(usuario)) {
             eventosPendientes.add(evento.getEventoDTO());
         }
         return eventosPendientes;
@@ -142,7 +149,13 @@ public class GestorEventos implements EventoService, UsuarioService {
      */
     @Override
     public EventoDTO obtenerEvento(String titulo) {
-        return eventoDAO.obtenerEventoPorTitulo(titulo).getEventoDTO();
+        try {
+            EventoDTO evento = eventoDAO.obtenerEventoPorTitulo(titulo).getEventoDTO();
+            return evento;
+        } catch ( Exception e ) {
+            return null;
+        }
+        
     }
 
     /**
@@ -187,10 +200,11 @@ public class GestorEventos implements EventoService, UsuarioService {
      * @return El evento creado
      */
     @Override
-    public void crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, int nMax, String nombre) {
+    public String crearEvento(String titulo, String descripcion, String localizacion, Tipo tipo, Calendar fecha, int nMax, String nombre) {
         Usuario usuario = usuarioDAO.obtenerUsuarioPorNombre(nombre);
         Evento evento = new Evento(nMax, titulo, descripcion, localizacion, tipo, fecha, usuario);
         eventoDAO.insertar(evento);
+        return evento.getTitulo();
     }
 
     @Override

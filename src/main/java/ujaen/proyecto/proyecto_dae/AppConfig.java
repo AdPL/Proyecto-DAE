@@ -18,6 +18,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ujaen.proyecto.proyecto_dae.beans.GestorEventos;
 
 
@@ -67,5 +69,10 @@ public class AppConfig {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setText("Enhorabuena! Ha sido aceptado para la actividad %s a celebrar el día %s en %s. Entra en tu cuenta %s para obtener más información");
         return message;
+    }
+    
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  *
@@ -23,7 +24,7 @@ public class SeguridadEventos extends WebSecurityConfigurerAdapter {
     
     @Override 
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(servicioDatosSeguridadEventos);
+        auth.userDetailsService(servicioDatosSeguridadEventos).passwordEncoder(new BCryptPasswordEncoder());
     }
     
     @Override
@@ -31,6 +32,6 @@ public class SeguridadEventos extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable();
         httpSecurity.httpBasic();
         
-        httpSecurity.authorizeRequests().antMatchers("/app/eventos/**").hasRole("USUARIO");
+        //httpSecurity.authorizeRequests().antMatchers("/app/eventos/**").hasRole("USUARIO");
     }
 }
