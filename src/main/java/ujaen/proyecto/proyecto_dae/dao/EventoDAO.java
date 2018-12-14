@@ -50,10 +50,14 @@ public class EventoDAO {
     @Cacheable(value="cacheEventos")
     @Transactional(propagation=Propagation.SUPPORTS)
     public Evento obtenerEventoPorTitulo(String titulo) {
-        Evento e = em.createQuery(
-                "SELECT e FROM Evento e WHERE e.titulo = :titulo", Evento.class)
-                .setParameter("titulo", titulo).getSingleResult();
-        return e;
+        try {
+            Evento e = em.createQuery(
+                    "SELECT e FROM Evento e WHERE e.titulo = :titulo", Evento.class)
+                    .setParameter("titulo", titulo).getSingleResult();
+            return e;
+        } catch ( javax.persistence.NoResultException e ) {
+            return null;
+        }
     }
     
     @Transactional(propagation=Propagation.SUPPORTS)
