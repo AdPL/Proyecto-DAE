@@ -31,9 +31,9 @@ public class ServicioDatosSeguridadEventos implements UserDetailsService {
         if ( usuario == null ) {
             throw new IdentificacionErronea("ERROR LOGIN");
         }
-        
-        //TODO: Fix this, is working without BCryptEncoder, using plain text
-        return User.withUsername(nombre).password("{noop}oretania").roles("USUARIO").build();
+
+        // TODO: Editar, autoasigna rol USUARIO cualquier login correcto
+        return User.withUsername(nombre).password(usuario.getPassword()).roles("USUARIO").build();
     }
     
 }
