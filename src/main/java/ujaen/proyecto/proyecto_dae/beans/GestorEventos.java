@@ -73,8 +73,8 @@ public class GestorEventos implements EventoService, UsuarioService {
         Usuario usuario = usuarioDAO.obtenerUsuarioPorNombre(nombre);
         if ( usuario == null ) throw new IdentificacionErronea("Datos incorrectos");
         
-        if ( usuario.getNombre().equals(nombre) && passwordEncoder.matches(usuario.getPassword(), pass) ) {
-            usuarioDAO.actualizar(usuario);        
+        if ( usuario.getNombre().equals(nombre) && passwordEncoder.matches(pass, usuario.getPassword()) ) {
+            usuarioDAO.actualizar(usuario);
             return nombre;
         } else {
             return null;
