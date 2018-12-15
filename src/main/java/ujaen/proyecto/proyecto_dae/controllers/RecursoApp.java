@@ -93,7 +93,7 @@ public class RecursoApp {
     
     @CrossOrigin
     @RequestMapping( value = "/usuarios/identificar", method = POST, consumes = "application/json" )
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public UsuarioDTO identificarUsuario( @RequestBody Usuario usuario ) {
         String nombre = app.identificarUsuario(usuario.getNombre(), usuario.getPassword());
         Usuario u = app.obtenerUsuario(nombre);
@@ -162,13 +162,24 @@ public class RecursoApp {
      * @param evento Evento a crear
      */
     @CrossOrigin
+    @RequestMapping( value = "/eventos", method = GET, produces = "application/json" ) //TODO: Falta paginado
+    @ResponseStatus(HttpStatus.OK)
+    public Collection<EventoDTO> listaEventos( ) {
+        return app.listaEventosPorCelebrar("adpl");
+    }
+    
+    /**
+     * Creación de un evento
+     * @param evento Evento a crear
+     */
+    @CrossOrigin
     @RequestMapping( value = "/eventos", method = POST, consumes = "application/json" ) //TODO: Solventar fechas
     @ResponseStatus(HttpStatus.CREATED)
     public EventoDTO crearEvento( @RequestBody Evento evento  ) {
         EventoDTO eventoDTO = app.obtenerEvento(evento.getTitulo());
         if ( eventoDTO != null ) { throw new EventoExistente("El evento ya existe"); }
         
-        app.crearEvento(evento.getTitulo(), evento.getDescripcion(), evento.getLocalizacion(), Tipo.FESTIVAL, Calendar.getInstance(), evento.getnMax(), "rafa");
+        app.crearEvento(evento.getTitulo(), evento.getDescripcion(), evento.getLocalizacion(), Tipo.FESTIVAL, Calendar.getInstance(), evento.getnMax(), "adpl");
         eventoDTO = app.obtenerEvento(evento.getTitulo());
         return eventoDTO;
     }
@@ -184,8 +195,12 @@ public class RecursoApp {
     @ResponseStatus(HttpStatus.OK)
     public void inscribirUsuario( @PathVariable String titulo, @PathVariable String nombre ) {
         titulo = titulo.replace("%20", " ");
-        app.inscribirUsuario(titulo, nombre);
+        EventoDTO evento = app.obtenerEvento(titulo);
+        Usuario usuario = app.obtenerUsuario(nombre);
+        if ( evento == null ) { throw new EventoNoExiste("El evento al que desea inscribirse no existe"); }
+        if ( usuario == null ) { throw new UsuarioNoExiste("Usuario no encontrado"); }
         
+        app.inscribirUsuario(titulo, nombre);
     }
     
     /**
