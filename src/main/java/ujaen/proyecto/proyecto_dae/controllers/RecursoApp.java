@@ -158,7 +158,7 @@ public class RecursoApp {
      * @param evento Evento a crear
      */
     @CrossOrigin
-    @RequestMapping( value = "/eventos", method = GET, produces = "application/json" ) //TODO: Falta paginado
+    @RequestMapping( value = "/eventos", method = GET, produces = "application/json" )
     @ResponseStatus(HttpStatus.OK)
     public Collection<EventoDTO> listaEventos( ) {
         return app.listaEventosPorCelebrar("adpl");
@@ -169,13 +169,12 @@ public class RecursoApp {
      * @param evento Evento a crear
      */
     @CrossOrigin
-    @RequestMapping( value = "/eventos", method = POST, consumes = "application/json" ) //TODO: Solventar fechas
+    @RequestMapping( value = "/eventos", method = POST, consumes = "application/json" )
     @ResponseStatus(HttpStatus.CREATED)
     public EventoDTO crearEvento( @RequestBody Evento evento  ) {
         EventoDTO eventoDTO = app.obtenerEvento(evento.getTitulo());
         if ( eventoDTO != null ) { throw new EventoExistente("El evento ya existe"); }
-        
-        app.crearEvento(evento.getTitulo(), evento.getDescripcion(), evento.getLocalizacion(), Tipo.FESTIVAL, Calendar.getInstance(), evento.getnMax(), "adpl");
+        app.crearEvento(evento.getTitulo(), evento.getDescripcion(), evento.getLocalizacion(), Tipo.FESTIVAL, Calendar.getInstance(), evento.getnMax(), evento.getOrganizador().getNombre());
         eventoDTO = app.obtenerEvento(evento.getTitulo());
         return eventoDTO;
     }
