@@ -54,6 +54,10 @@ public class RecursoApp {
     @ExceptionHandler({UsuarioExistente.class, EventoExistente.class})
     public void handlerExistente() {}
     
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler({UsuarioErrorAutorizacion.class})
+    public void handlerErrorAutorizacion() {}
+    
     /**
      * Consulta de los datos de un usuario
      * @param nombre Nombre del usuario en cuestión
@@ -64,9 +68,8 @@ public class RecursoApp {
     @ResponseStatus(HttpStatus.OK)
     public UsuarioDTO obtenerUsuario(@PathVariable String nombre) {
         Usuario usuario = app.obtenerUsuario(nombre);
-        if ( usuario == null) {
-            throw new UsuarioNoExiste("Usuario no encontrado");
-        }
+        if ( usuario == null) { throw new UsuarioNoExiste("Usuario no encontrado"); }
+        
         return usuario.getUsuarioDTO();
     }
     
@@ -78,13 +81,8 @@ public class RecursoApp {
     @RequestMapping( value = "/usuarios", method = POST, consumes = "application/json" )
     @ResponseStatus(HttpStatus.CREATED)
     public UsuarioDTO registrarUsuario( @RequestBody Usuario usuario ) {
-        if ( usuario == null ) {
-            throw new UsuarioIncorrecto("Usuario incorrecto");
-        }
-        
-        if ( app.obtenerUsuario(usuario.getNombre()) != null ) {
-            throw new UsuarioExistente("El usuario ya existe");
-        }
+        if ( usuario == null ) { throw new UsuarioIncorrecto("Usuario incorrecto"); }
+        if ( app.obtenerUsuario(usuario.getNombre()) != null ) { throw new UsuarioExistente("El usuario ya existe"); }
         
         String nombre = app.registrarUsuario(usuario.getNombre(), usuario.getPassword(), usuario.getPassword(), usuario.getEmail());
         Usuario u = app.obtenerUsuario(nombre);
@@ -92,16 +90,14 @@ public class RecursoApp {
     }
     
     @CrossOrigin
-    @RequestMapping( value = "/usuarios/identificar", method = POST, consumes = "application/json" )
+    @RequestMapping( value = "/usuarios/login", method = POST, consumes = "application/json" )
     @ResponseStatus(HttpStatus.OK)
     public UsuarioDTO identificarUsuario( @RequestBody Usuario usuario ) {
         String nombre = app.identificarUsuario(usuario.getNombre(), usuario.getPassword());
+        if ( nombre == null ) { throw new UsuarioErrorAutorizacion("Usuario o contraseña incorrectos"); }
+        
         Usuario u = app.obtenerUsuario(nombre);
-        if ( u != null ) {
-            System.out.println(u.getNombre() + " logueado correctamente");
-            return u.getUsuarioDTO();
-        }
-        throw new UsuarioIncorrecto("Usuario o contraseña incorrectos");
+        return u.getUsuarioDTO();
     }
     
     /**
@@ -113,7 +109,7 @@ public class RecursoApp {
     @CrossOrigin
     @RequestMapping( value = "/usuarios/{nombre}/organizador", method = GET, produces = "application/json" )
     @ResponseStatus(HttpStatus.OK)
-    public Collection<EventoDTO> obtenerEventosOrganizador( @PathVariable String nombre, @RequestParam boolean celebrado ) {
+    public Collection<EventoDTO> obtenerEventosOrganizador( @PathVariable String nombre, @RequestParam(defaultValue = "false") boolean celebrado ) {
         Usuario usuario = app.obtenerUsuario(nombre);
         if ( usuario == null ) { throw new UsuarioNoExiste("El usuario no existe"); }
         
@@ -132,7 +128,7 @@ public class RecursoApp {
     @CrossOrigin
     @RequestMapping( value = "/usuarios/{nombre}/asistente", method = GET, produces = "application/json" )
     @ResponseStatus(HttpStatus.OK)
-    public Collection<EventoDTO> obtenerEventosAsistente( @PathVariable String nombre, @RequestParam boolean celebrado ) {
+    public Collection<EventoDTO> obtenerEventosAsistente( @PathVariable String nombre, @RequestParam(defaultValue = "false") boolean celebrado ) {
         Usuario usuario = app.obtenerUsuario(nombre);
         if ( usuario == null ) { throw new UsuarioNoExiste("El usuario no existe"); }
         
@@ -189,9 +185,8 @@ public class RecursoApp {
      * @param titulo Título del evento
      * @param nombre Nombre del usuario
      */
-    //TODO: Cambio a PUT ?
     @CrossOrigin
-    @RequestMapping( value = "/eventos/{titulo}/asistentes/{nombre}", method = POST, consumes = "application/json" )
+    @RequestMapping( value = "/eventos/{titulo}/asistentes/{nombre}", method = POST )
     @ResponseStatus(HttpStatus.OK)
     public void inscribirUsuario( @PathVariable String titulo, @PathVariable String nombre ) {
         titulo = titulo.replace("%20", " ");
@@ -208,7 +203,7 @@ public class RecursoApp {
      * @param titulo Título del evento
      */
     @CrossOrigin
-    @RequestMapping( value = "/eventos/{titulo}", method = DELETE, consumes = "application/json" )
+    @RequestMapping( value = "/eventos/{titulo}", method = DELETE )
     public void cancelarEvento( @PathVariable String titulo ) {
         titulo = titulo.replace("%20", " ");
         app.cancelarEvento(titulo);

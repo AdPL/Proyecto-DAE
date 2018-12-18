@@ -34,6 +34,9 @@ public class SeguridadEventos extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable();
         httpSecurity.httpBasic();
         
-        httpSecurity.authorizeRequests().antMatchers(HttpMethod.POST, "/app/eventos").hasRole("USUARIO");
+        httpSecurity.authorizeRequests().antMatchers(HttpMethod.GET, "/app/usuarios/{nombre}").hasRole("USUARIO");
+        httpSecurity.authorizeRequests().antMatchers(HttpMethod.GET, "/app/usuarios/{nombre}/*").hasRole("USUARIO");
+        httpSecurity.authorizeRequests().antMatchers(HttpMethod.POST, "/app/eventos/**").hasRole("USUARIO");
+        httpSecurity.authorizeRequests().antMatchers(HttpMethod.DELETE, "/app/eventos/**").hasRole("USUARIO");
     }
 }

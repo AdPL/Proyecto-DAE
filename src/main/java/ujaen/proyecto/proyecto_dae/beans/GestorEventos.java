@@ -71,7 +71,7 @@ public class GestorEventos implements EventoService, UsuarioService {
     @Override
     public String identificarUsuario(String nombre, String pass) throws IdentificacionErronea {
         Usuario usuario = usuarioDAO.obtenerUsuarioPorNombre(nombre);
-        if ( usuario == null ) throw new IdentificacionErronea("Datos incorrectos");
+        if ( usuario == null ) return null;
         
         if ( usuario.getNombre().equals(nombre) && passwordEncoder.matches(pass, usuario.getPassword()) ) {
             usuarioDAO.actualizar(usuario);
