@@ -9,3 +9,10 @@ spring:
             ddl-auto: create
         properties:
             dialect: org.hibernate.dialect.DerbyTenSevenDialect
+server:
+    port: 8080
+    ssl:
+        key-store: classpath:daecert.p12
+        key-store-password: oretania
+        keyStoreType: PKCS12
+        keyAlias: tomcat
