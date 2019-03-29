@@ -1,24 +1,21 @@
-
+/**
+ * Clase de aplicación de SpringBoot
+ * @author Adrián Pérez López
+ * @author Rafael Galán Ruiz
+ */
 package ujaen.proyecto.proyecto_dae;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
-/**
- *
- * @author adpl
- * @author Rafa
- */
-@SpringBootApplication
+
+@SpringBootApplication(scanBasePackages = "ujaen.proyecto.proyecto_dae")
+@EntityScan(basePackages = "ujaen.proyecto.proyecto_dae.entities")
 public class App {
     public static void main(String[] args) throws Exception {
         SpringApplication servidor = new SpringApplication(App.class);
-        ApplicationContext context = servidor.run(args);
-        
-        ClienteUsuario usuario = new ClienteUsuario(context);
-        usuario.run();
-        
+        servidor.run(args);
     }
     
 }

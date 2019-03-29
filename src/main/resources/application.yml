@@ -1,0 +1,18 @@
+spring:
+    datasource:
+        jdbc-url: jdbc:derby://localhost:1527/DAE
+        driver-class-name: org.apache.derby.jdbc.ClientDriver
+        username: dae
+        password: dae
+    jpa:
+        hibernate:
+            ddl-auto: create
+        properties:
+            dialect: org.hibernate.dialect.DerbyTenSevenDialect
+server:
+    port: 8080
+    ssl:
+        key-store: classpath:daecert.p12
+        key-store-password: oretania
+        keyStoreType: PKCS12
+        keyAlias: tomcat
